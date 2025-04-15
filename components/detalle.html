@@ -1,0 +1,31 @@
+<!-- detalle.html -->
+<link rel="stylesheet" href="../css/detalle.css" />
+<link rel="stylesheet" href="../css/styles.css" />
+
+<div id="mainHeaderContainer"></div>
+
+<section class="pagina-transporte">
+  <header class="header">
+    <h2>Sistema de Alquiler - <strong>Detalle del vehículo</strong></h2>
+  </header>
+
+  <div class="detalle-container">
+    <div class="detalle-imagen">
+      <img id="detalleImagen" src=" " alt=" ">
+    </div>
+    <div class="detalle-info">
+      <h1 id="detalleNombre"></h1>
+      <div id="detalleBadge" class="badge"></div>
+      <p><strong>Tarifa:</strong> Bs. <span id="detalleTarifa"></span>/hora</p>
+      <p><strong>Estación:</strong> <span id="detalleEstacion"></span></p>
+      <p><strong>Descripción:</strong></p>
+      <p id="detalleDescripcion"></p>
+      <p><strong>Tecnología:</strong></p>
+      <ul id="detalleTecnologia"></ul>
+      <button class="volver-btn" onclick="window.history.back()">← Volver</button>
+    </div>
+  </div>
+
+<script src="../js/script.js"></script>
+<script src="../js/menu.js"></script>
+</section>

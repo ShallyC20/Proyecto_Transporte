@@ -1,0 +1,53 @@
+<!-- mainHeader.html -->
+
+<link rel="stylesheet" href="../css/mainHeader.css">
+<link rel="stylesheet" href="../css/styles.css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<header class="main-header">
+  <div class="left-section">
+    <button class="icon-btn" onclick="toggleSidebar()"><i class="material-icons">menu</i></button>
+    <button class="icon-btn" id="btn-recargar-inicio"><i class="material-icons">refresh</i></button>
+    <input type="text" class="search-input" placeholder="Buscar transporte o punto..." oninput="buscarTransporte(this.value)" />
+  </div>
+  <div class="right-section">
+    <span class="user-name">Felipe <strong>Herrero</strong></span>
+    <div class="icon-group">
+      <i class="material-icons">notifications</i>
+      <i class="material-icons">settings</i>
+      <img class="avatar" src="https://i.pravatar.cc/40?img=3" alt="User Avatar">
+    </div>
+  </div>
+  <script src="../js/script.js"></script>
+</header>
+
+<aside id="sidebar" class="sidebar hidden">
+  <div class="sidebar-header">
+    <h2>Lolicon</h2>
+  </div>
+  <nav class="sidebar-nav">
+    
+    <div class="sidebar-subtitle">Navegación</div>
+    <ul>
+      <li class="menu-inicio">
+        <i class="fas fa-home"></i> <span>Inicio</span>
+      </li>
+    </ul>
+
+    <div class="sidebar-subtitle">Vehículo</div>
+    <ul>
+      <li class="menu-item" data-component="r1.html">
+        <i class="fas fa-bus-alt"></i> <span>Transporte</span>
+      </li>
+    </ul>
+
+    <div class="sidebar-subtitle">Ubicación</div>
+    <ul>
+      <li class="menu-item" data-component="&">
+        <i class="fas fa-map-marker-alt"></i> <span>Puntos de control </span>
+      </li>
+    </ul>
+  </nav>
+  <script src="../js/script.js"></script>
+</aside>
+
+<main id="contenido"></main>

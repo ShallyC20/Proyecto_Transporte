@@ -1,0 +1,98 @@
+[
+  {
+    "id": "bicicleta1",
+    "nombre": "Bicicleta Urbana",
+    "imagen": "../imag/bicicleta1.jpg",
+    "alt": "Bicicleta Urbana",
+    "estacion": "Plaza Mayor",
+    "tarifa": 1.50,
+    "estado": "Disponible",
+    "badgeClass": "badge-disponible",
+    "descripcion": "Ideal para moverse por la ciudad con agilidad. Ligera, cómoda y ecológica.",
+    "tecnologia": ["Cambio Shimano", "Llantas de ciudad", "Frenos de disco"]
+  },
+  {
+    "id": "bicicleta2",
+    "nombre": "Bicicleta Montaña",
+    "imagen": "../imag/bicicleta2.jpg",
+    "alt": "Bicicleta Montaña",
+    "estacion": "Central",
+    "tarifa": 1.80,
+    "estado": "En uso",
+    "badgeClass": "badge-en-uso",
+    "descripcion": "Diseñada para terrenos difíciles, perfecta para aventuras fuera del asfalto.",
+    "tecnologia": ["Suspensión doble", "Cuadro de aluminio", "Neumáticos con agarre"]
+  },
+  {
+    "id": "patineta1",
+    "nombre": "Patineta Eléctrica",
+    "imagen": "../imag/patineta1.jpg",
+    "alt": "Patineta Eléctrica",
+    "estacion": "Universidad",
+    "tarifa": 2.00,
+    "estado": "Disponible",
+    "badgeClass": "badge-disponible",
+    "descripcion": "Moderna y eficiente, ideal para trayectos rápidos en el campus o la ciudad.",
+    "tecnologia": ["Motor 350W", "Autonomía 25km", "Luces LED"]
+  },
+  {
+    "id": "patineta2",
+    "nombre": "Patineta Clásica",
+    "imagen": "../imag/patineta2.jpg",
+    "alt": "Patineta Clásica",
+    "estacion": "Central",
+    "tarifa": 1.60,
+    "estado": "En uso",
+    "badgeClass": "badge-en-uso",
+    "descripcion": "Estilo retro y diversión garantizada. Sin baterías, solo tú y el impulso.",
+    "tecnologia": ["Ruedas de poliuretano", "Rodamientos ABEC-7", "Tabla de madera"]
+  },
+  {
+    "id": "bicicleta3",
+    "nombre": "Bicicleta Híbrida",
+    "imagen": "../imag/bicicleta3.jpg",
+    "alt": "Bicicleta Híbrida",
+    "estacion": "Parque Norte",
+    "tarifa": 1.70,
+    "estado": "Disponible",
+    "badgeClass": "badge-disponible",
+    "descripcion": "Combinación perfecta entre bici de ciudad y de montaña, versátil y resistente.",
+    "tecnologia": ["Cambio de 21 velocidades", "Cuadro reforzado", "Frenos V-brake"]
+  },
+  {
+    "id": "bicicleta4",
+    "nombre": "Bicicleta Eléctrica",
+    "imagen": "../imag/bicicleta4.jpg",
+    "alt": "Bicicleta Eléctrica",
+    "estacion": "Estación Sur",
+    "tarifa": 2.50,
+    "estado": "Mantenimiento",
+    "badgeClass": "badge-mantenimiento",
+    "descripcion": "Asistencia eléctrica para recorridos largos o zonas con pendientes.",
+    "tecnologia": ["Motor 250W", "Batería de litio", "Pantalla LCD"]
+  },
+  {
+    "id": "bicicleta5",
+    "nombre": "Bicicleta Infantil",
+    "imagen": "../imag/bicicleta5.jpg",
+    "alt": "Bicicleta Infantil",
+    "estacion": "Zona Recreativa",
+    "tarifa": 1.20,
+    "estado": "Disponible",
+    "badgeClass": "badge-disponible",
+    "descripcion": "Perfecta para los más pequeños. Segura, colorida y divertida.",
+    "tecnologia": ["Ruedas auxiliares", "Asiento ajustable", "Timbre incluido"]
+  },
+  {
+    "id": "patineta3",
+    "nombre": "Patineta Todo Terreno",
+    "imagen": "../imag/patineta3.jpg",
+    "alt": "Patineta Todo Terreno",
+    "estacion": "Bosque Urbano",
+    "tarifa": 2.20,
+    "estado": "Disponible",
+    "badgeClass": "badge-disponible",
+    "descripcion": "Preparada para caminos difíciles, con ruedas grandes y tracción reforzada.",
+    "tecnologia": ["Ruedas neumáticas", "Suspensión delantera", "Plataforma antideslizante"]
+  }
+]

@@ -1,0 +1,39 @@
+<!-- components/r1.html --> 
+<link rel="stylesheet" href="../css/styles.css" />
+<section class="pagina-transporte">
+
+  <header class="header">
+    <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
+    <div class="filters">
+      <select id="filterTipo">
+        <option value="Todo">Todos</option>
+        <option value="Bicicleta">Bicicletas</option>
+        <option value="Patineta">Patinetas</option>
+      </select>
+
+      <select id="filterEstacion">
+        <option value="Todo">Todas las estaciones</option>
+        <option value="Central">Central</option>
+        <option value="Plaza Mayor">Plaza Mayor</option>
+        <option value="Universidad">Universidad</option>
+      </select>
+
+      <select id="filterEstado">
+        <option value="Todo">Todo</option>
+        <option value="Disponible">Disponible</option>
+        <option value="En uso">En uso</option>
+      </select>
+
+      <select id="filterTarifa">
+        <option value="Default">Tarifa</option>
+        <option value="asc">Menor a mayor</option>
+        <option value="desc">Mayor a menor</option>
+      </select>
+    </div>
+  </header>
+
+  <div class="product-grid" id="gridTransportes">
+    <!-- Las tarjetas se cargarán aquí dinámicamente desde productos.json -->
+  </div>
+  <script src="../js/script.js"></script>
+</section>
