@@ -8,7 +8,7 @@ body.menu-open #mainDetalleContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f9fa;
+  background-color: #1b2a47;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   padding: 1rem 2rem;
   position: sticky;
@@ -24,8 +24,10 @@ body.menu-open #mainDetalleContainer {
 }
 
 .logo-ets {
-  height: 50px;
-  margin-left: 50px;
+  height: 70px;
+  margin-left: 40px;
+  border-radius: 40%;
+  background-color: #fff;
 }
 
 .logo-container {
@@ -75,7 +77,7 @@ body.menu-open #mainDetalleContainer {
 .user-name {
   font-size: 1rem;
   font-weight: 500;
-  color: #333;
+  color: #ffffff;
   margin-right: 0.8rem;
 }
 
@@ -88,7 +90,7 @@ body.menu-open #mainDetalleContainer {
   align-items: center;
   gap: 1rem;
   font-size: 1.2rem;
-  color: #555;
+  color: #ffffff;
 }
 
 .icon-group i {
