@@ -1,10 +1,13 @@
 /* detalle.css */
+#mainDetalleContainer {
+  transition: margin-left 0.3s ease;
+}
 
 body {
     font-family: Arial, sans-serif;
     background-color: #f5f5f5;
     margin: 0;
-    padding: 2rem;
+    padding: 0;
   }
   
   .detalle-container {

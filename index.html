@@ -3,12 +3,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Geolocalización de Bicicletas y Patinetas</title>
   <link rel="stylesheet" href="./css/styles.css" />
 </head>
 <body>
-
   <div id="mainHeaderContainer"></div>
 
   <div id="inicio">
@@ -20,7 +19,7 @@
     <section class="descripcion">
       <h2>¿Cómo funciona el sistema?</h2>
       <p>
-        Nuestro sistema de alquiler y geolocalización permite a los usuarios acceder a bicicletas y patinetas desde distintas estaciones mediante una app móvil. Gracias a la integración con GPS y sensores inteligentes, puedes conocer la ubicación en tiempo real, recibir notificaciones de disponibilidad y gestionar pagos de forma sencilla.
+        Accede a bicicletas y patinetas desde distintas estaciones con nuestra app móvil. Gracias a la integración con GPS y sensores inteligentes, conoce la ubicación en tiempo real, recibe notificaciones y gestiona pagos fácilmente.
       </p>
     </section>
 
@@ -29,34 +28,58 @@
       <ul>
         <li><i class="fas fa-map-marker-alt"></i> Geolocalización en tiempo real</li>
         <li><i class="fas fa-bell"></i> Notificaciones instantáneas</li>
-        <li><i class="fas fa-mobile-alt"></i> Aplicación móvil fácil de usar</li>
-        <li><i class="fas fa-recycle"></i> Promueve la movilidad sostenible</li>
+        <li><i class="fas fa-mobile-alt"></i> Aplicación móvil</li>
+        <li><i class="fas fa-recycle"></i> Movilidad sostenible</li>
       </ul>
     </section>
 
     <section class="vehiculos">
       <h2>Vehículos</h2>
       <div class="carousel-container">
-        <button class="carousel-btn left" onclick="scrollCarouselLoop(-1)">
+        <button class="carousel-btn left" id="btn-scroll-left">
           <i class="fas fa-chevron-left"></i>
         </button>
 
-        <div class="carousel-track" id="carouselTrack">
-          <!-- Las tarjetas se insertan dinámicamente aquí desde productos.json -->
-        </div>
+        <div class="carousel-track" id="carouselTrack"></div>
 
-        <button class="carousel-btn right" onclick="scrollCarouselLoop(1)">
+        <button class="carousel-btn right" id="btn-scroll-right">
           <i class="fas fa-chevron-right"></i>
         </button>
       </div>
     </section>
   </div>
 
+  <main id="contenido" style="display: none;"></main>
+
   <footer>
-    <p>© 2025 Sistema de Geolocalización de Bicicletas y Patinetas. Todos los derechos reservados.</p>
+    <p>© 2025 Sistema de Geolocalización. Todos los derechos reservados.</p>
   </footer>
 
-  <script src="./js/script.js"></script>
+  <script src="./js/script.js" defer></script>
   <script src="./js/menu.js"></script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('./components/mainHeader.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainer").innerHTML = html;
+  
+          const script1 = document.createElement('script');
+          script1.src = './js/menu.js';
+          script1.onload = () => {
+            const script2 = document.createElement('script');
+            script2.src = './js/headerEvents.js';
+            script2.onload = () => {
+              if (typeof initHeaderEvents === 'function') initHeaderEvents();
+            };
+            document.body.appendChild(script2);
+          };
+          document.body.appendChild(script1);
+        });
+    });
+  </script>
+  
 </body>
 </html>

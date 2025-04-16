@@ -1,212 +1,146 @@
 // script.js
+// === script.js ===
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("../components/mainHeader.html")
+  fetch("./components/mainHeader.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("mainHeaderContainer").innerHTML = html;
 
-      const menuItems = document.querySelectorAll('.menu-item');
-      const main = document.getElementById('contenido');
-      const inicio = document.getElementById('inicio');
+      // ⏬ Cargar eventos del header dinámico
+      const script = document.createElement("script");
+      script.src = "./js/headerEvents.js";
+      document.body.appendChild(script);
+    });
 
-      menuItems.forEach(item => {
-        item.addEventListener('click', () => {
-          const file = item.getAttribute('data-component');
-          const url = `./components/${file}`;
+  // Componente por parámetro ?cargar=
+  const params = new URLSearchParams(window.location.search);
+  const fileToLoad = params.get("cargar");
 
-          if (inicio) inicio.style.display = 'none';
-          if (main) main.style.display = 'block';
+  if (fileToLoad) {
+    cargarComponente(fileToLoad);
+  }
 
-          fetch(url)
-            .then(res => {
-              if (!res.ok) throw new Error(`Error al cargar ${url}: ${res.statusText}`);
-              return res.text();
-            })
-            .then(html => {
-              main.innerHTML = html;
+  // Carrusel de index
+  const track = document.getElementById('carouselTrack');
+  if (track) {
+    fetch('./json/productos.json')
+      .then(res => res.json())
+      .then(productos => {
+        productos.forEach(producto => {
+          const card = document.createElement('div');
+          card.classList.add('card');
 
-              // Renderizar r1.html dinámicamente
-              if (file === 'r1.html') {
-                fetch('../json/productos.json')
-                  .then(response => response.json())
-                  .then(productos => {
-                    const grid = document.getElementById('gridTransportes');
-                    const tipo = document.getElementById('filterTipo');
-                    const estacion = document.getElementById('filterEstacion');
-                    const estado = document.getElementById('filterEstado');
-                    const tarifa = document.getElementById('filterTarifa');
+          const badgeClass = {
+            "Disponible": "badge-disponible",
+            "En uso": "badge-en-uso",
+            "En mantenimiento": "badge-mante"
+          }[producto.estado] || "badge-default";
 
-                    function renderProductos(data) {
-                      grid.innerHTML = '';
-                      data.forEach(producto => {
-                        const card = document.createElement('div');
-                        card.classList.add('card');
+          card.innerHTML = `
+            <div class="badge ${badgeClass}">${producto.estado}</div>
+            <img src="${producto.imagen}" alt="${producto.alt}">
+            <div class="card-info">
+              <h4>${producto.nombre}</h4>
+              <p>Estación: ${producto.estacion}</p>
+              <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
+            </div>
+          `;
 
-                        // Asignar color según estado
-                        let badgeClass = '';
-                        switch (producto.estado) {
-                          case 'Disponible':
-                            badgeClass = 'badge-disponible'; break;
-                          case 'En uso':
-                            badgeClass = 'badge-en-uso'; break;
-                          case 'En mantenimiento':
-                            badgeClass = 'badge-mante'; break;
-                          default:
-                            badgeClass = 'badge-default'; break;
-                        }
+          card.addEventListener("click", () => {
+            localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+            window.location.href = "./components/detalle.html";
+          });
 
-                        const badge = document.createElement('div');
-                        badge.className = `badge ${badgeClass}`;
-                        badge.textContent = producto.estado;
-
-                        const img = document.createElement('img');
-                        img.src = producto.imagen;
-                        img.alt = producto.alt;
-
-                        const info = document.createElement('div');
-                        info.classList.add('card-info');
-                        info.innerHTML = `
-                          <h4>${producto.nombre}</h4>
-                          <p>Estación: ${producto.estacion}</p>
-                          <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
-                        `;
-
-                        card.appendChild(badge);
-                        card.appendChild(img);
-                        card.appendChild(info);
-
-                        // Evento clic para ver detalles
-                        card.addEventListener('click', () => {
-                          localStorage.setItem('productoSeleccionado', JSON.stringify(producto));
-                          window.location.href = '../components/detalle.html';
-                        });
-
-                        grid.appendChild(card);
-                      });
-                    }
-
-                    function aplicarFiltros() {
-                      let filtrados = [...productos];
-
-                      if (tipo.value !== "Todo") {
-                        filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
-                      }
-
-                      if (estacion.value !== "Todo") {
-                        filtrados = filtrados.filter(p => p.estacion === estacion.value);
-                      }
-
-                      if (estado.value !== "Todo") {
-                        filtrados = filtrados.filter(p => p.estado === estado.value);
-                      }
-
-                      if (tarifa.value === "asc") {
-                        filtrados.sort((a, b) => a.tarifa - b.tarifa);
-                      } else if (tarifa.value === "desc") {
-                        filtrados.sort((a, b) => b.tarifa - a.tarifa);
-                      }
-
-                      renderProductos(filtrados);
-                    }
-
-                    // Eventos de filtros
-                    [tipo, estacion, estado, tarifa].forEach(filtro => {
-                      filtro.addEventListener('change', aplicarFiltros);
-                    });
-
-                    renderProductos(productos);
-                  });
-              }
-            })
-            .catch(error => {
-              main.innerHTML = `<p>Error al cargar ${file}</p>`;
-              console.error(error);
-            });
+          track.appendChild(card);
         });
       });
+  }
 
-      const btnRecargar = document.getElementById('btn-recargar-inicio');
-      if (btnRecargar) {
-        btnRecargar.addEventListener('click', () => {
-          if (inicio) inicio.style.display = 'block';
-          if (main) {
-            main.innerHTML = '';
-            main.style.display = 'none';
-          }
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
+  // Asignar eventos al carrusel
+  const btnLeft = document.querySelector('.carousel-btn.left');
+  const btnRight = document.querySelector('.carousel-btn.right');
 
-      const menuInicio = document.querySelector('.menu-inicio');
-      if (menuInicio) {
-        menuInicio.addEventListener('click', () => {
-          if (inicio) inicio.style.display = 'block';
-          if (main) {
-            main.innerHTML = '';
-            main.style.display = 'none';
-          }
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-      }
-
-      // Cargar productos en el carrusel de index.html
-      if (document.getElementById('carouselTrack')) {
-        fetch('../json/productos.json')
-          .then(response => response.json())
-          .then(productos => {
-            const track = document.getElementById('carouselTrack');
-            track.innerHTML = '';
-
-            productos.forEach(producto => {
-              const card = document.createElement('div');
-              card.classList.add('card');
-
-              let badgeClass = '';
-              switch (producto.estado) {
-                case 'Disponible':
-                  badgeClass = 'badge-disponible'; break;
-                case 'En uso':
-                  badgeClass = 'badge-en-uso'; break;
-                case 'En mantenimiento':
-                  badgeClass = 'badge-mante'; break;
-                default:
-                  badgeClass = 'badge-default'; break;
-              }
-
-              const badge = document.createElement('div');
-              badge.className = `badge ${badgeClass}`;
-              badge.textContent = producto.estado;
-
-              const img = document.createElement('img');
-              img.src = producto.imagen;
-              img.alt = producto.alt;
-
-              const info = document.createElement('div');
-              info.classList.add('card-info');
-              info.innerHTML = `
-                <h4>${producto.nombre}</h4>
-                <p>Estación: ${producto.estacion}</p>
-                <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
-              `;
-
-              card.appendChild(badge);
-              card.appendChild(img);
-              card.appendChild(info);
-
-              card.addEventListener('click', () => {
-                console.log("Click en", producto);
-                localStorage.setItem('productoSeleccionado', JSON.stringify(producto));
-                window.location.href = '../components/detalle.html';
-              });
-
-              track.appendChild(card);
-            });
-          });
-      }
-    });
+  if (btnLeft) btnLeft.addEventListener('click', () => scrollCarouselLoop(-1));
+  if (btnRight) btnRight.addEventListener('click', () => scrollCarouselLoop(1));
 });
 
-// Función para mover el carrusel
+function cargarComponente(file) {
+  const main = document.getElementById('contenido');
+  const inicio = document.getElementById('inicio');
+
+  if (inicio) inicio.style.display = 'none';
+  if (main) main.style.display = 'block';
+
+  const url = `./components/${file}`;
+
+  fetch(url)
+    .then(res => res.text())
+    .then(html => {
+      main.innerHTML = html;
+
+      if (file === 'r1.html') {
+        fetch('./json/productos.json')
+          .then(res => res.json())
+          .then(productos => {
+            const grid = document.getElementById('gridTransportes');
+            const tipo = document.getElementById('filterTipo');
+            const estacion = document.getElementById('filterEstacion');
+            const estado = document.getElementById('filterEstado');
+            const tarifa = document.getElementById('filterTarifa');
+
+            function renderProductos(data) {
+              grid.innerHTML = '';
+              data.forEach(producto => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+
+                const badgeClass = {
+                  "Disponible": "badge-disponible",
+                  "En uso": "badge-en-uso",
+                  "En mantenimiento": "badge-mante"
+                }[producto.estado] || "badge-default";
+
+                card.innerHTML = `
+                  <div class="badge ${badgeClass}">${producto.estado}</div>
+                  <img src="${producto.imagen}" alt="${producto.alt}">
+                  <div class="card-info">
+                    <h4>${producto.nombre}</h4>
+                    <p>Estación: ${producto.estacion}</p>
+                    <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
+                  </div>
+                `;
+
+                card.addEventListener("click", () => {
+                  localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+                  window.location.href = "./components/detalle.html";
+                });
+
+                grid.appendChild(card);
+              });
+            }
+
+            function aplicarFiltros() {
+              let filtrados = [...productos];
+              if (tipo.value !== "Todo") filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
+              if (estacion.value !== "Todo") filtrados = filtrados.filter(p => p.estacion === estacion.value);
+              if (estado.value !== "Todo") filtrados = filtrados.filter(p => p.estado === estado.value);
+              if (tarifa.value === "asc") filtrados.sort((a, b) => a.tarifa - b.tarifa);
+              else if (tarifa.value === "desc") filtrados.sort((a, b) => b.tarifa - a.tarifa);
+
+              renderProductos(filtrados);
+            }
+
+            [tipo, estacion, estado, tarifa].forEach(f => f.addEventListener('change', aplicarFiltros));
+            renderProductos(productos);
+          });
+      }
+    })
+    .catch(err => {
+      main.innerHTML = `<p>Error al cargar ${file}</p>`;
+      console.error(err);
+    });
+}
+
 function scrollCarouselLoop(direction) {
   const track = document.getElementById('carouselTrack');
   if (!track) return;
@@ -230,52 +164,5 @@ function scrollCarouselLoop(direction) {
   track.scrollBy({
     left: direction * cardWidth,
     behavior: 'smooth'
-  });
-}
-
-if (window.location.pathname.includes('detalle.html')) {
-  document.addEventListener('DOMContentLoaded', () => {
-    // Cargar el header
-    fetch('../components/mainHeader.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("mainHeaderContainer").innerHTML = html;
-      });
-
-    // Renderizar detalle desde localStorage
-    const data = JSON.parse(localStorage.getItem('productoSeleccionado'));
-    if (data) {
-      document.getElementById('detalleImagen').src = data.imagen;
-      document.getElementById('detalleImagen').alt = data.alt;
-      document.getElementById('detalleNombre').textContent = data.nombre;
-      document.getElementById('detalleTarifa').textContent = data.tarifa.toFixed(2);
-      document.getElementById('detalleEstacion').textContent = data.estacion;
-      document.getElementById('detalleDescripcion').textContent = data.descripcion;
-
-      const badge = document.getElementById('detalleBadge');
-      badge.textContent = data.estado;
-
-      if (data.estado === "Disponible") {
-        badge.classList.add('badge-disponible');
-      } else if (data.estado === "En uso") {
-        badge.classList.add('badge-en-uso');
-      } else if (data.estado === "En mantenimiento") {
-        badge.classList.add('badge-mante');
-      } else {
-        badge.classList.add('badge-default');
-      }
-
-      const ul = document.getElementById('detalleTecnologia');
-      data.tecnologia.forEach(tec => {
-        const li = document.createElement('li');
-        li.textContent = tec;
-        ul.appendChild(li);
-      });
-    } else {
-      const contenido = document.getElementById('contenido');
-      if (contenido) {
-        contenido.innerHTML = '<h2 style="text-align:center;margin-top:4rem;">Producto no encontrado</h2>';
-      }
-    }
   });
 }

@@ -1,31 +1,100 @@
 <!-- detalle.html -->
-<link rel="stylesheet" href="../css/detalle.css" />
-<link rel="stylesheet" href="../css/styles.css" />
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Detalle del Vehículo</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/detalle.css" />
+  <link rel="stylesheet" href="../css/mainHeader.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+  <div id="mainHeaderContainer"></div>
 
-<div id="mainHeaderContainer"></div>
+  <main id="mainDetalleContainer" style="display: none">
+    <section class="pagina-transporte">
+      <header class="header">
+        <h2>Sistema de Alquiler - <strong>Detalle del vehículo</strong></h2>
+      </header>
 
-<section class="pagina-transporte">
-  <header class="header">
-    <h2>Sistema de Alquiler - <strong>Detalle del vehículo</strong></h2>
-  </header>
+      <div class="detalle-container">
+        <div class="detalle-imagen">
+          <img id="detalleImagen" src="" alt="Imagen del vehículo">
+        </div>
+        <div class="detalle-info">
+          <h1 id="detalleNombre"></h1>
+          <div id="detalleBadge" class="badge"></div>
+          <p><strong>Tarifa:</strong> Bs. <span id="detalleTarifa"></span>/hora</p>
+          <p><strong>Estación:</strong> <span id="detalleEstacion"></span></p>
+          <p><strong>Descripción:</strong></p>
+          <p id="detalleDescripcion"></p>
+          <p><strong>Tecnología:</strong></p>
+          <ul id="detalleTecnologia"></ul>
+          <button class="volver-btn" onclick="window.history.back()">← Volver</button>
+        </div>
+      </div>
+    </section>
+  </main>
 
-  <div class="detalle-container">
-    <div class="detalle-imagen">
-      <img id="detalleImagen" src=" " alt=" ">
-    </div>
-    <div class="detalle-info">
-      <h1 id="detalleNombre"></h1>
-      <div id="detalleBadge" class="badge"></div>
-      <p><strong>Tarifa:</strong> Bs. <span id="detalleTarifa"></span>/hora</p>
-      <p><strong>Estación:</strong> <span id="detalleEstacion"></span></p>
-      <p><strong>Descripción:</strong></p>
-      <p id="detalleDescripcion"></p>
-      <p><strong>Tecnología:</strong></p>
-      <ul id="detalleTecnologia"></ul>
-      <button class="volver-btn" onclick="window.history.back()">← Volver</button>
-    </div>
-  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/mainHeader.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainer").innerHTML = html;
 
-<script src="../js/script.js"></script>
-<script src="../js/menu.js"></script>
-</section>
+          const script1 = document.createElement('script');
+          script1.src = '../js/menu.js';
+          script1.onload = () => {
+            const script2 = document.createElement('script');
+            script2.src = '../js/headerEvents.js';
+            script2.onload = () => {
+              if (typeof initHeaderEvents === 'function') initHeaderEvents();
+            };
+            document.body.appendChild(script2);
+          };
+          document.body.appendChild(script1);
+        });
+
+      const data = JSON.parse(localStorage.getItem('productoSeleccionado'));
+      if (!data) {
+        document.body.innerHTML += '<h2 style="text-align:center;margin-top:4rem;">Producto no encontrado</h2>';
+        return;
+      }
+
+      setTimeout(() => {
+        document.getElementById('mainDetalleContainer').style.display = 'block';
+        document.getElementById('detalleImagen').src = data.imagen;
+        document.getElementById('detalleImagen').alt = data.alt;
+        document.getElementById('detalleNombre').textContent = data.nombre;
+        document.getElementById('detalleTarifa').textContent = data.tarifa.toFixed(2);
+        document.getElementById('detalleEstacion').textContent = data.estacion;
+        document.getElementById('detalleDescripcion').textContent = data.descripcion;
+
+        const badge = document.getElementById('detalleBadge');
+        badge.textContent = data.estado;
+
+        switch (data.estado) {
+          case "Disponible":
+            badge.classList.add('badge-disponible'); break;
+          case "En uso":
+            badge.classList.add('badge-en-uso'); break;
+          case "En mantenimiento":
+            badge.classList.add('badge-mante'); break;
+          default:
+            badge.classList.add('badge-default'); break;
+        }
+
+        const ul = document.getElementById('detalleTecnologia');
+        data.tecnologia.forEach(tec => {
+          const li = document.createElement('li');
+          li.textContent = tec;
+          ul.appendChild(li);
+        });
+      }, 100);
+    });
+  </script>
+</body>
+</html>
