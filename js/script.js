@@ -1,12 +1,11 @@
 // script.js
-// === script.js ===
 document.addEventListener("DOMContentLoaded", () => {
   fetch("./components/mainHeader.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("mainHeaderContainer").innerHTML = html;
 
-      // ⏬ Cargar eventos del header dinámico
+      // Cargar eventos del header dinámico
       const script = document.createElement("script");
       script.src = "./js/headerEvents.js";
       document.body.appendChild(script);
@@ -26,34 +25,62 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch('./json/productos.json')
       .then(res => res.json())
       .then(productos => {
-        productos.forEach(producto => {
-          const card = document.createElement('div');
-          card.classList.add('card');
-
-          const badgeClass = {
-            "Disponible": "badge-disponible",
-            "En uso": "badge-en-uso",
-            "En mantenimiento": "badge-mante"
-          }[producto.estado] || "badge-default";
-
-          card.innerHTML = `
-            <div class="badge ${badgeClass}">${producto.estado}</div>
-            <img src="${producto.imagen}" alt="${producto.alt}">
-            <div class="card-info">
-              <h4>${producto.nombre}</h4>
-              <p>Estación: ${producto.estacion}</p>
-              <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
-            </div>
-          `;
-
-          card.addEventListener("click", () => {
-            localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-            window.location.href = "./components/detalle.html";
+        const grid = document.getElementById('gridTransportes');
+        const tipo = document.getElementById('filterTipo');
+        const estado = document.getElementById('filterEstado');
+        const tarifa = document.getElementById('filterTarifa');
+      
+        function renderProductos(data) {
+          const grid = document.getElementById('gridTransportes');
+          if (!grid) {
+            console.warn("⚠️ No se encontró #gridTransportes en el DOM.");
+            return;
+          }
+        
+          grid.innerHTML = '';
+          data.forEach(producto => {
+            const card = document.createElement('div');
+            card.classList.add('card');
+        
+            const badgeClass = {
+              "Disponible": "badge-disponible",
+              "En uso": "badge-en-uso",
+              "En mantenimiento": "badge-mante"
+            }[producto.estado] || "badge-default";
+        
+            card.innerHTML = `
+              <div class="badge ${badgeClass}">${producto.estado}</div>
+              <img src="${producto.imagen}" alt="${producto.alt}">
+              <div class="card-info">
+                <h4>${producto.nombre}</h4>
+                <p>Estación: ${producto.estacion}</p>
+                <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
+              </div>
+            `;
+        
+            card.addEventListener("click", () => {
+              localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+              window.location.href = "./components/detalle.html";
+            });
+        
+            grid.appendChild(card);
           });
-
-          track.appendChild(card);
-        });
+        }        
+      
+        function aplicarFiltros() {
+          let filtrados = [...productos];
+          if (tipo.value !== "Todo") filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
+          if (estado.value !== "Todo") filtrados = filtrados.filter(p => p.estado === estado.value);
+          if (tarifa.value === "asc") filtrados.sort((a, b) => a.tarifa - b.tarifa);
+          else if (tarifa.value === "desc") filtrados.sort((a, b) => b.tarifa - a.tarifa);
+      
+          renderProductos(filtrados);
+        }
+      
+        [tipo, estado, tarifa].forEach(f => f?.addEventListener('change', aplicarFiltros));
+        renderProductos(productos);
       });
+      
   }
 
   // Asignar eventos al carrusel
@@ -84,22 +111,22 @@ function cargarComponente(file) {
           .then(productos => {
             const grid = document.getElementById('gridTransportes');
             const tipo = document.getElementById('filterTipo');
-            const estacion = document.getElementById('filterEstacion');
             const estado = document.getElementById('filterEstado');
             const tarifa = document.getElementById('filterTarifa');
-
+      
             function renderProductos(data) {
+              if (!grid) return;
               grid.innerHTML = '';
               data.forEach(producto => {
                 const card = document.createElement('div');
                 card.classList.add('card');
-
+      
                 const badgeClass = {
                   "Disponible": "badge-disponible",
                   "En uso": "badge-en-uso",
                   "En mantenimiento": "badge-mante"
                 }[producto.estado] || "badge-default";
-
+      
                 card.innerHTML = `
                   <div class="badge ${badgeClass}">${producto.estado}</div>
                   <img src="${producto.imagen}" alt="${producto.alt}">
@@ -109,31 +136,116 @@ function cargarComponente(file) {
                     <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
                   </div>
                 `;
-
+      
                 card.addEventListener("click", () => {
                   localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
                   window.location.href = "./components/detalle.html";
                 });
-
+      
                 grid.appendChild(card);
               });
             }
-
+      
             function aplicarFiltros() {
+              // Validación de seguridad
+              if (!tipo || !estado || !tarifa) return;
+      
               let filtrados = [...productos];
-              if (tipo.value !== "Todo") filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
-              if (estacion.value !== "Todo") filtrados = filtrados.filter(p => p.estacion === estacion.value);
-              if (estado.value !== "Todo") filtrados = filtrados.filter(p => p.estado === estado.value);
-              if (tarifa.value === "asc") filtrados.sort((a, b) => a.tarifa - b.tarifa);
-              else if (tarifa.value === "desc") filtrados.sort((a, b) => b.tarifa - a.tarifa);
-
+      
+              if (tipo.value !== "Todo") {
+                filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
+              }
+      
+              if (estado.value !== "Todo") {
+                filtrados = filtrados.filter(p => p.estado === estado.value);
+              }
+      
+              if (tarifa.value === "asc") {
+                filtrados.sort((a, b) => a.tarifa - b.tarifa);
+              } else if (tarifa.value === "desc") {
+                filtrados.sort((a, b) => b.tarifa - a.tarifa);
+              }
+      
               renderProductos(filtrados);
             }
+      
+            // Asignar eventos solo si los filtros existen
+            if (tipo && estado && tarifa) {
+              [tipo, estado, tarifa].forEach(f => f.addEventListener('change', aplicarFiltros));
+              renderProductos(productos);
+            }
+          });
+      }
 
-            [tipo, estacion, estado, tarifa].forEach(f => f.addEventListener('change', aplicarFiltros));
+      if (file === 'r6.html') {
+        fetch('./json/productos.json')
+          .then(res => res.json())
+          .then(productos => {
+            const grid = document.getElementById('gridTransportes');
+            const tipo = document.getElementById('filterTipo');
+            const estacion = document.getElementById('filterEstacion');
+            const estado = document.getElementById('filterEstado');
+      
+            function renderProductos(data) {
+              if (!grid) return;
+              grid.innerHTML = '';
+      
+              data.forEach(producto => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+      
+                const badgeClass = {
+                  "Disponible": "badge-disponible",
+                  "En uso": "badge-en-uso",
+                  "Mantenimiento": "badge-mante"
+                }[producto.estado] || "badge-default";
+      
+                card.innerHTML = `
+                  <div class="badge ${badgeClass}">${producto.estado}</div>
+                  <img src="${producto.imagen}" alt="${producto.alt}">
+                  <div class="card-info">
+                    <h4>${producto.nombre}</h4>
+                    <p>Estación: ${producto.estacion}</p>
+                    <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
+                  </div>
+                `;
+      
+                card.addEventListener("click", () => {
+                  localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+                  window.location.href = "./components/detalle.html";
+                });
+      
+                grid.appendChild(card);
+              });
+            }
+      
+            function aplicarFiltros() {
+              if (!tipo || !estacion || !estado) return;
+      
+              let filtrados = [...productos];
+      
+              // Filtrado por tipo (usa el ID: "bicicleta1", "patineta2", etc.)
+              if (tipo.value !== "Todo") {
+                filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
+              }
+      
+              if (estacion.value !== "Todo") {
+                filtrados = filtrados.filter(p => p.estacion === estacion.value);
+              }
+      
+              if (estado.value !== "Todo") {
+                filtrados = filtrados.filter(p => p.estado === estado.value);
+              }
+      
+              renderProductos(filtrados);
+            }
+      
+            [tipo, estacion, estado].forEach(f => f?.addEventListener('change', aplicarFiltros));
             renderProductos(productos);
           });
       }
+      
+      
     })
     .catch(err => {
       main.innerHTML = `<p>Error al cargar ${file}</p>`;

@@ -13,7 +13,7 @@ body {
   .detalle-container {
     display: flex;
     flex-wrap: wrap;
-    background: white;
+    background: #1b2a47;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     padding: 2rem;
@@ -37,12 +37,6 @@ body {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-  }
-  
-  
-  .detalle-info {
-    flex: 1;
-    min-width: 280px;
   }
   
   .volver-btn {
