@@ -22,66 +22,40 @@ document.addEventListener("DOMContentLoaded", () => {
   // Carrusel de index
   const track = document.getElementById('carouselTrack');
   if (track) {
+    // Lógica solo para el carrusel en index.html
     fetch('./json/productos.json')
       .then(res => res.json())
       .then(productos => {
-        const grid = document.getElementById('gridTransportes');
-        const tipo = document.getElementById('filterTipo');
-        const estado = document.getElementById('filterEstado');
-        const tarifa = document.getElementById('filterTarifa');
-      
-        function renderProductos(data) {
-          const grid = document.getElementById('gridTransportes');
-          if (!grid) {
-            console.warn("⚠️ No se encontró #gridTransportes en el DOM.");
-            return;
-          }
-        
-          grid.innerHTML = '';
-          data.forEach(producto => {
-            const card = document.createElement('div');
-            card.classList.add('card');
-        
-            const badgeClass = {
-              "Disponible": "badge-disponible",
-              "En uso": "badge-en-uso",
-              "En mantenimiento": "badge-mante"
-            }[producto.estado] || "badge-default";
-        
-            card.innerHTML = `
-              <div class="badge ${badgeClass}">${producto.estado}</div>
-              <img src="${producto.imagen}" alt="${producto.alt}">
-              <div class="card-info">
-                <h4>${producto.nombre}</h4>
-                <p>Estación: ${producto.estacion}</p>
-                <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
-              </div>
-            `;
-        
-            card.addEventListener("click", () => {
-              localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-              window.location.href = "./components/detalle.html";
-            });
-        
-            grid.appendChild(card);
+        productos.forEach(producto => {
+          const card = document.createElement('div');
+          card.classList.add('card');
+
+          const badgeClass = {
+            "Disponible": "badge-disponible",
+            "En uso": "badge-en-uso",
+            "En mantenimiento": "badge-mante"
+          }[producto.estado] || "badge-default";
+
+          card.innerHTML = `
+            <div class="badge ${badgeClass}">${producto.estado}</div>
+            <img src="${producto.imagen}" alt="${producto.alt}">
+            <div class="card-info">
+              <h4>${producto.nombre}</h4>
+              <p>Estación: ${producto.estacion}</p>
+              <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
+            </div>
+          `;
+
+          card.addEventListener("click", () => {
+            localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+            window.location.href = "./components/detalle.html";
           });
-        }        
-      
-        function aplicarFiltros() {
-          let filtrados = [...productos];
-          if (tipo.value !== "Todo") filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
-          if (estado.value !== "Todo") filtrados = filtrados.filter(p => p.estado === estado.value);
-          if (tarifa.value === "asc") filtrados.sort((a, b) => a.tarifa - b.tarifa);
-          else if (tarifa.value === "desc") filtrados.sort((a, b) => b.tarifa - a.tarifa);
-      
-          renderProductos(filtrados);
-        }
-      
-        [tipo, estado, tarifa].forEach(f => f?.addEventListener('change', aplicarFiltros));
-        renderProductos(productos);
+
+          track.appendChild(card);
+        });
       });
-      
   }
+
 
   // Asignar eventos al carrusel
   const btnLeft = document.querySelector('.carousel-btn.left');
