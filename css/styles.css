@@ -1,7 +1,7 @@
 /* styles.css */
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Sanchez", serif;
   background: #f4f8fc;
   color: #333;
 }
@@ -12,20 +12,34 @@ body.menu-open #inicio {
 
 header {
   background: #ffffff;
-  padding: 2rem;
+  padding: 20px 0;
   text-align: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 header h1 {
   margin: 0;
-  font-size: 2rem;
-  color: #2c3e50;
+  font-size: 48px;
+
+  color: #000000;
 }
 
 header p {
-  font-size: 1rem;
+  font-size: 32px;
   color: #7f8c8d;
+}
+
+.header-section {
+  flex: 1;
+  margin: 10px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 0 40px;
 }
 
 .descripcion p,
@@ -161,19 +175,19 @@ footer {
 
 @media (max-width: 1024px) {
   .carousel-track .card {
-    flex: 0 0 calc(33.33% - 1rem); /* 3 por fila */
+    flex: 0 0 calc(33.33% - 1rem); 
   }
 }
 
 @media (max-width: 768px) {
   .carousel-track .card {
-    flex: 0 0 calc(50% - 1rem); /* 2 por fila */
+    flex: 0 0 calc(50% - 1rem); 
   }
 }
 
 @media (max-width: 500px) {
   .carousel-track .card {
-    flex: 0 0 100%; /* 1 por fila */
+    flex: 0 0 100%; 
   }
 }
 
@@ -308,4 +322,64 @@ section {
 
 .grid-resultados .card:hover {
   transform: scale(1.03);
+}
+
+.footer {
+  background-color: #14213d;
+  color: #ffffff;
+  padding: 20px 0;
+  text-align: center;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 0 40px;
+}
+
+.footer-section {
+  flex: 1;
+  margin: 10px;
+}
+
+.footer-section h4 {
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section li {
+  margin: 8px 0;
+}
+
+.footer-section a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-section a:hover {
+  color: #fca311;
+}
+
+.footer-icon {
+  width: 90px;
+  height: auto;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  color: #e5e5e5;
+}
+
+.footer i {
+  margin-right: 8px;
 }
