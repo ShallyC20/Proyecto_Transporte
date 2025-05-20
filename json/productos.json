@@ -9,19 +9,19 @@
     "estado": "Disponible",
     "badgeClass": "badge-disponible",
     "descripcion": "Ideal para moverse por la ciudad con agilidad. Ligera, cómoda y ecológica.",
-    "tecnologia": ["Cambio Shimano", "Llantas de ciudad", "Frenos de disco"]
+    "coordenadas": "16.522000, -68.126000"
   },
   {
     "id": "bicicleta2",
     "nombre": "Bicicleta Montaña",
     "imagen": "../imag/bicicleta2.jpg",
     "alt": "Bicicleta Montaña",
-    "estacion": "Irpavii",
+    "estacion": "Irpavi",
     "tarifa": 1.80,
     "estado": "En uso",
     "badgeClass": "badge-en-uso",
     "descripcion": "Diseñada para terrenos difíciles, perfecta para aventuras fuera del asfalto.",
-    "tecnologia": ["Suspensión doble", "Cuadro de aluminio", "Neumáticos con agarre"]
+    "coordenadas": "16.510000, -68.129000"
   },
   {
     "id": "patineta1",
@@ -33,7 +33,7 @@
     "estado": "Disponible",
     "badgeClass": "badge-disponible",
     "descripcion": "Moderna y eficiente, ideal para trayectos rápidos en el campus o la ciudad.",
-    "tecnologia": ["Motor 350W", "Autonomía 25km", "Luces LED"]
+    "coordenadas": "16.518000, -68.135000"
   },
   {
     "id": "patineta2",
@@ -45,7 +45,7 @@
     "estado": "En uso",
     "badgeClass": "badge-en-uso",
     "descripcion": "Estilo retro y diversión garantizada. Sin baterías, solo tú y el impulso.",
-    "tecnologia": ["Ruedas de poliuretano", "Rodamientos ABEC-7", "Tabla de madera"]
+    "coordenadas": "16.511000, -68.128000"
   },
   {
     "id": "bicicleta3",
@@ -57,7 +57,7 @@
     "estado": "Disponible",
     "badgeClass": "badge-disponible",
     "descripcion": "Combinación perfecta entre bici de ciudad y de montaña, versátil y resistente.",
-    "tecnologia": ["Cambio de 21 velocidades", "Cuadro reforzado", "Frenos V-brake"]
+    "coordenadas": "16.523000, -68.126500"
   },
   {
     "id": "bicicleta4",
@@ -69,7 +69,7 @@
     "estado": "Mantenimiento",
     "badgeClass": "badge-mantenimiento",
     "descripcion": "Asistencia eléctrica para recorridos largos o zonas con pendientes.",
-    "tecnologia": ["Motor 250W", "Batería de litio", "Pantalla LCD"]
+    "coordenadas": "16.527000, -68.123000"
   },
   {
     "id": "bicicleta5",
@@ -81,7 +81,7 @@
     "estado": "Disponible",
     "badgeClass": "badge-disponible",
     "descripcion": "Perfecta para los más pequeños. Segura, colorida y divertida.",
-    "tecnologia": ["Ruedas auxiliares", "Asiento ajustable", "Timbre incluido"]
+    "coordenadas": "16.512000, -68.127500"
   },
   {
     "id": "patineta3",
@@ -93,6 +93,30 @@
     "estado": "Disponible",
     "badgeClass": "badge-disponible",
     "descripcion": "Preparada para caminos difíciles, con ruedas grandes y tracción reforzada.",
-    "tecnologia": ["Ruedas neumáticas", "Suspensión delantera", "Plataforma antideslizante"]
+    "coordenadas": "16.513000, -68.128500"
+  },
+  {
+    "id": "patineta4",
+    "nombre": "Patineta Eléctrica Avanzada",
+    "imagen": "../imag/patineta4.jpg",
+    "alt": "Patineta Eléctrica Avanzada",
+    "estacion": "Obrajes",
+    "tarifa": 2.80,
+    "estado": "Disponible",
+    "badgeClass": "badge-disponible",
+    "descripcion": "Modelo avanzado con mayor autonomía y velocidad.",
+    "coordenadas": "16.520000, -68.136000"
+  },
+  {
+    "id": "bicicleta6",
+    "nombre": "Bicicleta Urbana Premium",
+    "imagen": "../imag/bicicleta6.jpg",
+    "alt": "Bicicleta Urbana Premium",
+    "estacion": "Calacoto",
+    "tarifa": 2.00,
+    "estado": "Disponible",
+    "badgeClass": "badge-disponible",
+    "descripcion": "Versión premium con materiales ligeros y frenos avanzados.",
+    "coordenadas": "16.524000, -68.125000"
   }
 ]

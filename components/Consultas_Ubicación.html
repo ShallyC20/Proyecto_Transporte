@@ -1,0 +1,107 @@
+<!-- Consultas_Ubicación.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consultas de Ubicación</title>
+  <link rel="stylesheet" href="../css/r2.css" />
+  <style>
+    a {
+      color: #007bff;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <h2>Sistema de Alquiler - <strong>Consultas de ubicación y disponibilidad</strong></h2>
+  </header>
+
+  <main style="padding: 2rem;">
+    <h2>Consultas de Ubicación</h2>
+    <table border="1">
+      <caption style="caption-side: top; text-align: center; font-weight: bold; padding: 0.5rem;">
+        Tabla de estaciones y disponibilidad de transportes
+      </caption>
+      <thead>
+        <tr>
+          <th>Dirección</th>
+          <th>Transportes en el punto</th>
+          <th>Transportes disponibles</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-ubicacion">
+        <!-- Contenido dinámico -->
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../json/productos.json')
+        .then(res => res.json())
+        .then(data => {
+          const ubicaciones = {};
+
+          data.forEach(item => {
+            const dir = item.estacion;
+            if (!ubicaciones[dir]) {
+              ubicaciones[dir] = { total: [], disponibles: [] };
+            }
+            ubicaciones[dir].total.push(item.nombre);
+            if (item.estado.toLowerCase() === 'disponible') {
+              ubicaciones[dir].disponibles.push(item);
+            }
+          });
+
+          const tbody = document.getElementById('tabla-ubicacion');
+          Object.entries(ubicaciones).forEach(([dir, datos]) => {
+            const tr = document.createElement('tr');
+
+            // Dirección
+            const tdDireccion = document.createElement('td');
+            const aDireccion = document.createElement('a');
+            aDireccion.href = `./components/ubicacion.html?estacion=${encodeURIComponent(dir)}`;
+            aDireccion.textContent = dir;
+            tdDireccion.appendChild(aDireccion);
+
+            // Transportes en el punto
+            const tdTransportes = document.createElement('td');
+            tdTransportes.textContent = datos.total.join(', ');
+
+            // Transportes disponibles
+            const tdDisponibles = document.createElement('td');
+            if (datos.disponibles.length === 0) {
+              tdDisponibles.textContent = 'Ninguno';
+            } else {
+              datos.disponibles.forEach((prod, i) => {
+                const enlace = document.createElement('a');
+                enlace.href = './components/detalle.html';
+                enlace.textContent = prod.nombre;
+                enlace.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  localStorage.setItem('productoSeleccionado', JSON.stringify(prod));
+                  window.location.href = './components/detalle.html';
+                });
+                tdDisponibles.appendChild(enlace);
+                if (i < datos.disponibles.length - 1) {
+                  tdDisponibles.appendChild(document.createTextNode(', '));
+                }
+              });
+            }
+
+            tr.appendChild(tdDireccion);
+            tr.appendChild(tdTransportes);
+            tr.appendChild(tdDisponibles);
+            tbody.appendChild(tr);
+          });
+        })
+        .catch(err => console.error('Error al cargar JSON:', err));
+    });
+  </script>
+
+</body>
+</html>
