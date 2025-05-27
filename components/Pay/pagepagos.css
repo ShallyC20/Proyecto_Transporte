@@ -1,0 +1,7 @@
+/* Estilos para la página de pagos y exclusivos para PagePagos.html */
+.estructura{
+  display: grid;
+  min-height: 100dvh;
+  grid-template-rows: 
+  auto 1fr auto;
+}

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiciTrack - Historial de Viajes</title>
+    <link rel="stylesheet" href="HistorialViajes.css">
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <h1>BiciTrack - Gestión de Alquileres y Pagos</h1>
+    </div>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#historial-viajes">Historial de Viajes</a></li>
+        <li><a href="#historial-pagos">Historial de Pagos</a></li>
+        <li><a href="#mensajes-mantenimiento">Mensajes de Mantenimiento</a></li>
+    </ul>
+</nav>
+
+<main>
+    <section class="historial-viajes-section">
+        <h2>Historial de Viajes</h2>
+
+        <!-- Filtros -->
+        <div class="historial-viajes-filtros">
+            <form id="filtro-viajes-form">
+                <label>
+                    Fecha desde:
+                    <input type="date" id="filtro-fecha-desde" name="fecha-desde">
+                </label>
+                <label>
+                    Fecha hasta:
+                    <input type="date" id="filtro-fecha-hasta" name="fecha-hasta">
+                </label>
+                <label>
+                    Tipo de transporte:
+                    <select id="filtro-tipo" name="tipo">
+                        <option value="">Todos</option>
+                        <option value="bicicleta">Bicicleta</option>
+                        <option value="patineta">Patineta</option>
+                    </select>
+                </label>
+                <button type="submit">Filtrar</button>
+            </form>
+        </div>
+
+        <!-- Tabla Historial de Viajes -->
+        <div class="historial-viajes-table-container center-table">
+            <table class="historial-viajes-table extra-wide-table">
+                <colgroup>
+                    <col style="width: 5%;">
+                    <col style="width: 18%;">
+                    <col style="width: 10%;">
+                    <col style="width: 15%;">
+                    <col style="width: 13%;">
+                    <col style="width: 13%;">
+                    <col style="width: 13%;">
+                    <col style="width: 13%;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Transporte</th>
+                        <th>Duración</th>
+                        <th>Fecha</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-viajes-body">
+                    <tr>
+                        <td>1</td>
+                        <td>Bicicleta</td>
+                        <td>2 h</td>
+                        <td>2025-05-10</td>
+                        <td>08:00</td>
+                        <td>10:00</td>
+                        <td><span class="badge badge-finalizado">Finalizado</span></td>
+                        <td><button class="btn-detalle">Ver Detalle</button></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Patineta</td>
+                        <td>1 h</td>
+                        <td>2025-05-12</td>
+                        <td>15:00</td>
+                        <td>16:00</td>
+                        <td><span class="badge badge-finalizado">Finalizado</span></td>
+                        <td><button class="btn-detalle">Ver Detalle</button></td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Bicicleta</td>
+                        <td>3 h</td>
+                        <td>2025-05-15</td>
+                        <td>09:00</td>
+                        <td>12:00</td>
+                        <td><span class="badge badge-cancelado">Cancelado</span></td>
+                        <td><button class="btn-detalle">Ver Detalle</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="historial-viajes-paginacion">
+            <button class="btn-paginacion" disabled>&laquo; Anterior</button>
+            <span>Página 1 de 1</span>
+            <button class="btn-paginacion" disabled>Siguiente &raquo;</button>
+        </div>
+    </section>
+    <div id="modal-detalle-viaje" class="modal-viaje" style="display:none;">
+        <div class="modal-viaje-content">
+            <span class="modal-viaje-close" onclick="cerrarModalDetalleViaje()">&times;</span>
+            <h3>Detalle del Viaje</h3>
+            <div id="detalle-viaje-info"></div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-container">
+        <p>&copy; 2025 BiciTrack. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script>
+    // Simulación de datos de viajes
+    const viajes = [
+        { id: 1, transporte: "Bicicleta", duracion: "2 h", fecha: "2025-05-10", inicio: "08:00", fin: "10:00", estado: "Finalizado", detalle: "Recorrido por el parque central. Sin incidencias." },
+        { id: 2, transporte: "Patineta", duracion: "1 h", fecha: "2025-05-12", inicio: "15:00", fin: "16:00", estado: "Finalizado", detalle: "Viaje corto en zona universitaria." },
+        { id: 3, transporte: "Bicicleta", duracion: "3 h", fecha: "2025-05-15", inicio: "09:00", fin: "12:00", estado: "Cancelado", detalle: "Viaje cancelado por mal clima." }
+    ];
+
+    // Mostrar detalles del viaje
+    document.querySelectorAll('.btn-detalle').forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+            alert(`
+                Transporte: ${viajes[index].transporte}
+                Duración: ${viajes[index].duracion}
+                Fecha: ${viajes[index].fecha}
+                Hora Inicio: ${viajes[index].inicio}
+                Hora Fin: ${viajes[index].fin}
+                Estado: ${viajes[index].estado}
+            `);
+        });
+    });
+
+    document.querySelectorAll('.btn-detalle').forEach((btn, idx) => {
+        btn.onclick = function() {
+            mostrarModalDetalleViaje(viajes[idx]);
+        };
+    });
+
+    function mostrarModalDetalleViaje(viaje) {
+        document.getElementById('detalle-viaje-info').innerHTML = `
+            <p><strong>Transporte:</strong> ${viaje.transporte}</p>
+            <p><strong>Duración:</strong> ${viaje.duracion}</p>
+            <p><strong>Fecha:</strong> ${viaje.fecha}</p>
+            <p><strong>Hora Inicio:</strong> ${viaje.inicio}</p>
+            <p><strong>Hora Fin:</strong> ${viaje.fin}</p>
+            <p><strong>Estado:</strong> ${viaje.estado}</p>
+            <p><strong>Detalle:</strong> ${viaje.detalle}</p>
+        `;
+        document.getElementById('modal-detalle-viaje').style.display = 'flex';
+    }
+
+    function cerrarModalDetalleViaje() {
+        document.getElementById('modal-detalle-viaje').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

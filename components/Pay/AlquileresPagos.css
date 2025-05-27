@@ -1,0 +1,192 @@
+.alquileres-pagos-section {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(31,38,135,0.07);
+  padding: 36px 32px 28px 32px;
+  color: #111;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 32px auto;
+  max-width: 600px;
+}
+.alquileres-pagos-section h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #0072ff;
+}
+.alquileres-pagos-section p {
+  color: #444;
+  text-align: center;
+  margin-bottom: 24px;
+}
+.alquileres-pagos-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  margin-top: 18px;
+}
+.alquileres-pagos-btn-group .btn {
+  padding: 12px 28px;
+  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px 0 rgba(0,198,255,0.10);
+}
+.alquileres-pagos-btn-group .btn:hover {
+  background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+  color: #111;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.pay-section-container {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(31,38,135,0.07);
+  padding: 36px 32px 28px 32px;
+  color: #111;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 32px auto;
+  max-width: 600px;
+}
+
+.pay-section-container h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #0072ff;
+}
+
+.pay-section-container p {
+  color: #444;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.pay-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: center;
+  margin-top: 18px;
+}
+
+.pay-btn-group .btn {
+  padding: 12px 28px;
+  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px 0 rgba(0,198,255,0.10);
+}
+
+.pay-btn-group .btn:hover {
+  background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+  color: #111;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.pay-section-container.pay-section-home {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px 0 rgba(31,38,135,0.10);
+  padding: 48px 40px 40px 40px;
+  color: #111;
+  width: 100%;
+  max-width: 900px;
+  margin: 48px auto 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pay-section-home h2 {
+  font-size: 2.2rem;
+  margin-bottom: 18px;
+  font-weight: 800;
+  color: #0072ff;
+  letter-spacing: 1px;
+}
+
+.pay-section-home p {
+  color: #444;
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 1.15rem;
+}
+
+.pay-btn-group.pay-btn-group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 28px;
+  width: 100%;
+  max-width: 700px;
+}
+
+.btn-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 32px 0 24px 0;
+  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 4px 16px 0 rgba(0,198,255,0.13);
+  transition: background 0.2s, color 0.2s, transform 0.1s, box-shadow 0.2s;
+  min-height: 120px;
+  min-width: 0;
+}
+
+.btn-home .material-icons {
+  font-size: 2.5rem;
+  margin-bottom: 6px;
+  color: #fff;
+  transition: color 0.2s;
+}
+
+.btn-home:hover, .btn-home:focus {
+  background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+  color: #111;
+  transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 8px 24px 0 rgba(0,198,255,0.18);
+}
+
+.btn-home:hover .material-icons,
+.btn-home:focus .material-icons {
+  color: #fca311;
+}
+
+@media (max-width: 700px) {
+  .pay-section-container.pay-section-home {
+    padding: 24px 6px 18px 6px;
+    max-width: 98vw;
+  }
+  .pay-btn-group.pay-btn-group-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    max-width: 100%;
+  }
+}
