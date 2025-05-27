@@ -1,0 +1,150 @@
+.header-pagos {
+  background: #1b2a47;
+  color: #f4f8fc;
+  box-shadow: 0 2px 12px 0 rgba(31,38,135,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  min-height: 110px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  position: relative;
+  z-index: 10;
+}
+.header-pagos.sticky-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.header-pagos .left-section,
+.header-pagos .right-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-pagos .logo-ets {
+  height: 40px;
+  margin: 0 12px;
+}
+.header-pagos .search-input {
+  background: #24305e;
+  color: #f4f8fc;
+  border: 1px solid #283a5c;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 1rem;
+  outline: none;
+}
+.header-pagos .search-input::placeholder {
+  color: #b2becd;
+  opacity: 1;
+}
+.header-pagos .icon-btn,
+.header-pagos .icon-group .material-icons {
+  color: #f4f8fc;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.header-pagos .icon-btn:hover,
+.header-pagos .icon-group .material-icons:hover {
+  color: #fca311;
+}
+.header-pagos .user-name {
+  color: #f4f8fc;
+  font-size: 1rem;
+}
+.header-pagos .user-name strong {
+  color: #fca311;
+}
+.header-pagos .avatar {
+  border: 2px solid #fca311;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+.navbar-pagos {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.navbar-pagos ul {
+  display: flex;
+  gap: 18px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.navbar-pagos a {
+  color: #f4f8fc;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 8px 18px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+.navbar-pagos a:hover, .navbar-pagos a:focus {
+  background: #24305e;
+  color: #fca311;
+  box-shadow: 0 2px 8px 0 #fca31122;
+}
+@media (max-width: 900px) {
+  .header-pagos {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 8px;
+    min-height: 90px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .navbar-pagos ul {
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .header-pagos .left-section,
+  .header-pagos .right-section {
+    justify-content: center;
+    gap: 8px;
+    margin: 4px 0;
+  }
+}
+.header-pagos.small-header {
+  min-height: 54px;
+  padding: 0 10px;
+  font-size: 0.95rem;
+}
+.header-pagos.small-header .logo-ets {
+  height: 28px;
+  margin: 0 6px;
+}
+.header-pagos.small-header .search-input {
+  font-size: 0.95rem;
+  padding: 5px 10px;
+  height: 28px;
+}
+.header-pagos.small-header .navbar-pagos ul {
+  gap: 8px;
+}
+.header-pagos.small-header .navbar-pagos a {
+  font-size: 0.97rem;
+  padding: 5px 10px;
+}
+.header-pagos.small-header .user-name {
+  font-size: 0.97rem;
+}
+.header-pagos.small-header .avatar {
+  width: 28px;
+  height: 28px;
+}
+.header-pagos.small-header .icon-btn,
+.header-pagos.small-header .icon-group .material-icons {
+  font-size: 1.1rem;
+}
