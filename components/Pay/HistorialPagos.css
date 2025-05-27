@@ -1,0 +1,48 @@
+.historial-pagos-section {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 rgba(31,38,135,0.07);
+  padding: 36px 32px 28px 32px;
+  color: #111;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 32px auto;
+  max-width: 600px;
+}
+.historial-pagos-section h2 {
+  text-align: center;
+  margin-bottom: 18px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #0072ff;
+}
+.historial-pagos-section ul {
+  margin: 0 0 18px 0;
+  padding-left: 18px;
+  color: #222;
+}
+.historial-pagos-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 12px;
+}
+.historial-pagos-btn-group .btn {
+  padding: 10px 24px;
+  background: linear-gradient(90deg, #00c6ff 0%, #0072ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.1s;
+  box-shadow: 0 2px 8px 0 rgba(0,198,255,0.10);
+}
+.historial-pagos-btn-group .btn:hover {
+  background: linear-gradient(90deg, #0072ff 0%, #00c6ff 100%);
+  color: #111;
+  transform: translateY(-2px) scale(1.03);
+}

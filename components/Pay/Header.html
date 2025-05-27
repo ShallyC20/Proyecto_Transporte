@@ -1,14 +1,23 @@
-<link rel="stylesheet" href="../css/mainHeader.css" />
-<link rel="stylesheet" href="../css/styles.css" />
+<link rel="stylesheet" href="../Pay/HeaderPagos.css" />
+<link rel="stylesheet" href="../../css/mainHeader.css" />
+<link rel="stylesheet" href="../../css/styles.css" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-<header class="main-header">
+<header class="header-pagos sticky-header small-header">
   <div class="left-section">
     <button class="icon-btn" onclick="toggleSidebar()"><i class="material-icons">menu</i></button>
     <button class="icon-btn" id="btn-recargar-inicio"><i class="material-icons">refresh</i></button>
-    <img src="../imag/Logo_Blanco.png" alt="Logo ETS" class="logo-ets">
+    <img src="../../imag/Logo_Blanco.png" alt="Logo ETS" class="logo-ets">
     <input type="text" class="search-input" placeholder="Buscar transporte o punto..." oninput="buscarTransporte(this.value)" />
   </div>
+  <nav class="navbar-pagos">
+    <ul>
+      <li><a href="AlquileresPagos.html">Alquileres y Pagos</a></li>
+      <li><a href="HistorialViajes.html">Historial de Viajes</a></li>
+      <li><a href="HistorialPagos.html">Historial de Pagos</a></li>
+      <li><a href="MensajesMantenimiento.html">Mensajes de Mantenimiento</a></li>
+    </ul>
+  </nav>
   <div class="right-section">
     <span class="user-name">Felipe <strong>Herrero</strong></span>
     <div class="icon-group">
@@ -48,7 +57,7 @@
     </ul>
 
     <ul>
-      <li class="menu-item" data-component="Consultas_Ubicación.html">
+      <li class="menu-item" data-component="r2.html">
         <i class="fas fa-search-location"></i> <span>Consultas de ubicación </span>
       </li>
     </ul>

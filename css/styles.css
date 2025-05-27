@@ -329,6 +329,7 @@ section {
   color: #ffffff;
   padding: 20px 0;
   text-align: center;
+  border: 0;
 }
 
 .footer-content {
@@ -382,4 +383,10 @@ section {
 
 .footer i {
   margin-right: 8px;
+}
+.estructura{
+  display: grid;
+  min-height: 100dvh;
+  grid-template-rows: 
+  auto 1fr auto;
 }
