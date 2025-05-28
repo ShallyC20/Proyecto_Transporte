@@ -75,40 +75,6 @@
     </div>
     <div id="listaResultados" class="grid-resultados"></div>
   </section>
-  
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <img src="imag/icono1.png" alt="Bicicleta" class="footer-icon" />
-      </div>
-  
-      <div class="footer-section about">
-        <h4>Acerca de Nosotros</h4>
-        <ul>
-          <li><i class="fas fa-info-circle"></i> <a href="#">Acerca de nosotros</a></li>
-          <li><i class="fas fa-headset"></i> <a href="#">Contáctanos</a></li>
-        </ul>
-      </div>
-  
-      <div class="footer-section social">
-        <h4>Nuestras Redes</h4>
-        <ul>
-          <li><i class="fab fa-whatsapp"></i> <a href="#">WhatsApp</a></li>
-          <li><i class="fab fa-facebook"></i> <a href="#">Facebook</a></li>
-          <li><i class="fab fa-instagram"></i> <a href="#">Instagram</a></li>
-          <li><i class="fab fa-x-twitter"></i> <a href="#">X/Twitter</a></li>
-        </ul>
-      </div>
-  
-      <div class="footer-section">
-        <img src="imag/icono2.png" alt="Scooter" class="footer-icon" />
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2025 Sistema de Geolocalización. Todos los derechos reservados.</p>
-    </div>
-  </footer>
-  
 
   <script src="./js/script.js" defer></script>
   <script src="./js/menu.js"></script>
@@ -136,5 +102,18 @@
     });
   </script>
   
+  <div id="mainFooterContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('./components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el footer:", err));
+    });
+  </script>
+
 </body>
 </html>

@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Consultas de Ubicación</title>
   <link rel="stylesheet" href="../css/r2.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  
+  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
     a {
       color: #007bff;
@@ -15,6 +20,8 @@
   </style>
 </head>
 <body>
+
+  <div id="mainHeaderContainer"></div>
 
   <header class="header">
     <h2>Sistema de Alquiler - <strong>Consultas de ubicación y disponibilidad</strong></h2>
@@ -79,12 +86,12 @@
             } else {
               datos.disponibles.forEach((prod, i) => {
                 const enlace = document.createElement('a');
-                enlace.href = './components/detalle.html';
+                enlace.href = '../components/detalle.html';
                 enlace.textContent = prod.nombre;
                 enlace.addEventListener('click', (e) => {
                   e.preventDefault();
                   localStorage.setItem('productoSeleccionado', JSON.stringify(prod));
-                  window.location.href = './components/detalle.html';
+                  window.location.href = '../components/detalle.html';
                 });
                 tdDisponibles.appendChild(enlace);
                 if (i < datos.disponibles.length - 1) {
@@ -100,6 +107,21 @@
           });
         })
         .catch(err => console.error('Error al cargar JSON:', err));
+    });
+  </script>
+
+  <script src="../js/script.js" defer></script>
+
+  <div id="mainFooterContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
 

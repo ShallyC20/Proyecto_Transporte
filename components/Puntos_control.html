@@ -1,0 +1,200 @@
+<!-- components/Puntos_control.html --> 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Puntos de control</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  
+  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+</head>
+<body>
+  <!-- Contenedor para el header principal -->
+  <div id="mainHeaderContainer"></div>
+
+  <section class="pagina-transporte">
+    <header class="header">
+      <h2>Sistema de Alquiler - <strong>Puntos de control</strong></h2>
+      <div class="filters">
+        <select id="filterTipo">
+          <option value="Todo">Todos</option>
+          <option value="Bicicleta">Bicicletas</option>
+          <option value="Patineta">Patinetas</option>
+        </select>
+
+        <select id="filterEstacion">
+          <option value="Todo">Todas las estaciones</option>
+          <option value="Calacoto">Calacoto</option>
+          <option value="San Miguel">San Miguel</option>
+          <option value="Achumani">Achumani</option>
+          <option value="Obrajes">Obrajes</option>
+          <option value="Cota Cota">Cota Cota</option>
+          <option value="Següencoma">Següencoma</option>
+          <option value="Irpavi">Irpavi</option>
+          <option value="Los Pinos">Los Pinos</option>
+          <option value="Chasquipampa">Chasquipampa</option>
+        </select>
+
+        <select id="filterEstado">
+          <option value="Todo">Todo</option>
+          <option value="Disponible">Disponible</option>
+          <option value="En uso">En uso</option>
+          <option value="Mantenimiento">Mantenimiento</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="product-grid" id="gridTransportes">
+      <!-- Las tarjetas se cargarán aquí dinámicamente desde productos.json -->
+    </div>
+  </section>
+
+  <script>
+    // Cargar el header principal
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("./mainHeader.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainer").innerHTML = html;
+
+          // Cargar scripts de menú y eventos del header
+          const scriptMenu = document.createElement("script");
+          scriptMenu.src = "../js/menu.js";
+          scriptMenu.onload = () => {
+            const scriptHeaderEvents = document.createElement("script");
+            scriptHeaderEvents.src = "../js/headerEvents.js";
+            scriptHeaderEvents.onload = () => {
+              if (typeof initHeaderEvents === "function") initHeaderEvents();
+            };
+            document.body.appendChild(scriptHeaderEvents);
+          };
+          document.body.appendChild(scriptMenu);
+
+          // Después de cargar el header, puedes cargar productos o filtros aquí si quieres
+          cargarTransportes();
+          inicializarFiltros();
+        })
+        .catch(err => console.error("Error al cargar mainHeader:", err));
+    });
+
+    // Función para cargar productos en el grid
+    function cargarTransportes() {
+      fetch("../json/productos.json")
+        .then(res => res.json())
+        .then(productos => {
+          const grid = document.getElementById("gridTransportes");
+          grid.innerHTML = "";
+
+          productos.forEach(prod => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+              <div class="badge ${
+                prod.estado === "Disponible" ? "badge-disponible" :
+                prod.estado === "En uso" ? "badge-en-uso" :
+                "badge-mante"
+              }">${prod.estado}</div>
+              <img src="${prod.imagen}" alt="${prod.alt}" />
+              <div class="card-info">
+                <h4>${prod.nombre}</h4>
+                <p>Estación: ${prod.estacion}</p>
+                <p><strong>Bs${prod.tarifa.toFixed(2)}/hora</strong></p>
+              </div>
+            `;
+
+            // Al hacer click en la tarjeta, guarda el producto seleccionado y navega a detalle
+            card.addEventListener("click", () => {
+              localStorage.setItem("productoSeleccionado", JSON.stringify(prod));
+              window.location.href = "./detalle.html";
+            });
+
+            grid.appendChild(card);
+          });
+        })
+        .catch(err => console.error("Error cargando productos:", err));
+    }
+
+    // Ejemplo básico para filtros, puedes expandir según tu lógica
+    function inicializarFiltros() {
+      const filtroTipo = document.getElementById("filterTipo");
+      const filtroEstacion = document.getElementById("filterEstacion");
+      const filtroEstado = document.getElementById("filterEstado");
+
+      // Escucha cambios y filtra el grid (esto es solo un ejemplo simple)
+      [filtroTipo, filtroEstacion, filtroEstado].forEach(select => {
+        select.addEventListener("change", () => {
+          aplicarFiltros();
+        });
+      });
+    }
+
+    function aplicarFiltros() {
+      const tipo = document.getElementById("filterTipo").value;
+      const estacion = document.getElementById("filterEstacion").value;
+      const estado = document.getElementById("filterEstado").value;
+
+      fetch("../json/productos.json")
+        .then(res => res.json())
+        .then(productos => {
+          const grid = document.getElementById("gridTransportes");
+          grid.innerHTML = "";
+
+          const filtrados = productos.filter(prod => {
+            const matchTipo = tipo === "Todo" || prod.tipo === tipo;
+            const matchEstacion = estacion === "Todo" || prod.estacion === estacion;
+            const matchEstado = estado === "Todo" || prod.estado === estado;
+
+            return matchTipo && matchEstacion && matchEstado;
+          });
+
+          filtrados.forEach(prod => {
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+              <div class="badge ${
+                prod.estado === "Disponible" ? "badge-disponible" :
+                prod.estado === "En uso" ? "badge-en-uso" :
+                "badge-mante"
+              }">${prod.estado}</div>
+              <img src="${prod.imagen}" alt="${prod.alt}" />
+              <div class="card-info">
+                <h4>${prod.nombre}</h4>
+                <p>Estación: ${prod.estacion}</p>
+                <p><strong>Bs${prod.tarifa.toFixed(2)}/hora</strong></p>
+              </div>
+            `;
+
+            card.addEventListener("click", () => {
+              localStorage.setItem("productoSeleccionado", JSON.stringify(prod));
+              window.location.href = "./detalle.html";
+            });
+
+            grid.appendChild(card);
+          });
+
+          if (filtrados.length === 0) {
+            grid.innerHTML = "<p>No hay transportes que coincidan con los filtros.</p>";
+          }
+        });
+    }
+  </script>
+  <div id="mainFooterContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el footer:", err));
+    });
+  </script>
+</body>
+</html>

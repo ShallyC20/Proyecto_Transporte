@@ -1,12 +1,12 @@
 // script.js
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("./components/mainHeader.html")
+  fetch("../components/mainHeader.html")
     .then(res => res.text())
     .then(html => {
       document.getElementById("mainHeaderContainer").innerHTML = html;
 
       const script = document.createElement("script");
-      script.src = "./js/headerEvents.js";
+      script.src = "../js/headerEvents.js";
       document.body.appendChild(script);
     });
 
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Carrusel de index
   const track = document.getElementById('carouselTrack');
   if (track) {
-    fetch('./json/productos.json')
+    fetch('../json/productos.json')
       .then(res => res.json())
       .then(productos => {
         productos.forEach(producto => {
@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           card.addEventListener("click", () => {
             localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-            window.location.href = "./components/detalle.html";
+            window.location.href = "../components/detalle.html";
           });
 
           track.appendChild(card);
@@ -69,154 +69,16 @@ function cargarComponente(file) {
   if (inicio) inicio.style.display = 'none';
   if (main) main.style.display = 'block';
 
-  const url = `./components/${file}`;
+  const url = `../components${file}`;
 
   fetch(url)
     .then(res => res.text())
     .then(html => {
       main.innerHTML = html;
 
-      if (file === 'r1.html') {
-        fetch('./json/productos.json')
-          .then(res => res.json())
-          .then(productos => {
-            const grid = document.getElementById('gridTransportes');
-            const tipo = document.getElementById('filterTipo');
-            const estado = document.getElementById('filterEstado');
-            const tarifa = document.getElementById('filterTarifa');
-      
-            function renderProductos(data) {
-              if (!grid) return;
-              grid.innerHTML = '';
-              data.forEach(producto => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-      
-                const badgeClass = {
-                  "Disponible": "badge-disponible",
-                  "En uso": "badge-en-uso",
-                  "En mantenimiento": "badge-mante"
-                }[producto.estado] || "badge-default";
-      
-                card.innerHTML = `
-                  <div class="badge ${badgeClass}">${producto.estado}</div>
-                  <img src="${producto.imagen}" alt="${producto.alt}">
-                  <div class="card-info">
-                    <h4>${producto.nombre}</h4>
-                    <p>Estación: ${producto.estacion}</p>
-                    <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
-                  </div>
-                `;
-      
-                card.addEventListener("click", () => {
-                  localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-                  window.location.href = "./components/detalle.html";
-                });
-      
-                grid.appendChild(card);
-              });
-            }
-      
-            function aplicarFiltros() {
-              if (!tipo || !estado || !tarifa) return;
-      
-              let filtrados = [...productos];
-      
-              if (tipo.value !== "Todo") {
-                filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
-              }
-      
-              if (estado.value !== "Todo") {
-                filtrados = filtrados.filter(p => p.estado === estado.value);
-              }
-      
-              if (tarifa.value === "asc") {
-                filtrados.sort((a, b) => a.tarifa - b.tarifa);
-              } else if (tarifa.value === "desc") {
-                filtrados.sort((a, b) => b.tarifa - a.tarifa);
-              }
-      
-              renderProductos(filtrados);
-            }
-      
-            if (tipo && estado && tarifa) {
-              [tipo, estado, tarifa].forEach(f => f.addEventListener('change', aplicarFiltros));
-              renderProductos(productos);
-            }
-          });
-      }
-
-      if (file === 'r6.html') {
-        fetch('./json/productos.json')
-          .then(res => res.json())
-          .then(productos => {
-            const grid = document.getElementById('gridTransportes');
-            const tipo = document.getElementById('filterTipo');
-            const estacion = document.getElementById('filterEstacion');
-            const estado = document.getElementById('filterEstado');
-      
-            function renderProductos(data) {
-              if (!grid) return;
-              grid.innerHTML = '';
-      
-              data.forEach(producto => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-      
-                const badgeClass = {
-                  "Disponible": "badge-disponible",
-                  "En uso": "badge-en-uso",
-                  "Mantenimiento": "badge-mante"
-                }[producto.estado] || "badge-default";
-      
-                card.innerHTML = `
-                  <div class="badge ${badgeClass}">${producto.estado}</div>
-                  <img src="${producto.imagen}" alt="${producto.alt}">
-                  <div class="card-info">
-                    <h4>${producto.nombre}</h4>
-                    <p>Estación: ${producto.estacion}</p>
-                    <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
-                  </div>
-                `;
-      
-                card.addEventListener("click", () => {
-                  localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-                  window.location.href = "./components/detalle.html";
-                });
-      
-                grid.appendChild(card);
-              });
-            }
-      
-            function aplicarFiltros() {
-              if (!tipo || !estacion || !estado) return;
-      
-              let filtrados = [...productos];
-      
-              // Filtrado por tipo
-              if (tipo.value !== "Todo") {
-                filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
-              }
-      
-              if (estacion.value !== "Todo") {
-                filtrados = filtrados.filter(p => p.estacion === estacion.value);
-              }
-      
-              if (estado.value !== "Todo") {
-                filtrados = filtrados.filter(p => p.estado === estado.value);
-              }
-      
-              renderProductos(filtrados);
-            }
-      
-            [tipo, estacion, estado].forEach(f => f?.addEventListener('change', aplicarFiltros));
-            renderProductos(productos);
-          });
-      }
-
       // FUNCIONALIDAD PARA DIRECCIONES EN Consultas_Ubicación.html
-if (file === 'Consultas_Ubicación.html') {
-  fetch('./json/productos.json')
+if (file === '../components/Consultas_Ubicación.html') {
+  fetch('../json/productos.json')
     .then(response => response.json())
     .then(data => {
       const ubicaciones = {};
@@ -243,7 +105,7 @@ if (file === 'Consultas_Ubicación.html') {
         // DIRECCIÓN CLICKEABLE
         const celdaDireccion = document.createElement('td');
         const enlaceDireccion = document.createElement('a');
-        enlaceDireccion.href = `./components/ubicacion.html?estacion=${encodeURIComponent(dir)}`;
+        enlaceDireccion.href = `../components/ubicacion.html?estacion=${encodeURIComponent(dir)}`;
         enlaceDireccion.textContent = dir;
         enlaceDireccion.style.color = '#007bff';
         enlaceDireccion.style.textDecoration = 'underline';
@@ -267,7 +129,7 @@ if (file === 'Consultas_Ubicación.html') {
         } else {
           ubicaciones[dir].disponibles.forEach((producto, idx) => {
             const enlace = document.createElement('a');
-            enlace.href = './components/detalle.html';
+            enlace.href = '../components/detalle.html';
             enlace.textContent = producto.nombre;
             enlace.style.marginRight = '8px';
             enlace.style.cursor = 'pointer';
@@ -275,7 +137,7 @@ if (file === 'Consultas_Ubicación.html') {
             enlace.addEventListener('click', (e) => {
               e.preventDefault();
               localStorage.setItem('productoSeleccionado', JSON.stringify(producto));
-              window.location.href = './components/detalle.html';
+              window.location.href = '../components/detalle.html';
             });
 
             celdaDisponibles.appendChild(enlace);
@@ -296,8 +158,8 @@ if (file === 'Consultas_Ubicación.html') {
 }
 
       
-      if (file === 'Consultas_Ubicación.html') {
-        fetch('./json/productos.json')
+      if (file === '../components/Consultas_Ubicación.html') {
+        fetch('../json/productos.json')
           .then(response => response.json())
           .then(data => {
             const ubicaciones = {};
@@ -335,7 +197,7 @@ if (file === 'Consultas_Ubicación.html') {
               } else {
                 ubicaciones[dir].disponibles.forEach((producto, idx, array) => {
                   const enlace = document.createElement('a');
-                  enlace.href = './components/detalle.html';
+                  enlace.href = '../components/detalle.html';
                   enlace.textContent = producto.nombre;
                   enlace.style.marginRight = '8px';
                   enlace.style.cursor = 'pointer';
@@ -411,7 +273,7 @@ function buscarTransporte(valor) {
     return;
   }
 
-  fetch('./json/productos.json')
+  fetch('../json/productos.json')
     .then(res => res.json())
     .then(productos => {
       const resultado = productos.filter(p =>
@@ -444,7 +306,7 @@ function buscarTransporte(valor) {
 
         div.addEventListener('click', () => {
           localStorage.setItem('productoSeleccionado', JSON.stringify(prod));
-          window.location.href = './components/detalle.html';
+          window.location.href = '../components/detalle.html';
         });
 
         lista.appendChild(div);

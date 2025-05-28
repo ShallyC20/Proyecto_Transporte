@@ -6,8 +6,11 @@
   <title>Ubicación del Punto de Control</title>
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/mainHeader.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  
+  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Content Security Policy Actualizada -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self' https://www.google.com https://maps.google.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
@@ -21,10 +24,8 @@
 </head>
 <body>
 
-  <!-- Main Header -->
   <div id="mainHeaderContainer"></div>
 
-  <!-- Contenido Principal -->
   <main class="main-content">
     <section class="info-section">
       <h2>Ubicación del Punto de Control</h2>
@@ -96,5 +97,18 @@
 
   <!-- Script externo -->
   <script src="../js/ubicacion.js"></script>
+  
+  <div id="mainFooterContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el footer:", err));
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,141 @@
+<!-- components/Transporte.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transporte</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  
+  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+</head>
+<body>
+
+  <div id="mainHeaderContainer"></div>
+
+  <section class="pagina-transporte">
+
+    <header class="header">
+      <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
+      <div class="filters">
+        <select id="filterTipo">
+          <option value="Todo">Todos</option>
+          <option value="Bicicleta">Bicicletas</option>
+          <option value="Patineta">Patinetas</option>
+        </select>
+
+        <select id="filterEstado">
+          <option value="Todo">Todo</option>
+          <option value="Disponible">Disponible</option>
+          <option value="En uso">En uso</option>
+          <option value="Mantenimiento">Mantenimiento</option>
+        </select>
+
+        <select id="filterTarifa">
+          <option value="Default">Tarifa</option>
+          <option value="asc">Menor a mayor</option>
+          <option value="desc">Mayor a menor</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="product-grid" id="gridTransportes">
+      <!-- Las tarjetas se cargarán aquí dinámicamente desde productos.json -->
+    </div>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../json/productos.json')
+        .then(res => res.json())
+        .then(productos => {
+          const grid = document.getElementById('gridTransportes');
+          const tipo = document.getElementById('filterTipo');
+          const estado = document.getElementById('filterEstado');
+          const tarifa = document.getElementById('filterTarifa');
+
+          function renderProductos(data) {
+            if (!grid) return;
+            grid.innerHTML = '';
+            data.forEach(producto => {
+              const card = document.createElement('div');
+              card.classList.add('card');
+
+              const badgeClass = {
+                "Disponible": "badge-disponible",
+                "En uso": "badge-en-uso",
+                "Mantenimiento": "badge-mante"
+              }[producto.estado] || "badge-default";
+
+              card.innerHTML = `
+                <div class="badge ${badgeClass}">${producto.estado}</div>
+                <img src="${producto.imagen}" alt="${producto.alt}">
+                <div class="card-info">
+                  <h4>${producto.nombre}</h4>
+                  <p>Estación: ${producto.estacion}</p>
+                  <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
+                </div>
+              `;
+
+              card.addEventListener("click", () => {
+                localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+                window.location.href = "../components/detalle.html";
+              });
+
+              grid.appendChild(card);
+            });
+          }
+
+          function aplicarFiltros() {
+            if (!tipo || !estado || !tarifa) return;
+
+            let filtrados = [...productos];
+
+            if (tipo.value !== "Todo") {
+              filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
+            }
+
+            if (estado.value !== "Todo") {
+              filtrados = filtrados.filter(p => p.estado === estado.value);
+            }
+
+            if (tarifa.value === "asc") {
+              filtrados.sort((a, b) => a.tarifa - b.tarifa);
+            } else if (tarifa.value === "desc") {
+              filtrados.sort((a, b) => b.tarifa - a.tarifa);
+            }
+
+            renderProductos(filtrados);
+          }
+
+          [tipo, estado, tarifa].forEach(f => f.addEventListener('change', aplicarFiltros));
+          renderProductos(productos);
+        })
+        .catch(err => {
+          console.error('Error cargando productos:', err);
+          const grid = document.getElementById('gridTransportes');
+          if (grid) {
+            grid.innerHTML = '<p style="color:red;">No se pudieron cargar los productos.</p>';
+          }
+        });
+    });
+  </script>
+  <script src="../js/script.js" defer></script>
+
+  <div id="mainFooterContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el footer:", err));
+    });
+  </script>
+</body>
+</html>
