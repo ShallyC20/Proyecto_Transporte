@@ -8,13 +8,15 @@ const firebaseConfig = {
     measurementId: "G-PN7FB0RTDM"
 };
 
-// Initialize Firebase
+// Inicia el Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Initialize Cloud Firestore and get a reference to the service
+// Obtiene la base de datos de Firebase, mas que todo el FireStore
 const db = firebase.firestore();
 
 let usuarios = db.collection("usuarios");
+let transportes = db.collection("transporte");
+let ubicaciones = db.collection("ubicaciones");
 
 window.leerDocumentos = async function () {
     const lista = document.getElementById("listaUsuarios");
@@ -23,6 +25,13 @@ window.leerDocumentos = async function () {
         querySnapshot.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
             console.log(doc.id, " => ", doc.data().nombre);
+        });
+    });
+    ubicaciones.get().then((transaccion) => {
+        transaccion.forEach((doc) => {
+            console.log(doc.id, " => ", doc.data().datos);
+            console.log(doc.data().nombre, " => ", doc.data().datos._lat);
+            console.log(doc.data().nombre, " => ", doc.data().datos._long);
         });
     });
 };

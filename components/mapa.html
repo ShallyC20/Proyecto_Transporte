@@ -3,19 +3,26 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/mapas.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 
 <body>
-    <div>Este va a ser el mapa XD</div>
-    <button onclick="leerDocumentos()">Leer usuarios</button>
+    <div class="titulo">
+        <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
+    </div>
     <ul id="listaUsuarios"></ul>
+    <div class="contmapa">
+        <div id="map" class="mapa"></div>
+    </div>
+    <div id="coordenadas" style="margin-top: 10px; font-weight: bold;"></div>
 </body>
 
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
-<script type="module" src="/js/conexionFireBase.js"></script>
-<script type="module" src=""></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script type="module" src="/js/mapas.js"></script>
 
 </html>
