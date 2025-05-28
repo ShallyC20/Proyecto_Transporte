@@ -99,6 +99,9 @@ header p {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   display: flex;
   flex-direction: column;
+  width: 250px;     
+  height: 340px;    
+  flex-shrink: 0;
 }
 
 .card:hover {
@@ -107,33 +110,36 @@ header p {
 }
 
 .card img {
-  width: 100%;
-  height: auto;
-  max-height: 200px;
-  aspect-ratio: 4 / 3; 
-  object-fit: contain;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  display: block;         
+  margin: 0 auto;         
+  width: calc(100% - 40px); 
+  max-width: 280px;       
+  height: 120px;          
+  object-fit: cover;      
+  border-radius: 12px 12px 0 0;
 }
 
 
 .card-info {
   padding: 1rem 1.5rem;
+
 }
 
 .card-info h4 {
   margin: 0 0 0.5rem;
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   color: #ffffff;
 }
 
 .card-info p {
   margin: 0.3rem 0;
+  font-size: 1.3rem;
   color: #ffffff;
 }
 
 .card-info strong {
   color: #2980b9;
+  font-size: 1.3rem;
 }
 
 .badge {
