@@ -13,11 +13,16 @@
     integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
-  <script src="./js/conexionFirebase.js" defer></script>
-  <script src="./js/carruselFirebase.js" defer></script>
+  <!-- Firebase Core y Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <!-- Configuración Firebase -->
+  <script src="js/conexionFireBase.js"></script>
+
+  <!-- Carrusel de Firestore -->
+  <script src="js/carruselFirebase.js"></script>
+
 </head>
 <body>
   <div id="mainHeaderContainer"></div>
@@ -43,11 +48,11 @@
 
       <div class="carousel-destinos">
         <button class="carousel-btnD left" id="btn-destinos-left">
-          <i class="fas fa-chevron-leftD"></i>
+          <i class="fas fa-chevron-left"></i>
         </button>
         <div class="carousel-trackD" id="carouselDestinos"></div>
         <button class="carousel-btnD right" id="btn-destinos-right">
-          <i class="fas fa-chevron-rightD"></i>
+          <i class="fas fa-chevron-right"></i>
         </button>
       </div>
     </section>
@@ -89,7 +94,6 @@
   <!-- Footer -->
   <div id="mainFooterContainer"></div>
 
-  <!-- Carga dinámica del header y footer -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       fetch('./components/mainHeader.html')

@@ -1,0 +1,75 @@
+/* puntos_control.css mejorado */
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  justify-content: center;
+  background: #f0f4ff;
+}
+
+.cardU {
+  background: #1b2a47;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: row;
+  width: 320px;
+  height: 200px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.cardU:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+.cardU img {
+  width: 120px;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px 0 0 12px;
+  flex-shrink: 0;
+}
+
+.cardU-info {
+  padding: 1rem 1.5rem;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.cardU-info h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+}
+
+.cardU-info p {
+  margin: 0.3rem 0;
+  font-size: 1.1rem;
+}
+
+.cardU-info strong {
+  color: #2980b9;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 400px) {
+  .cardU {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+  }
+
+  .cardU img {
+    width: 100%;
+    height: 180px;
+    border-radius: 12px 12px 0 0;
+  }
+}
