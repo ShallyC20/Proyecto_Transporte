@@ -127,19 +127,19 @@ header p {
 
 .card-info h4 {
   margin: 0 0 0.5rem;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #ffffff;
 }
 
 .card-info p {
   margin: 0.3rem 0;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   color: #ffffff;
 }
 
 .card-info strong {
   color: #2980b9;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 .badge {
@@ -229,7 +229,7 @@ header.header {
 header.header h2 {
   margin: 0 0 1rem;
   font-size: 1.6rem;
-  color: #2c3e50;
+  color: #000000;
 }
 
 header.header strong {
