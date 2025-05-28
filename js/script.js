@@ -1,5 +1,6 @@
 // script.js
 document.addEventListener("DOMContentLoaded", () => {
+  // Cargar header
   fetch("../components/mainHeader.html")
     .then(res => res.text())
     .then(html => {
@@ -10,58 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.appendChild(script);
     });
 
+  // Obtener componente por URL
   const params = new URLSearchParams(window.location.search);
   const fileToLoad = params.get("cargar");
-
-  if (fileToLoad) {
-    cargarComponente(fileToLoad);
-  }
-
-  // Carrusel de index
-  const track = document.getElementById('carouselTrack');
-  if (track) {
-    fetch('../json/productos.json')
-      .then(res => res.json())
-      .then(productos => {
-        productos.forEach(producto => {
-          const card = document.createElement('div');
-          card.classList.add('card');
-
-          const badgeClass = {
-            "Disponible": "badge-disponible",
-            "En uso": "badge-en-uso",
-            "En mantenimiento": "badge-mante"
-          }[producto.estado] || "badge-default";
-
-          card.innerHTML = `
-            <div class="badge ${badgeClass}">${producto.estado}</div>
-            <img src="${producto.imagen}" alt="${producto.alt}">
-            <div class="card-info">
-              <h4>${producto.nombre}</h4>
-              <p>Estación: ${producto.estacion}</p>
-              <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
-            </div>
-          `;
-
-          card.addEventListener("click", () => {
-            localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-            window.location.href = "../components/detalle.html";
-          });
-
-          track.appendChild(card);
-        });
-      });
-  }
-
-
-  // Asignar eventos al carrusel
-  const btnLeft = document.querySelector('.carousel-btn.left');
-  const btnRight = document.querySelector('.carousel-btn.right');
-
-  if (btnLeft) btnLeft.addEventListener('click', () => scrollCarouselLoop(-1));
-  if (btnRight) btnRight.addEventListener('click', () => scrollCarouselLoop(1));
+  if (fileToLoad) cargarComponente(fileToLoad);
 });
 
+// Cargar componente dinámico
 function cargarComponente(file) {
   const main = document.getElementById('contenido');
   const inicio = document.getElementById('inicio');
@@ -76,155 +32,9 @@ function cargarComponente(file) {
     .then(html => {
       main.innerHTML = html;
 
-      // FUNCIONALIDAD PARA DIRECCIONES EN Consultas_Ubicación.html
-if (file === '../components/Consultas_Ubicación.html') {
-  fetch('../json/productos.json')
-    .then(response => response.json())
-    .then(data => {
-      const ubicaciones = {};
-
-      data.forEach(item => {
-        const dir = item.estacion;
-        if (!ubicaciones[dir]) {
-          ubicaciones[dir] = {
-            total: [],
-            disponibles: []
-          };
-        }
-        ubicaciones[dir].total.push(item.nombre);
-        if (item.estado.toLowerCase() === "disponible") {
-          ubicaciones[dir].disponibles.push(item); 
-        }
-      });
-
-      const tbody = document.getElementById('tabla-ubicacion');
-
-      Object.keys(ubicaciones).forEach(dir => {
-        const fila = document.createElement('tr');
-
-        // DIRECCIÓN CLICKEABLE
-        const celdaDireccion = document.createElement('td');
-        const enlaceDireccion = document.createElement('a');
-        enlaceDireccion.href = `../components/ubicacion.html?estacion=${encodeURIComponent(dir)}`;
-        enlaceDireccion.textContent = dir;
-        enlaceDireccion.style.color = '#007bff';
-        enlaceDireccion.style.textDecoration = 'underline';
-        enlaceDireccion.style.cursor = 'pointer';
-
-        celdaDireccion.appendChild(enlaceDireccion);
-        fila.appendChild(celdaDireccion);
-
-        // TRANSPORTES EN EL PUNTO
-        const celdaTransportes = document.createElement('td');
-        celdaTransportes.textContent = ubicaciones[dir].total.join(', ');
-        fila.appendChild(celdaTransportes);
-
-        // TRANSPORTES DISPONIBLES
-        const celdaDisponibles = document.createElement('td');
-        celdaDisponibles.style.color = '#27ae60';
-        celdaDisponibles.style.fontWeight = 'bold';
-
-        if (ubicaciones[dir].disponibles.length === 0) {
-          celdaDisponibles.textContent = 'Ninguno';
-        } else {
-          ubicaciones[dir].disponibles.forEach((producto, idx) => {
-            const enlace = document.createElement('a');
-            enlace.href = '../components/detalle.html';
-            enlace.textContent = producto.nombre;
-            enlace.style.marginRight = '8px';
-            enlace.style.cursor = 'pointer';
-
-            enlace.addEventListener('click', (e) => {
-              e.preventDefault();
-              localStorage.setItem('productoSeleccionado', JSON.stringify(producto));
-              window.location.href = '../components/detalle.html';
-            });
-
-            celdaDisponibles.appendChild(enlace);
-
-            if (idx < ubicaciones[dir].disponibles.length - 1) {
-              celdaDisponibles.appendChild(document.createTextNode(', '));
-            }
-          });
-        }
-
-        fila.appendChild(celdaDisponibles);
-        tbody.appendChild(fila);
-      });
-    })
-    .catch(err => {
-      console.error('Error al cargar productos para Consultas_Ubicación.html:', err);
-    });
-}
-
-      
-      if (file === '../components/Consultas_Ubicación.html') {
-        fetch('../json/productos.json')
-          .then(response => response.json())
-          .then(data => {
-            const ubicaciones = {};
-      
-            data.forEach(item => {
-              const dir = item.estacion;
-              if (!ubicaciones[dir]) {
-                ubicaciones[dir] = {
-                  total: [],
-                  disponibles: []
-                };
-              }
-              ubicaciones[dir].total.push(item.nombre);
-              if (item.estado.toLowerCase() === "disponible") {
-                ubicaciones[dir].disponibles.push(item); 
-              }
-            });
-      
-            const tbody = document.getElementById('tabla-ubicacion');
-      
-            Object.keys(ubicaciones).forEach(dir => {
-              const fila = document.createElement('tr');
-      
-              const celdaTransportes = document.createElement('td');
-              celdaTransportes.setAttribute('data-label', 'Transportes en el punto');
-              celdaTransportes.textContent = ubicaciones[dir].total.join(', ');
-      
-              const celdaDisponibles = document.createElement('td');
-              celdaDisponibles.setAttribute('data-label', 'Transportes disponibles');
-              celdaDisponibles.style.color = '#27ae60';
-              celdaDisponibles.style.fontWeight = 'bold';
-      
-              if (ubicaciones[dir].disponibles.length === 0) {
-                celdaDisponibles.textContent = 'Ninguno';
-              } else {
-                ubicaciones[dir].disponibles.forEach((producto, idx, array) => {
-                  const enlace = document.createElement('a');
-                  enlace.href = '../components/detalle.html';
-                  enlace.textContent = producto.nombre;
-                  enlace.style.marginRight = '8px';
-                  enlace.style.cursor = 'pointer';
-      
-                  enlace.addEventListener('click', (e) => {
-                    localStorage.setItem('productoSeleccionado', JSON.stringify(producto));
-                  });
-      
-                  celdaDisponibles.appendChild(enlace);
-                  if (idx < array.length - 1) {
-                    celdaDisponibles.appendChild(document.createTextNode(', '));
-                  }
-                });
-              }
-      
-              fila.appendChild(celdaDireccion);
-              fila.appendChild(celdaTransportes);
-              fila.appendChild(celdaDisponibles);
-              tbody.appendChild(fila);
-            });
-          })
-          .catch(err => {
-            console.error('Error al cargar productos para Consultas_Ubicación.html:', err);
-          });
+      if (file === '/Consultas_Ubicación.html') {
+        cargarUbicacionesDesdeFirebase();
       }
-      
-      
     })
     .catch(err => {
       main.innerHTML = `<p>Error al cargar ${file}</p>`;
@@ -232,33 +42,72 @@ if (file === '../components/Consultas_Ubicación.html') {
     });
 }
 
-function scrollCarouselLoop(direction) {
-  const track = document.getElementById('carouselTrack');
-  if (!track) return;
+// Cargar tabla de ubicaciones desde Firestore
+function cargarUbicacionesDesdeFirebase() {
+  const tbody = document.getElementById('tabla-ubicacion');
+  if (!tbody) return;
 
-  const cardWidth = track.querySelector('.card')?.offsetWidth + 24 || 300;
-  const totalScroll = track.scrollWidth - track.clientWidth;
-  const currentScroll = track.scrollLeft;
+  db.collection("transporte").get().then((querySnapshot) => {
+    const ubicaciones = {};
 
-  let targetScroll = currentScroll + direction * cardWidth;
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const dir = data.estacion;
 
-  if (direction === 1 && currentScroll >= totalScroll - cardWidth) {
-    track.scrollTo({ left: 0, behavior: 'smooth' });
-    return;
-  }
+      if (!ubicaciones[dir]) {
+        ubicaciones[dir] = { total: [], disponibles: [] };
+      }
 
-  if (direction === -1 && currentScroll <= 0) {
-    track.scrollTo({ left: totalScroll, behavior: 'smooth' });
-    return;
-  }
+      ubicaciones[dir].total.push(data.nombre);
+      if (data.estado.toLowerCase() === 'disponible') {
+        ubicaciones[dir].disponibles.push(data);
+      }
+    });
 
-  track.scrollBy({
-    left: direction * cardWidth,
-    behavior: 'smooth'
+    Object.entries(ubicaciones).forEach(([dir, datos]) => {
+      const tr = document.createElement('tr');
+
+      // Dirección clickeable
+      const tdDireccion = document.createElement('td');
+      const aDireccion = document.createElement('a');
+      aDireccion.href = `../components/ubicacion.html?estacion=${encodeURIComponent(dir)}`;
+      aDireccion.textContent = dir;
+      tdDireccion.appendChild(aDireccion);
+
+      // Transportes en el punto
+      const tdTransportes = document.createElement('td');
+      tdTransportes.textContent = datos.total.join(', ');
+
+      // Transportes disponibles
+      const tdDisponibles = document.createElement('td');
+      if (datos.disponibles.length === 0) {
+        tdDisponibles.textContent = 'Ninguno';
+      } else {
+        datos.disponibles.forEach((prod, i) => {
+          const enlace = document.createElement('a');
+          enlace.href = '../components/detalle.html';
+          enlace.textContent = prod.nombre;
+          enlace.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.setItem('productoSeleccionado', JSON.stringify(prod));
+            window.location.href = '../components/detalle.html';
+          });
+          tdDisponibles.appendChild(enlace);
+          if (i < datos.disponibles.length - 1) {
+            tdDisponibles.appendChild(document.createTextNode(', '));
+          }
+        });
+      }
+
+      tr.appendChild(tdDireccion);
+      tr.appendChild(tdTransportes);
+      tr.appendChild(tdDisponibles);
+      tbody.appendChild(tr);
+    });
   });
 }
 
-// Resulatdo al buscar
+// 🔍 Buscar transporte en Firestore
 function buscarTransporte(valor) {
   const contenedor = document.getElementById('resultadosBusqueda');
   const lista = document.getElementById('listaResultados');
@@ -273,47 +122,55 @@ function buscarTransporte(valor) {
     return;
   }
 
-  fetch('../json/productos.json')
-    .then(res => res.json())
-    .then(productos => {
-      const resultado = productos.filter(p =>
-        p.nombre.toLowerCase().includes(valor.toLowerCase()) ||
-        p.estacion.toLowerCase().includes(valor.toLowerCase())
-      );
+  db.collection("transporte").get().then((querySnapshot) => {
+    const productos = [];
 
-      if (main) main.style.display = 'none';
-      if (inicio) inicio.style.display = 'none';
-      lista.innerHTML = '';
+    querySnapshot.forEach((doc) => {
+      productos.push(doc.data());
+    });
 
-      if (resultado.length === 0) {
-        lista.innerHTML = '<p>No se encontraron resultados.</p>';
-        contenedor.style.display = 'block';
-        return;
-      }
+    const resultado = productos.filter(p =>
+      p.nombre.toLowerCase().includes(valor.toLowerCase()) ||
+      p.estacion.toLowerCase().includes(valor.toLowerCase())
+    );
 
-      lista.innerHTML = '';
-      resultado.forEach(prod => {
-        const div = document.createElement('div');
-        div.classList.add('card');
+    if (main) main.style.display = 'none';
+    if (inicio) inicio.style.display = 'none';
+    lista.innerHTML = '';
 
-        div.innerHTML = `
-          <div class="badge ${prod.badgeClass}">${prod.estado}</div>
-          <img src="${prod.imagen}" alt="${prod.alt}" style="width:100%;border-radius:8px;" />
-          <h4>${prod.nombre}</h4>
-          <p><strong>Estación:</strong> ${prod.estacion}</p>
-          <p><strong>Bs ${prod.tarifa.toFixed(2)}/hora</strong></p>
-        `;
+    if (resultado.length === 0) {
+      lista.innerHTML = '<p>No se encontraron resultados.</p>';
+      contenedor.style.display = 'block';
+      return;
+    }
 
-        div.addEventListener('click', () => {
-          localStorage.setItem('productoSeleccionado', JSON.stringify(prod));
-          window.location.href = '../components/detalle.html';
-        });
+    resultado.forEach(prod => {
+      const div = document.createElement('div');
+      div.classList.add('card');
 
-        lista.appendChild(div);
+      const badgeClass = {
+        "Disponible": "badge-disponible",
+        "En uso": "badge-en-uso",
+        "Mantenimiento": "badge-mantenimiento"
+      }[prod.estado] || "badge-default";
+
+      div.innerHTML = `
+        <div class="badge ${badgeClass}">${prod.estado}</div>
+        <img src="${prod.imagen || 'https://via.placeholder.com/150'}" alt="${prod.alt || prod.nombre}" style="width:100%;border-radius:8px;" />
+        <h4>${prod.nombre}</h4>
+        <p><strong>Estación:</strong> ${prod.estacion}</p>
+        <p><strong>Bs ${prod.tarifa.toFixed(2)}/hora</strong></p>
+      `;
+
+      div.addEventListener('click', () => {
+        localStorage.setItem('productoSeleccionado', JSON.stringify(prod));
+        window.location.href = '../components/detalle.html';
       });
 
-      contenedor.style.display = 'block';
+      lista.appendChild(div);
     });
+
+    contenedor.style.display = 'block';
 
     setTimeout(() => {
       const btnCerrar = document.getElementById('btnCerrarBusqueda');
@@ -325,4 +182,5 @@ function buscarTransporte(valor) {
         };
       }
     }, 100);
-  }
+  });
+}

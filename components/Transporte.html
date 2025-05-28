@@ -5,19 +5,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Transporte</title>
+
+  <!-- Estilos -->
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  
-  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />
-  
+    integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
   <div id="mainHeaderContainer"></div>
 
   <section class="pagina-transporte">
-
     <header class="header">
       <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
       <div class="filters">
@@ -42,87 +41,93 @@
       </div>
     </header>
 
-    <div class="product-grid" id="gridTransportes">
-      <!-- Las tarjetas se cargarán aquí dinámicamente desde productos.json -->
-    </div>
+    <div class="product-grid" id="gridTransportes"></div>
   </section>
+
+  <!-- Firebase y lógica -->
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
+  <script src="../js/conexionFirebase.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('../json/productos.json')
-        .then(res => res.json())
-        .then(productos => {
-          const grid = document.getElementById('gridTransportes');
-          const tipo = document.getElementById('filterTipo');
-          const estado = document.getElementById('filterEstado');
-          const tarifa = document.getElementById('filterTarifa');
+      const grid = document.getElementById('gridTransportes');
+      const tipo = document.getElementById('filterTipo');
+      const estado = document.getElementById('filterEstado');
+      const tarifa = document.getElementById('filterTarifa');
+      let productos = [];
 
-          function renderProductos(data) {
-            if (!grid) return;
-            grid.innerHTML = '';
-            data.forEach(producto => {
-              const card = document.createElement('div');
-              card.classList.add('card');
+      function renderProductos(data) {
+        grid.innerHTML = '';
 
-              const badgeClass = {
-                "Disponible": "badge-disponible",
-                "En uso": "badge-en-uso",
-                "Mantenimiento": "badge-mante"
-              }[producto.estado] || "badge-default";
+        if (data.length === 0) {
+          grid.innerHTML = '<p>No hay transportes que coincidan con los filtros.</p>';
+          return;
+        }
 
-              card.innerHTML = `
-                <div class="badge ${badgeClass}">${producto.estado}</div>
-                <img src="${producto.imagen}" alt="${producto.alt}">
-                <div class="card-info">
-                  <h4>${producto.nombre}</h4>
-                  <p>Estación: ${producto.estacion}</p>
-                  <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
-                </div>
-              `;
+        data.forEach(producto => {
+          const card = document.createElement('div');
+          card.classList.add('card');
 
-              card.addEventListener("click", () => {
-                localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-                window.location.href = "../components/detalle.html";
-              });
+          const badgeClass = {
+            "Disponible": "badge-disponible",
+            "En uso": "badge-en-uso",
+            "Mantenimiento": "badge-mantenimiento"
+          }[producto.estado] || "badge-default";
 
-              grid.appendChild(card);
-            });
-          }
+          card.innerHTML = `
+            <div class="badge ${badgeClass}">${producto.estado}</div>
+            <img src="${producto.imagen || 'https://via.placeholder.com/150'}" alt="${producto.alt || producto.nombre}">
+            <div class="card-info">
+              <h4>${producto.nombre}</h4>
+              <p>Estación: ${producto.estacion}</p>
+              <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
+            </div>
+          `;
 
-          function aplicarFiltros() {
-            if (!tipo || !estado || !tarifa) return;
+          card.addEventListener("click", () => {
+            localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+            window.location.href = "../components/detalle.html";
+          });
 
-            let filtrados = [...productos];
-
-            if (tipo.value !== "Todo") {
-              filtrados = filtrados.filter(p => p.id.startsWith(tipo.value.toLowerCase()));
-            }
-
-            if (estado.value !== "Todo") {
-              filtrados = filtrados.filter(p => p.estado === estado.value);
-            }
-
-            if (tarifa.value === "asc") {
-              filtrados.sort((a, b) => a.tarifa - b.tarifa);
-            } else if (tarifa.value === "desc") {
-              filtrados.sort((a, b) => b.tarifa - a.tarifa);
-            }
-
-            renderProductos(filtrados);
-          }
-
-          [tipo, estado, tarifa].forEach(f => f.addEventListener('change', aplicarFiltros));
-          renderProductos(productos);
-        })
-        .catch(err => {
-          console.error('Error cargando productos:', err);
-          const grid = document.getElementById('gridTransportes');
-          if (grid) {
-            grid.innerHTML = '<p style="color:red;">No se pudieron cargar los productos.</p>';
-          }
+          grid.appendChild(card);
         });
+      }
+
+      function aplicarFiltros() {
+        let filtrados = [...productos];
+
+        if (tipo.value !== "Todo") {
+          filtrados = filtrados.filter(p => p.tipo === tipo.value);
+        }
+
+        if (estado.value !== "Todo") {
+          filtrados = filtrados.filter(p => p.estado === estado.value);
+        }
+
+        if (tarifa.value === "asc") {
+          filtrados.sort((a, b) => a.tarifa - b.tarifa);
+        } else if (tarifa.value === "desc") {
+          filtrados.sort((a, b) => b.tarifa - a.tarifa);
+        }
+
+        renderProductos(filtrados);
+      }
+
+      db.collection("transporte").get().then(snapshot => {
+        productos = snapshot.docs.map(doc => doc.data());
+        renderProductos(productos);
+      }).catch(err => {
+        console.error('Error al obtener datos de Firebase:', err);
+        grid.innerHTML = '<p style="color:red;">No se pudieron cargar los transportes.</p>';
+      });
+
+      [tipo, estado, tarifa].forEach(select => {
+        select.addEventListener('change', aplicarFiltros);
+      });
     });
   </script>
+
   <script src="../js/script.js" defer></script>
 
   <div id="mainFooterContainer"></div>
