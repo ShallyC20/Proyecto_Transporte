@@ -21,36 +21,42 @@ document.addEventListener("DOMContentLoaded", () => {
   const track = document.getElementById('carouselTrack');
   if (track) {
     fetch('../json/productos.json')
-      .then(res => res.json())
-      .then(productos => {
-        productos.forEach(producto => {
-          const card = document.createElement('div');
-          card.classList.add('card');
+  .then(res => res.json())
+  .then(productos => {
+    productos.forEach(producto => {
+      const card = document.createElement('div');
+      card.classList.add('card');
 
-          const badgeClass = {
-            "Disponible": "badge-disponible",
-            "En uso": "badge-en-uso",
-            "En mantenimiento": "badge-mante"
-          }[producto.estado] || "badge-default";
+      const badgeClass = {
+        "Disponible": "badge-disponible",
+        "En uso": "badge-en-uso",
+        "Mantenimiento": "badge-mantenimiento"
+      }[producto.estado] || "badge-default";
 
-          card.innerHTML = `
-            <div class="badge ${badgeClass}">${producto.estado}</div>
-            <img src="${producto.imagen}" alt="${producto.alt}">
-            <div class="card-info">
-              <h4>${producto.nombre}</h4>
-              <p>Estación: ${producto.estacion}</p>
-              <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
-            </div>
-          `;
+      // Ajuste ruta imagen si es necesario:
+      const imagenPath = producto.imagen.replace('../imag/', 'imag/');
 
-          card.addEventListener("click", () => {
-            localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-            window.location.href = "../components/detalle.html";
-          });
+      card.innerHTML = `
+        <div class="badge ${badgeClass}">${producto.estado}</div>
+        <img src="${imagenPath}" alt="${producto.alt}">
+        <div class="card-info">
+          <h4>${producto.nombre}</h4>
+          <p>Estación: ${producto.estacion}</p>
+          <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
+        </div>
+      `;
 
-          track.appendChild(card);
-        });
+      card.addEventListener("click", () => {
+        localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
+        window.location.href = "../components/detalle.html";
       });
+
+      track.appendChild(card);
+    });
+  })
+  .catch(e => console.error("Error cargando productos.json:", e));
+
+
   }
 
 

@@ -271,51 +271,78 @@ header.header strong {
   position: relative;
   overflow: hidden;
   margin-top: 2rem;
+  padding: 0 1rem;
 }
 
 .carousel-track {
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-behavior: smooth;
   gap: 1.5rem;
   padding-bottom: 1rem;
   scrollbar-width: none;
-}
-
-.carousel-track .card {
-  flex: 0 0 calc(20% - 1.2rem); 
-  box-sizing: border-box;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
 }
 
 .carousel-track::-webkit-scrollbar {
   display: none;
 }
 
+.carousel-track .card {
+  flex: 0 0 calc(20% - 1.2rem);
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  height: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (max-width: 1024px) {
+  .carousel-track .card {
+    flex: 0 0 calc(33.33% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-track .card {
+    flex: 0 0 calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 500px) {
+  .carousel-track .card {
+    flex: 0 0 100%;
+  }
+}
+
 .carousel-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #ffffff;
+  background-color: rgba(255,255,255,0.85);
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
   padding: 0.5rem 1rem;
   box-shadow: 0 0 8px rgba(0,0,0,0.1);
-  z-index: 10;
-  transition: all 0.3s;
+  z-index: 20;
   border-radius: 8px;
+  transition: background-color 0.3s;
 }
 
 .carousel-btn.left {
-  left: 0;
+  left: 10px;
 }
 
 .carousel-btn.right {
-  right: 0;
+  right: 10px;
 }
 
 .carousel-btn:hover {
-  background-color: #f0f0f0;
+  background-color: rgba(255,255,255,1);
 }
 
 section {
@@ -416,4 +443,104 @@ section {
   min-height: 100dvh;
   grid-template-rows: 
   auto 1fr auto;
+}
+.explora-destinos {
+  padding: 2rem;
+  background-color: #f5f5f5;
+  text-align: center;
+}
+
+.explora-destinos h2 {
+  font-size: 2rem;
+  color: #1b2a47;
+  margin-bottom: 0.5rem;
+}
+
+.explora-destinos p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.carousel-destinos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+#carouselDestinos {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 1rem;
+}
+
+.destino-card {
+  position: relative;
+  width: 220px;        
+  height: 140px;      
+  border-radius: 8px;
+  overflow: hidden;
+  margin-right: 1rem;
+  flex-shrink: 0;     
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+.destino-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   
+  display: block;
+}
+
+.destino-card span {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(27, 42, 71, 0.8);
+  color: white;
+  padding: 0.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.carousel-btn {
+  background-color: #1b2a47;
+  color: white;
+  border: none;
+  padding: 0.5rem 0.8rem;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.carousel-btn:hover {
+  background-color: #2c3e5e;
+}
+
+.carousel-btn.left {
+  margin-right: 1rem;
+}
+
+.carousel-btn.right {
+  margin-left: 1rem;
+}
+
+.destino-nombre {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: rgba(27, 42, 71, 0.8);
+  color: white;
+  padding: 0.5rem;
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: center;
+  box-sizing: border-box;
 }

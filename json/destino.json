@@ -1,0 +1,27 @@
+[
+  {
+    "estacion": "Calacoto",
+    "imagen": "../imag/calacoto.jpg",
+    "alt": "Estación Calacoto"
+  },
+  {
+    "estacion": "Irpavi",
+    "imagen": "../imag/irpavi.jpg",
+    "alt": "Estación Irpavi"
+  },
+  {
+    "estacion": "Obrajes",
+    "imagen": "../imag/obrajes.jpg",
+    "alt": "Estación Obrajes"
+  },
+    {
+    "estacion": "Cota cota",
+    "imagen": "../imag/Cota Cota.jpg",
+    "alt": "Estación Cota Cota"
+  },
+  {
+    "estacion": "Los Pinos",
+    "imagen": "../imag/pinos.jpg",
+    "alt": "Estación Los Pinos"
+  }
+]

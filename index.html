@@ -44,6 +44,23 @@
       </p>
     </section>
 
+    <section class="explora-destinos">
+      <h2>Explora Destinos</h2>
+      <p>Explorar alrededores con bicicleta o patineta nos ahorra tiempo y nos hace más libres.</p>
+
+      <div class="carousel-destinos">
+        <button class="carousel-btn left" id="btn-destinos-left">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="carousel-track" id="carouselDestinos"></div>
+
+        <button class="carousel-btn right" id="btn-destinos-right">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </section>
+
     <section class="caracteristicas">
       <h2>Características Principales</h2>
       <ul>
@@ -105,6 +122,37 @@
         });
     });
   </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('./json/destino.json')
+        .then(res => res.json())
+        .then(data => {
+          const track = document.getElementById("carouselDestinos");
+
+          data.forEach(destino => {
+            const card = document.createElement("div");
+            card.className = "destino-card";
+
+            card.innerHTML = `
+              <img src="${destino.imagen}" alt="${destino.alt}">
+              <div class="destino-nombre">${destino.estacion}</div>
+            `;
+
+            track.appendChild(card);
+          });
+        });
+
+      const track = document.getElementById("carouselDestinos");
+      document.getElementById("btn-destinos-left").onclick = () => {
+        track.scrollBy({ left: -300, behavior: 'smooth' });
+      };
+      document.getElementById("btn-destinos-right").onclick = () => {
+        track.scrollBy({ left: 300, behavior: 'smooth' });
+      };
+    });
+  </script>
+
   
   <div id="mainFooterContainer"></div>
 
