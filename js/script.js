@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "Mantenimiento": "badge-mantenimiento"
       }[producto.estado] || "badge-default";
 
-      // Ajuste ruta imagen si es necesario:
+      // Ajuste ruta imagen
       const imagenPath = producto.imagen.replace('../imag/', 'imag/');
 
       card.innerHTML = `

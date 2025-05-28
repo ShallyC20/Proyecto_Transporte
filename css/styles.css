@@ -10,13 +10,6 @@ body.menu-open #inicio {
   margin-left: 260px;
 }
 
-header {
-  background: #ffffff;
-  padding: 20px 0;
-  text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
 .header-banner img {
   max-width: 100%;
   height: auto;
@@ -25,23 +18,20 @@ header {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.header-title-container {
-  position: relative; 
+.header-content {
   background-image: url('../imag/banner-header.jpg'); 
   background-size: cover;    
   background-position: center; 
-  background-repeat: no-repeat;
-  padding: 40px 20px;         
-  border-radius: 12px;
-  color: white;               
-  text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 20px 40px;
 }
-
 
 header h1 {
   margin: 0;
   font-size: 48px;
-
   color: white; 
 }
 
@@ -50,22 +40,9 @@ header p {
   color: white; 
 }
 
-.header-section {
-  flex: 1;
-  margin: 10px;
-}
-
-.header-content {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  padding: 0 40px;
-}
-
 .descripcion p,
 .caracteristicas ul {
-  font-size: 1rem;
+  font-size: 1.5rem;
   line-height: 1.6;
 }
 
@@ -119,7 +96,6 @@ header p {
   border-radius: 12px 12px 0 0;
 }
 
-
 .card-info {
   padding: 1rem 1.5rem;
 
@@ -127,19 +103,19 @@ header p {
 
 .card-info h4 {
   margin: 0 0 0.5rem;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   color: #ffffff;
 }
 
 .card-info p {
   margin: 0.3rem 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: #ffffff;
 }
 
 .card-info strong {
   color: #2980b9;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .badge {
@@ -197,24 +173,6 @@ footer {
 
   .card-info h4 {
     font-size: 1rem;
-  }
-}
-
-@media (max-width: 1024px) {
-  .carousel-track .card {
-    flex: 0 0 calc(33.33% - 1rem); 
-  }
-}
-
-@media (max-width: 768px) {
-  .carousel-track .card {
-    flex: 0 0 calc(50% - 1rem); 
-  }
-}
-
-@media (max-width: 500px) {
-  .carousel-track .card {
-    flex: 0 0 100%; 
   }
 }
 
@@ -462,22 +420,6 @@ section {
   margin-bottom: 2rem;
 }
 
-.carousel-destinos {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-#carouselDestinos {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  padding: 1rem;
-}
-
 .destino-card {
   position: relative;
   width: 220px;        
@@ -509,27 +451,83 @@ section {
   text-align: center;
 }
 
-.carousel-btn {
-  background-color: #1b2a47;
-  color: white;
+.carousel-destinos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-trackD {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  gap: 1.5rem;
+  padding-bottom: 1rem;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-trackD::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-trackD .card {
+  flex: 0 0 calc(20% - 1.2rem);
+  box-sizing: border-box;
+  scroll-snap-align: start;
+  height: 340px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (max-width: 1024px) {
+  .carousel-trackD .card {
+    flex: 0 0 calc(33.33% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-trackD .card {
+    flex: 0 0 calc(50% - 1rem);
+  }
+}
+
+@media (max-width: 500px) {
+  .carousel-trackD .card {
+    flex: 0 0 100%;
+  }
+}
+
+.carousel-btnD {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255,255,255,0.85);
   border: none;
-  padding: 0.5rem 0.8rem;
-  font-size: 1.2rem;
-  border-radius: 8px;
+  font-size: 1.5rem;
   cursor: pointer;
-  z-index: 10;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  z-index: 20;
+  border-radius: 8px;
+  transition: background-color 0.3s;
 }
 
-.carousel-btn:hover {
-  background-color: #2c3e5e;
+.carousel-btnD.left {
+  left: 10px;
 }
 
-.carousel-btn.left {
-  margin-right: 1rem;
+.carousel-btnD.right {
+  right: 10px;
 }
 
-.carousel-btn.right {
-  margin-left: 1rem;
+.carousel-btnD:hover {
+  background-color: rgba(255,255,255,1);
 }
 
 .destino-nombre {

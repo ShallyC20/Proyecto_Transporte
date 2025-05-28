@@ -20,19 +20,10 @@
   <div id="mainHeaderContainer"></div>
 
   <div id="inicio">
-    <header>
+    <header >
       <div class="header-content">
-        <div class="header-section">
-          <img src="imag/icono-p1.png" alt="Bicicleta" class="footer-icon" />
-        </div>
-        <div class="header-title-container">
           <h1>BICITRACK</h1>
           <p>Más cerca, más rápido y más económico.</p>
-          
-        </div>
-        <div class="header-section">
-          <img src="imag/icono-p2.png" alt="Bicicleta" class="footer-icon" />
-        </div>
       </div>
     </header>
 
@@ -49,14 +40,14 @@
       <p>Explorar alrededores con bicicleta o patineta nos ahorra tiempo y nos hace más libres.</p>
 
       <div class="carousel-destinos">
-        <button class="carousel-btn left" id="btn-destinos-left">
-          <i class="fas fa-chevron-left"></i>
+        <button class="carousel-btnD left" id="btn-destinos-left">
+          <i class="fas fa-chevron-leftD"></i>
         </button>
 
-        <div class="carousel-track" id="carouselDestinos"></div>
+        <div class="carousel-trackD" id="carouselDestinos"></div>
 
-        <button class="carousel-btn right" id="btn-destinos-right">
-          <i class="fas fa-chevron-right"></i>
+        <button class="carousel-btnD right" id="btn-destinos-right">
+          <i class="fas fa-chevron-rightD"></i>
         </button>
       </div>
     </section>
@@ -166,6 +157,10 @@
         .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
+
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
+  <script type="module" src="./js/insercionCarru.js"></script>
 
 </body>
 </html>
