@@ -163,15 +163,6 @@ header p {
   color: #ffffff;
 }
 
-footer {
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.9rem;
-  color: #7f8c8d;
-  background: #f0f4f8;
-  border-top: 1px solid #ddd;
-}
-
 @media (max-width: 600px) {
   header h1 {
     font-size: 1.5rem;
@@ -336,66 +327,87 @@ section {
   transform: scale(1.03);
 }
 
-.footer {
+footer {
   background-color: #14213d;
   color: #ffffff;
-  padding: 20px 0;
-  text-align: center;
-  border: 0;
+  padding: 40px 0 20px;
+  font-size: 0.95rem;
+  border-top: 4px solid #007bff;
 }
 
 .footer-content {
   display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
+  gap: 30px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 0 40px;
+  box-sizing: border-box;
 }
 
 .footer-section {
-  flex: 1;
-  margin: 10px;
+  flex: 1 1 250px;
 }
 
 .footer-section h4 {
-  margin-bottom: 10px;
-  font-size: 1.1rem;
-  color: #ffffff;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color: #007bff;
+  border-bottom: 2px solid #007bff;
+  display: inline-block;
+  padding-bottom: 5px;
 }
 
 .footer-section ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .footer-section li {
-  margin: 8px 0;
-}
-
-.footer-section a {
-  color: #ffffff;
-  text-decoration: none;
-  transition: color 0.3s;
-}
-
-.footer-section a:hover {
-  color: #fca311;
-}
-
-.footer-icon {
-  width: 90px;
-  height: auto;
-}
-
-.footer-bottom {
-  margin-top: 20px;
-  font-size: 0.9rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
   color: #e5e5e5;
 }
 
-.footer i {
-  margin-right: 8px;
+.footer-section i {
+  margin-right: 10px;
+  color: #007bff;
+  min-width: 20px;
 }
+
+.footer-section a {
+  color: #e5e5e5;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  margin-top: 30px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #cccccc;
+  border-top: 1px solid #444;
+  padding: 10px 40px; 
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
 .estructura{
   display: grid;
   min-height: 100dvh;
