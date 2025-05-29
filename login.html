@@ -2,18 +2,20 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Iniciar Sesión</title>
+  <title>Iniciar Sesión / Registrarse</title>
   <link rel="stylesheet" href="css/login.css" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="login-container">
-    <h2>Iniciar Sesión</h2>
+    <h2 id="titulo">Iniciar Sesión</h2>
     <form id="loginForm">
+      <input type="text" id="nombre" placeholder="Nombre completo" style="display:none;" />
       <input type="email" id="email" placeholder="Correo electrónico" required />
       <input type="password" id="password" placeholder="Contraseña" required />
-      <button type="submit">Ingresar</button>
+      <button type="submit" id="btnPrincipal">Ingresar</button>
     </form>
+    <a href="#" id="alternarModo">¿No tienes cuenta? Regístrate</a>
     <p id="mensajeError"></p>
   </div>
 

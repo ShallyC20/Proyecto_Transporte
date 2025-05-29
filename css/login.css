@@ -1,6 +1,6 @@
 body {
   font-family: 'Roboto', sans-serif;
-  background: #e9f0f7;
+  background: linear-gradient(to right, #007BFF, #00C6FF);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,34 +10,39 @@ body {
 
 .login-container {
   background: white;
-  padding: 40px 30px;
-  border-radius: 12px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
   text-align: center;
-  width: 300px;
 }
 
 h2 {
+  margin-bottom: 24px;
   color: #007BFF;
 }
 
-input {
+form input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 6px;
+  padding: 12px;
+  margin: 10px 0;
   border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
 }
 
 button {
   width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
+  padding: 12px;
   background-color: #007BFF;
   color: white;
-  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
 }
 
 button:hover {
@@ -45,7 +50,24 @@ button:hover {
 }
 
 #mensajeError {
-  color: red;
-  margin-top: 10px;
+  margin-top: 15px;
   font-size: 14px;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 6px;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+#mensajeError.red {
+  background-color: #f8d7da;
+  color: #a94442;
+  border: 1px solid #f5c6cb;
+}
+
+#mensajeError.green {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
 }

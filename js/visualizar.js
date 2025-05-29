@@ -36,8 +36,8 @@ onAuthStateChanged(auth, async (user) => {
         fotoPerfil.src = data.foto;
         fotoHeader.src = data.foto;
       } else {
-        fotoPerfil.src = "img/default.jpeg";
-        fotoHeader.src = "img/default.jpeg";
+        fotoPerfil.src = "img/default.jpg";
+        fotoHeader.src = "img/default.jpg";
       }
 
       
