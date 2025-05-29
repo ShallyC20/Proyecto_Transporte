@@ -5,6 +5,12 @@ body {
   background: #f4f8fc;
   color: #333;
 }
+    #map {
+      height: 300px;
+      width: 100%;
+      margin-top: 1rem;
+      border: 1px solid #ccc;
+    }
 
 .contact-header {
   background-color: #ffffff;

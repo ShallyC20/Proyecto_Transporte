@@ -74,7 +74,6 @@ td:last-child {
     color: #1b2a47;
   }
 
-  /* ✅ FIX para permitir hacer clic en enlaces en móviles */
   td a {
     position: relative;
     z-index: 10;
