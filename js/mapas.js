@@ -128,7 +128,8 @@ cantidades.forEach((doc) => {
     let tarjeta = document.createElement("div")
     tarjeta.className = "cartaubicacion";
     tarjeta.innerHTML = `
-        <p>${doc.nombre}</p>
-        <h3><strong>Disponibles:</strong> ${doc.contado}</h3>`;
+        <h1><strong>${doc.nombre}</strong></h1>
+        <h3><strong>Disponibles:</strong></h3>
+        <p>${doc.contado}</p>`;
     contenedor.appendChild(tarjeta);
 });

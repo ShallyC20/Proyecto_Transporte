@@ -47,10 +47,17 @@ body {
 .cartaubicacion {
     width: 300px;
     height: 200px;
+    display: flex;
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
     flex-direction: column;
     margin-top: 5px;
     margin-bottom: 5px;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.cartaubicacion p {
+    font-size: 35px;
 }
 
 .titulo {
