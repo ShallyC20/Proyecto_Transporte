@@ -4,15 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/mapas.css" />
+    <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 
 <body>
+    <div id="mainHeaderContainer"></div>
     <section class="mapprincipal">
         <div class="titulo">
-            <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
+            <h2>Ubicaciones - <strong>Visualización de puntos de Control</strong></h2>
         </div>
         <div class="tarjetaMapaPrin">
             <div class="contmapa">
@@ -25,8 +27,35 @@
         <div id="contetarjetasubi" class="contetarjetasubi">
         </div>
     </section>
+    <!-- Footer -->
+    <div id="mainFooterContainer"></div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/components/mainHeader.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("mainHeaderContainer").innerHTML = html;
+                const script1 = document.createElement('script');
+                script1.src = './js/menu.js';
+                script1.onload = () => {
+                    const script2 = document.createElement('script');
+                    script2.src = './js/headerEvents.js';
+                    script2.onload = () => {
+                        if (typeof initHeaderEvents === 'function') initHeaderEvents();
+                    };
+                    document.body.appendChild(script2);
+                };
+                document.body.appendChild(script1);
+            });
 
+        fetch('/components/footer.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("mainFooterContainer").innerHTML = html;
+            });
+    });
+</script>
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
