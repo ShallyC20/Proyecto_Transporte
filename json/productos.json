@@ -24,30 +24,6 @@
     "coordenadas": "16.510000, -68.129000"
   },
   {
-    "id": "patineta1",
-    "nombre": "Patineta Eléctrica",
-    "imagen": "../imag/patineta1.jpg",
-    "alt": "Patineta Eléctrica",
-    "estacion": "Obrajes",
-    "tarifa": 2.00,
-    "estado": "Disponible",
-    "badgeClass": "badge-disponible",
-    "descripcion": "Moderna y eficiente, ideal para trayectos rápidos en el campus o la ciudad.",
-    "coordenadas": "16.518000, -68.135000"
-  },
-  {
-    "id": "patineta2",
-    "nombre": "Patineta Clásica",
-    "imagen": "../imag/patineta2.jpg",
-    "alt": "Patineta Clásica",
-    "estacion": "Irpavi",
-    "tarifa": 1.60,
-    "estado": "En uso",
-    "badgeClass": "badge-en-uso",
-    "descripcion": "Estilo retro y diversión garantizada. Sin baterías, solo tú y el impulso.",
-    "coordenadas": "16.511000, -68.128000"
-  },
-  {
     "id": "bicicleta3",
     "nombre": "Bicicleta Híbrida",
     "imagen": "../imag/bicicleta3.jpg",
@@ -82,6 +58,30 @@
     "badgeClass": "badge-disponible",
     "descripcion": "Perfecta para los más pequeños. Segura, colorida y divertida.",
     "coordenadas": "16.512000, -68.127500"
+  },
+  {
+    "id": "patineta1",
+    "nombre": "Patineta Eléctrica",
+    "imagen": "../imag/patineta1.jpg",
+    "alt": "Patineta Eléctrica",
+    "estacion": "Obrajes",
+    "tarifa": 2.00,
+    "estado": "Disponible",
+    "badgeClass": "badge-disponible",
+    "descripcion": "Moderna y eficiente, ideal para trayectos rápidos en el campus o la ciudad.",
+    "coordenadas": "16.518000, -68.135000"
+  },
+  {
+    "id": "patineta2",
+    "nombre": "Patineta Clásica",
+    "imagen": "../imag/patineta2.jpg",
+    "alt": "Patineta Clásica",
+    "estacion": "Irpavi",
+    "tarifa": 1.60,
+    "estado": "En uso",
+    "badgeClass": "badge-en-uso",
+    "descripcion": "Estilo retro y diversión garantizada. Sin baterías, solo tú y el impulso.",
+    "coordenadas": "16.511000, -68.128000"
   },
   {
     "id": "patineta3",

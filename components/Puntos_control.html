@@ -8,6 +8,8 @@
 
   <!-- Estilos -->
   <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/puntos_control.css" />
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -58,7 +60,7 @@
   <script src="../js/conexionFirebase.js"></script>
 
   <script>
-    let productos = [];
+    let ubicaciones = [];
 
     document.addEventListener("DOMContentLoaded", () => {
       // Cargar header
@@ -81,47 +83,40 @@
         });
 
       // Cargar datos desde Firestore
-      db.collection("transporte").get().then((querySnapshot) => {
-        productos = [];
-        querySnapshot.forEach((doc) => productos.push(doc.data()));
-        renderProductos(productos);
+      db.collection("ubicaciones").get().then((querySnapshot) => {
+        ubicaciones = [];
+        querySnapshot.forEach((doc) => ubicaciones.push(doc.data()));
+        renderUbicaciones(ubicaciones);
       });
 
       inicializarFiltros();
     });
 
-    function renderProductos(lista) {
+    function renderUbicaciones(lista) {
       const grid = document.getElementById("gridTransportes");
       grid.innerHTML = "";
 
       if (lista.length === 0) {
-        grid.innerHTML = "<p>No hay transportes que coincidan con los filtros.</p>";
+        grid.innerHTML = "<p>No hay ubicaciones que coincidan con los filtros.</p>";
         return;
       }
 
-      lista.forEach(prod => {
-        const badgeClass = {
-          "Disponible": "badge-disponible",
-          "En uso": "badge-en-uso",
-          "Mantenimiento": "badge-mantenimiento"
-        }[prod.estado] || "badge-default";
-
+      lista.forEach(ubic => {
         const card = document.createElement("div");
-        card.className = "card";
+        card.className = "cardU";
 
         card.innerHTML = `
-          <div class="badge ${badgeClass}">${prod.estado}</div>
-          <img src="${prod.imagen || 'https://via.placeholder.com/150'}" alt="${prod.alt || prod.nombre}" />
-          <div class="card-info">
-            <h4>${prod.nombre}</h4>
-            <p>Estación: ${prod.estacion}</p>
-            <p><strong>Bs${prod.tarifa.toFixed(2)}/hora</strong></p>
+          <img src="${ubic.imagen || 'https://via.placeholder.com/150'}" alt="${ubic.nombre}" />
+          <div class="cardU-info">
+            <h4>${ubic.nombre}</h4>
+            <p>Zona: ${ubic.zona || 'Sin zona definida'}</p>
+            <p><strong>${ubic.descripcion || ''}</strong></p>
           </div>
         `;
 
         card.addEventListener("click", () => {
-          localStorage.setItem("productoSeleccionado", JSON.stringify(prod));
-          window.location.href = "./detalle.html";
+          localStorage.setItem("ubicacionSeleccionada", JSON.stringify(ubic));
+          window.location.href = "./detalleUbicacion.html";
         });
 
         grid.appendChild(card);
@@ -143,14 +138,14 @@
       const estacion = document.getElementById("filterEstacion").value;
       const estado = document.getElementById("filterEstado").value;
 
-      const filtrados = productos.filter(prod => {
-        const matchTipo = tipo === "Todo" || prod.tipo === tipo;
-        const matchEstacion = estacion === "Todo" || prod.estacion === estacion;
-        const matchEstado = estado === "Todo" || prod.estado === estado;
+      const filtrados = ubicaciones.filter(ubic => {
+        const matchTipo = tipo === "Todo" || ubic.tipo === tipo;
+        const matchEstacion = estacion === "Todo" || ubic.estacion === estacion;
+        const matchEstado = estado === "Todo" || ubic.estado === estado;
         return matchTipo && matchEstacion && matchEstado;
       });
 
-      renderProductos(filtrados);
+      renderUbicaciones(filtrados);
     }
   </script>
 

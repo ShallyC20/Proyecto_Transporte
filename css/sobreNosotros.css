@@ -11,6 +11,8 @@ body {
   color: white;
   padding: 2rem;
   text-align: center;
+    width: 100%;
+  box-sizing: border-box;
 }
 
 .about-header h1 {
