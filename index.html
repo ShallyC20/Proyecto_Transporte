@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil</title>
+  <link rel="stylesheet" href="css/estilos.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="img/logo.png" alt="Logo" />
+      <button>MENÚ</button>
+      <input type="search" placeholder="🔍 Buscar..." />
+    </div>
+    <div class="usuario-info">
+      <span id="nombreHeader">Usuario</span>
+      <img id="fotoHeader" src="img/default.jpeg" alt="Foto Usuario">
+    </div>
+  </header>
+
+  <div class="contenedor">
+    <h2 class="titulo-principal">Presentación - <span>Perfil</span></h2>
+
+    <div class="card-perfil">
+      <img id="fotoPerfil" src="img/default.jpeg" alt="Foto de perfil" class="foto">
+
+      <div class="info">
+        <div class="col">
+          <h3>Datos Personales:</h3>
+          <p><strong>Nombre:</strong> <span id="nombre"></span></p>
+          <p><strong>Género:</strong> <span id="genero"></span></p>
+          <p><strong>Email:</strong> <span id="correo"></span></p>
+          <p><strong>Fecha de nacimiento:</strong> <span id="nacimiento"></span></p>
+          <p><strong>Celular:</strong> <span id="celular"></span></p>
+
+          <button class="btn azul" onclick="window.location.href='editar.html'">✏️ Editar Perfil</button>
+          <button class="btn rojo" id="cerrarSesion">❌ Cerrar sesión</button>
+        </div>
+
+        <div class="col">
+          <h3>Datos de Servicio:</h3>
+          <p><strong>Kilómetros recorridos:</strong> <span id="kms"></span></p>
+          <p><strong>Horas de recorrido:</strong> <span id="horas"></span></p>
+          <p><strong>Vehículo(s) favorito(s):</strong></p>
+          <div id="vehiculosFav"></div>
+          <p><strong>Punto(s) favorito(s):</strong></p>
+          <div id="puntosFav"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/visualizar.js"></script>
+</body>
+</html>

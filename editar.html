@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Editar Perfil</title>
+  <link rel="stylesheet" href="css/editar.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h2>Editar Perfil</h2>
+    <form id="formPerfil">
+      <label>Nombre:</label>
+      <input type="text" id="nombre" required>
+
+      <label>Género:</label>
+      <select id="genero">
+        <option value="">Seleccionar</option>
+        <option value="Femenino">Femenino</option>
+        <option value="Masculino">Masculino</option>
+        <option value="Otro">Otro</option>
+      </select>
+
+      <label>Email:</label>
+      <input type="email" id="correo" disabled>
+
+      <label>Fecha de nacimiento:</label>
+      <input type="date" id="fecha">
+
+      <label>Celular:</label>
+      <input type="text" id="celular">
+
+      <label>Foto (URL):</label>
+      <input type="text" id="foto" placeholder="https://..." />
+      <div id="previewContainer">
+        <img id="previewImg" src="img/default.jpg" alt="Vista previa" />
+      </div>
+
+      <label>Vehículos favoritos (separados por coma):</label>
+      <input type="text" id="vehiculos">
+
+      <label>Puntos favoritos (separados por coma):</label>
+      <input type="text" id="puntos">
+
+      <button type="submit">💾 Guardar cambios</button>
+      <button type="button" onclick="window.location.href='index.html'">🔙 Volver</button>
+    </form>
+    <p id="mensaje"></p>
+  </div>
+
+  <script type="module" src="js/editar.js"></script>
+</body>
+</html>

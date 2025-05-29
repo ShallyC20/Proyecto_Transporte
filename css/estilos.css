@@ -1,0 +1,173 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  background: #f2f5fc;
+  color: #333;
+}
+
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0b2c52;
+  padding: 10px 20px;
+  color: white;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  height: 40px;
+}
+
+.menu-busqueda input {
+  border-radius: 6px;
+  padding: 5px 10px;
+  border: none;
+}
+
+.usuario-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.usuario-info img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* Contenido */
+.contenedor {
+  padding: 30px 20px;
+  text-align: center;
+}
+
+.titulo-principal {
+  background: white;
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: 2px dashed #007BFF;
+  font-size: 24px;
+  margin-bottom: 30px;
+}
+
+.titulo-principal span {
+  color: #007BFF;
+}
+
+.card-perfil {
+  background: white;
+  border: 3px solid #007BFF;
+  border-radius: 12px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.foto {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 6px solid #d0eaff;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px #c8e7ff;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.col {
+  flex: 1;
+  min-width: 280px;
+  text-align: left;
+}
+
+.col h3 {
+  border-bottom: 2px solid #007BFF;
+  padding-bottom: 4px;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.col p {
+  font-size: 14.5px;
+  margin: 6px 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  margin: 10px 5px 0 0;
+  transition: background-color 0.3s ease;
+}
+
+.btn.azul {
+  background-color: #007BFF;
+}
+
+.btn.azul:hover {
+  background-color: #0056b3;
+}
+
+.btn.rojo {
+  background-color: #dc3545;
+}
+
+.btn.rojo:hover {
+  background-color: #a91d2b;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 50px;
+  margin: 4px 6px;
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+}
+
+.verde {
+  background-color: #28a745;
+}
+
+.rojo {
+  background-color: #dc3545;
+}
+
+@media screen and (max-width: 768px) {
+  .info {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .col {
+    text-align: center;
+  }
+}
