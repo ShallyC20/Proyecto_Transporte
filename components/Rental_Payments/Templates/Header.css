@@ -19,6 +19,12 @@
   align-items: center;
   gap: 1rem;
 }
+.left-section p
+{
+    font-weight: bold;
+    font-size: 35PX;
+    font-family: 'Courier New', Courier, monospace;
+}
 
 .logo-ets {
   height: 70px;
