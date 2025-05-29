@@ -1,0 +1,91 @@
+/* sobreNosotros.css */
+body {
+  margin: 0;
+  font-family: "Sanchez", serif;
+  background: #f4f8fc;
+  color: #333;
+}
+
+.about-header {
+  background-color: #ffffff;
+  color: white;
+  padding: 2rem;
+  text-align: center;
+    width: 100%;
+  box-sizing: border-box;
+}
+
+.about-header h1 {
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  color: #000000;
+}
+
+.about-container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.about-description, .about-values, .about-team {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.about-description h2,
+.about-values h2,
+.about-team h2 {
+  color: #1b2a47;
+  margin-bottom: 1rem;
+}
+
+.about-values ul {
+  list-style: none;
+  padding: 0;
+}
+
+.about-values li {
+  display: flex;
+  align-items: center;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.about-values i {
+  color: #007bff;
+  margin-right: 0.5rem;
+}
+
+.team-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.team-member {
+  text-align: center;
+  max-width: 200px;
+}
+
+.team-member img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+.team-member h3 {
+  margin: 0.8rem 0 0.3rem;
+  color: #1b2a47;
+}
+
+.team-member p {
+  color: #666;
+  font-size: 0.95rem;
+}

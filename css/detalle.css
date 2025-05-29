@@ -59,4 +59,18 @@ body {
       flex-direction: column;
     }
   }
-  
+
+.alquilar-btn {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  padding: 10px 20px;
+  background-color: #28a745; /* verde */
+  color: white;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.alquilar-btn:hover {
+  background-color: #218838;
+}

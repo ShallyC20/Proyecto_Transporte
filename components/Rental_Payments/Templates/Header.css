@@ -1,0 +1,189 @@
+/* === HEADER GENERAL === */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1b2a47;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  color: #ffffff;
+}
+
+/* Secciones laterales */
+.left-section,
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.left-section p
+{
+    font-weight: bold;
+    font-size: 35PX;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.logo-ets {
+  height: 70px;
+  margin: 0;
+}
+
+/* === BUSCADOR === */
+.search-input {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  width: 280px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #0d6efd;
+}
+
+/* === MENÚ HORIZONTAL === */
+.top-nav {
+  background-color: #1b2a47;
+  padding: 0;
+}
+
+.horizontal-menu {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.menu-item-dropdown {
+  position: relative;
+}
+
+.nav-link {
+  color: #e0bc5a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: #2c3e5e;
+}
+
+/* === SUBMENÚ CON ESTILO === */
+.submenu-mega {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #4b5778;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 0.75rem 0;
+  min-width: 250px;
+  z-index: 999;
+}
+
+.menu-item-dropdown:hover .submenu-mega {
+  display: block;
+}
+
+.submenu-mega a {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: background-color 0.2s, color 0.2s;
+  border-left: 4px solid transparent;
+}
+
+.submenu-mega a i {
+  font-size: 20px;
+  color: #e0bc5a;
+}
+
+.submenu-mega a:hover {
+  background-color: #9a77a5;
+  border-left: 4px solid #fdc643;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* === BOTONES DE AUTENTICACIÓN === */
+.auth-button {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 2px solid #ffffff;
+  background-color: transparent;
+  color: #ffffff;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  height: 20px;
+}
+
+.auth-button:hover {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  color: #1b2a47;
+}
+
+.auth-button.login {
+  background-color: #ffffff;
+  color: #1b2a47;
+  border-color: #ffffff;
+}
+
+.auth-button.login:hover {
+  background-color: #ffc107;
+  color: #1b2a47;
+  border-color: #ffc107;
+}
+
+.auth-button.register {
+  background-color: #0d6efd;
+  color: #ffffff;
+  border-color: #0d6efd;
+}
+
+.auth-button.register:hover {
+  background-color: #ffc107;
+  color: #1b2a47;
+  border-color: #ffc107;
+}
+
+/* === AVATAR Y USUARIO === */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0d6efd33;
+  transition: transform 0.2s;
+}
+
+.avatar:hover {
+  transform: scale(1.1);
+}
+
+.user-name {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+}

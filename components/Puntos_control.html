@@ -1,0 +1,166 @@
+<!-- components/Puntos_control.html --> 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Puntos de control</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/puntos_control.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <!-- Header -->
+  <div id="mainHeaderContainer"></div>
+
+  <section class="pagina-transporte">
+    <header class="header">
+      <h2>Sistema de Alquiler - <strong>Puntos de control</strong></h2>
+      <div class="filters">
+        <select id="filterTipo">
+          <option value="Todo">Todos</option>
+          <option value="Bicicleta">Bicicletas</option>
+          <option value="Patineta">Patinetas</option>
+        </select>
+
+        <select id="filterEstacion">
+          <option value="Todo">Todas las estaciones</option>
+          <option value="Calacoto">Calacoto</option>
+          <option value="San Miguel">San Miguel</option>
+          <option value="Achumani">Achumani</option>
+          <option value="Obrajes">Obrajes</option>
+          <option value="Cota Cota">Cota Cota</option>
+          <option value="Següencoma">Següencoma</option>
+          <option value="Irpavi">Irpavi</option>
+          <option value="Los Pinos">Los Pinos</option>
+          <option value="Chasquipampa">Chasquipampa</option>
+        </select>
+
+        <select id="filterEstado">
+          <option value="Todo">Todo</option>
+          <option value="Disponible">Disponible</option>
+          <option value="En uso">En uso</option>
+          <option value="Mantenimiento">Mantenimiento</option>
+        </select>
+      </div>
+    </header>
+
+    <div class="product-grid" id="gridTransportes"></div>
+  </section>
+
+  <!-- Firebase y lógica -->
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
+  <script src="../js/conexionFirebase.js"></script>
+
+  <script>
+    let ubicaciones = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Cargar header
+      fetch("./mainHeader.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainer").innerHTML = html;
+
+          const scriptMenu = document.createElement("script");
+          scriptMenu.src = "../js/menu.js";
+          scriptMenu.onload = () => {
+            const scriptHeader = document.createElement("script");
+            scriptHeader.src = "../js/headerEvents.js";
+            scriptHeader.onload = () => {
+              if (typeof initHeaderEvents === "function") initHeaderEvents();
+            };
+            document.body.appendChild(scriptHeader);
+          };
+          document.body.appendChild(scriptMenu);
+        });
+
+      // Cargar datos desde Firestore
+      db.collection("ubicaciones").get().then((querySnapshot) => {
+        ubicaciones = [];
+        querySnapshot.forEach((doc) => ubicaciones.push(doc.data()));
+        renderUbicaciones(ubicaciones);
+      });
+
+      inicializarFiltros();
+    });
+
+    function renderUbicaciones(lista) {
+      const grid = document.getElementById("gridTransportes");
+      grid.innerHTML = "";
+
+      if (lista.length === 0) {
+        grid.innerHTML = "<p>No hay ubicaciones que coincidan con los filtros.</p>";
+        return;
+      }
+
+      lista.forEach(ubic => {
+        const card = document.createElement("div");
+        card.className = "cardU";
+
+        card.innerHTML = `
+          <img src="${ubic.imagen || 'https://via.placeholder.com/150'}" alt="${ubic.nombre}" />
+          <div class="cardU-info">
+            <h4>${ubic.nombre}</h4>
+            <p>Zona: ${ubic.zona || 'Sin zona definida'}</p>
+            <p><strong>${ubic.descripcion || ''}</strong></p>
+          </div>
+        `;
+
+        card.addEventListener("click", () => {
+          localStorage.setItem("ubicacionSeleccionada", JSON.stringify(ubic));
+          window.location.href = "./detalleUbicacion.html";
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    function inicializarFiltros() {
+      const filtros = ["filterTipo", "filterEstacion", "filterEstado"];
+      filtros.forEach(id => {
+        const select = document.getElementById(id);
+        if (select) {
+          select.addEventListener("change", aplicarFiltros);
+        }
+      });
+    }
+
+    function aplicarFiltros() {
+      const tipo = document.getElementById("filterTipo").value;
+      const estacion = document.getElementById("filterEstacion").value;
+      const estado = document.getElementById("filterEstado").value;
+
+      const filtrados = ubicaciones.filter(ubic => {
+        const matchTipo = tipo === "Todo" || ubic.tipo === tipo;
+        const matchEstacion = estacion === "Todo" || ubic.estacion === estacion;
+        const matchEstado = estado === "Todo" || ubic.estado === estado;
+        return matchTipo && matchEstacion && matchEstado;
+      });
+
+      renderUbicaciones(filtrados);
+    }
+  </script>
+
+  <!-- Footer -->
+  <div id="mainFooterContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el footer:", err));
+    });
+  </script>
+</body>
+</html>

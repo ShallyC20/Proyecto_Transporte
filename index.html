@@ -10,34 +10,51 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Sanchez:ital@0;1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  
-  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />
+    integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+  <!-- Firebase Core y Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <!-- Configuración Firebase -->
+  <script src="js/conexionFireBase.js"></script>
+
+  <!-- Carrusel de Firestore -->
+  <script src="js/carruselFirebase.js"></script>
 
 </head>
 <body>
   <div id="mainHeaderContainer"></div>
-
-  <div id="inicio">
     <header>
       <div class="header-content">
-        <div class="header-section">
-          <img src="imag/icono-p1.png" alt="Bicicleta" class="footer-icon" />
-        </div>
         <h1>BICITRACK</h1>
-        <div class="header-section">
-          <img src="imag/icono-p2.png" alt="Bicicleta" class="footer-icon" />
-        </div>
+        <p>Más cerca, más rápido y más económico.</p>
       </div>
-      <p>Monitorea, ubica y administra bicicletas y patinetas con facilidad.</p>
     </header>
+  <div id="inicio">
+
 
     <section class="descripcion">
       <h2>¿Cómo funciona la web?</h2>
       <p>
-        Accede a bicicletas y patinetas desde distintas estaciones con  nuestra página. Gracias a la integración con GPS y sensores inteligentes, conoce la ubicación en tiempo real, recibe notificaciones y gestiona pagos fácilmente.
+        Accede a bicicletas y patinetas desde distintas estaciones con nuestra página. Gracias a la integración con GPS y sensores inteligentes, conoce la ubicación en tiempo real, recibe notificaciones y gestiona pagos fácilmente.
       </p>
+    </section>
+
+    <section class="explora-destinos">
+      <h2>Explora Destinos</h2>
+      <p>Explorar alrededores con bicicleta o patineta nos ahorra tiempo y nos hace más libres.</p>
+
+      <div class="carousel-destinos">
+        <button class="carousel-btnD left" id="btn-destinos-left">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="carousel-trackD" id="carouselDestinos"></div>
+        <button class="carousel-btnD right" id="btn-destinos-right">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
     </section>
 
     <section class="caracteristicas">
@@ -45,7 +62,7 @@
       <ul>
         <li><i class="fas fa-map-marker-alt"></i> Geolocalización en tiempo real</li>
         <li><i class="fas fa-bell"></i> Notificaciones instantáneas</li>
-        <li><i class="fas fa-mobile-alt"></i> Pagina Web</li>
+        <li><i class="fas fa-mobile-alt"></i> Página Web</li>
         <li><i class="fas fa-recycle"></i> Movilidad sostenible</li>
       </ul>
     </section>
@@ -56,9 +73,7 @@
         <button class="carousel-btn left" id="btn-scroll-left">
           <i class="fas fa-chevron-left"></i>
         </button>
-
         <div class="carousel-track" id="carouselTrack"></div>
-
         <button class="carousel-btn right" id="btn-scroll-right">
           <i class="fas fa-chevron-right"></i>
         </button>
@@ -75,44 +90,9 @@
     </div>
     <div id="listaResultados" class="grid-resultados"></div>
   </section>
-  
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <img src="imag/icono1.png" alt="Bicicleta" class="footer-icon" />
-      </div>
-  
-      <div class="footer-section about">
-        <h4>Acerca de Nosotros</h4>
-        <ul>
-          <li><i class="fas fa-info-circle"></i> <a href="#">Acerca de nosotros</a></li>
-          <li><i class="fas fa-headset"></i> <a href="#">Contáctanos</a></li>
-        </ul>
-      </div>
-  
-      <div class="footer-section social">
-        <h4>Nuestras Redes</h4>
-        <ul>
-          <li><i class="fab fa-whatsapp"></i> <a href="#">WhatsApp</a></li>
-          <li><i class="fab fa-facebook"></i> <a href="#">Facebook</a></li>
-          <li><i class="fab fa-instagram"></i> <a href="#">Instagram</a></li>
-          <li><i class="fab fa-x-twitter"></i> <a href="#">X/Twitter</a></li>
-        </ul>
-      </div>
-  
-      <div class="footer-section">
-        <img src="imag/icono2.png" alt="Scooter" class="footer-icon" />
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2025 Sistema de Geolocalización. Todos los derechos reservados.</p>
-    </div>
-  </footer>
-  
 
-  <script src="./js/script.js" defer></script>
-  <script src="./js/menu.js"></script>
-
+  <!-- Footer -->
+  <div id="mainFooterContainer"></div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -120,7 +100,6 @@
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainHeaderContainer").innerHTML = html;
-  
           const script1 = document.createElement('script');
           script1.src = './js/menu.js';
           script1.onload = () => {
@@ -133,8 +112,14 @@
           };
           document.body.appendChild(script1);
         });
+
+      fetch('./components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        });
     });
   </script>
-  
+
 </body>
 </html>

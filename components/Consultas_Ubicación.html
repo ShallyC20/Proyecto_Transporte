@@ -1,0 +1,74 @@
+<!-- Consultas_Ubicación.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consultas de Ubicación</title>
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="../css/r2.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <!-- Header -->
+  <div id="mainHeaderContainer"></div>
+
+  <header class="header">
+    <h2>Sistema de Alquiler - <strong>Consultas de ubicación y disponibilidad</strong></h2>
+  </header>
+
+  <main style="padding: 2rem;">
+    <h2>Consultas de Ubicación</h2>
+    <table border="1">
+      <caption style="caption-side: top; text-align: center; font-weight: bold; padding: 0.5rem;">
+        Tabla de estaciones y disponibilidad de transportes
+      </caption>
+      <thead>
+        <tr>
+          <th>Dirección</th>
+          <th>Transportes en el punto</th>
+          <th>Transportes disponibles</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-ubicacion">
+        <!-- Contenido dinámico desde Firestore -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Footer -->
+  <div id="mainFooterContainer"></div>
+
+  <!-- Firebase y scripts -->
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
+  <script src="../js/conexionFirebase.js"></script>
+  <script src="../js/script.js" defer></script>
+
+  <!-- Cargar Header y Footer -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/mainHeader.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainer").innerHTML = html;
+        });
+
+      fetch('../components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        });
+
+      // Cargar tabla automáticamente desde script.js
+      if (typeof cargarUbicacionesDesdeFirebase === 'function') {
+        cargarUbicacionesDesdeFirebase();
+      }
+    });
+  </script>
+</body>
+</html>

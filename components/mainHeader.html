@@ -1,59 +1,71 @@
-<link rel="stylesheet" href="../css/mainHeader.css" />
-<link rel="stylesheet" href="../css/styles.css" />
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="/../css/mainHeader.css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
+<!-- Menú superior con submenús -->
 <header class="main-header">
+
   <div class="left-section">
-    <button class="icon-btn" onclick="toggleSidebar()"><i class="material-icons">menu</i></button>
-    <button class="icon-btn" id="btn-recargar-inicio"><i class="material-icons">refresh</i></button>
-    <img src="../imag/Logo_Blanco.png" alt="Logo ETS" class="logo-ets">
+    <img src="/../imag/Logo_Blanco.png" alt="Logo ETS" class="logo-ets">
     <input type="text" class="search-input" placeholder="Buscar transporte o punto..." oninput="buscarTransporte(this.value)" />
   </div>
+
+  <div class="top-nav">
+    <nav class="horizontal-menu">
+      <div class="menu-item-dropdown">
+        <span class="nav-link"><i class="material-icons">home</i> Sistema</span>
+        <div class="submenu">
+          <a href="/index.html">Inicio</a>
+          <a href="/components/sobreNosotros.html">Acerca de nosotros</a>
+          <a href="/components/contactanos.html">Contáctanos</a>
+        </div>
+      </div>
+
+      <div class="menu-item-dropdown">
+        <span class="nav-link"><i class="material-icons">directions_bus</i> Vehículo</span>
+        <div class="submenu">
+          <a href="/components/Transporte.html">Transporte</a>
+        </div>
+      </div>
+
+      <div class="menu-item-dropdown">
+        <span class="nav-link"><i class="material-icons">place</i> Ubicación</span>
+        <div class="submenu">
+          <a href="/components/Puntos_control.html">Puntos de control</a>
+          <a href="/components/Consultas_Ubicación.html">Consultas de ubicación</a>
+        </div>
+      </div>
+
+      <div class="menu-item-dropdown">
+        <span class="nav-link"><i class="material-icons">description</i> Otros</span>
+        <div class="submenu">
+          <a href="AlquileresPagos.html">Alquileres y Pagos</a>
+          <a href="MensajesMantenimiento.html">Mensajes de Mantenimiento</a>
+        </div>
+      </div>
+
+      <div class="menu-item-dropdown">
+        <span class="nav-link"><i class="material-icons">history</i> Historial</span>
+        <div class="submenu">
+          <a href="HistorialViajes.html">Historial de Viajes</a>
+          <a href="HistorialPagos.html">Historial de Pagos</a>
+        </div>
+      </div>
+
+    </nav>
+  </div>
+
   <div class="right-section">
-    <span class="user-name">Felipe <strong>Herrero</strong></span>
-    <div class="icon-group">
-      <i class="material-icons">notifications</i>
-      <i class="material-icons">settings</i>
-      <img class="avatar" src="https://i.pravatar.cc/40?img=3" alt="User Avatar">
-    </div>
+    <a href="/login.html" class="auth-button login">
+      <i class="material-icons">login</i>
+      Iniciar sesión
+    </a>
+    <a href="/register.html" class="auth-button register">
+      <i class="material-icons">person_add</i>
+      Registrarse
+    </a>
   </div>
+
 </header>
-
-<aside id="sidebar" class="sidebar hidden">
-  <div class="sidebar-header">
-    <div class="logo-container">
-      <img src="../imag/Logo_Blanco.png" alt="Logo ETS" class="logo-ets-sidebar">
-    </div>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="sidebar-subtitle">Navegación</div>
-    <ul>
-      <li class="menu-inicio">
-        <i class="fas fa-home"></i> <span>Inicio</span>
-      </li>
-    </ul>
-
-    <div class="sidebar-subtitle">Vehículo</div>
-    <ul>
-      <li class="menu-item" data-component="r1.html">
-        <i class="fas fa-bus-alt"></i> <span>Transporte</span>
-      </li>
-    </ul>
-
-    <div class="sidebar-subtitle">Ubicación</div>
-    <ul>
-      <li class="menu-item" data-component="r6.html">
-        <i class="fas fa-map-marker-alt"></i> <span>Puntos de control</span>
-      </li>
-    </ul>
-
-    <ul>
-      <li class="menu-item" data-component="r2.html">
-        <i class="fas fa-search-location"></i> <span>Consultas de ubicación </span>
-      </li>
-    </ul>
-  </nav>
-</aside>
 
 <section id="resultadosBusqueda" style="display: none; padding: 1rem 2rem;">
   <h3>Resultados de búsqueda:</h3>
