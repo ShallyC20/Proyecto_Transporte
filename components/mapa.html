@@ -10,14 +10,21 @@
 </head>
 
 <body>
-    <div class="titulo">
-        <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
-    </div>
-    <ul id="listaUsuarios"></ul>
-    <div class="contmapa">
-        <div id="map" class="mapa"></div>
-    </div>
-    <div id="coordenadas" style="margin-top: 10px; font-weight: bold;"></div>
+    <section class="mapprincipal">
+        <div class="titulo">
+            <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
+        </div>
+        <div class="tarjetaMapaPrin">
+            <div class="contmapa">
+                <div id="map" class="mapa"></div>
+            </div>
+            <div id="coordenadas" class="coordenadas"></div>
+        </div>
+    </section>
+    <section class="infoubicaciones">
+        <div id="contetarjetasubi" class="contetarjetasubi">
+        </div>
+    </section>
 </body>
 
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>

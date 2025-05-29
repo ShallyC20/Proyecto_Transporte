@@ -29,7 +29,7 @@ L.Icon.Default.mergeOptions({
 
 
 // Inicializar el mapa en una ubicación (lat, lng) y zoom
-const map = L.map('map').setView([-16.527426, -68.106068], 13); // La Paz, Bolivia
+const map = L.map('map').setView([-16.527426, -68.106068], 14); // La Paz, Bolivia
 
 // Agregar capa de mapa (tiles de OpenStreetMap)
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -49,8 +49,6 @@ const iconoBici = L.icon({
 
 ubicaciones.get().then((transaccion) => {
     transaccion.forEach((doc) => {
-        console.log(doc.data().nombre, " => ", doc.data().geo[0]);
-        console.log(doc.data().nombre, " => ", doc.data().geo[1]);
         const data = doc.data()
         const nuevo = {
             lat: data.geo[0],
@@ -81,6 +79,56 @@ map.on('mousemove', function (e) {
     document.getElementById("coordenadas").textContent = `Latitud: ${lat}, Longitud: ${lng}`;
 });
 
-console.log(puntos)
+//Datos a mostrar
+const transportesSnap = await db.collection("transporte").get();
+const ubicacionesSnap = await db.collection("ubicaciones").get();
 
+const nombreUbi = [];
+const transUbi = [];
+const cantidades = [];
 
+ubicacionesSnap.forEach((doc) => {
+    const nuevo = {
+        nombre: doc.data().nombre
+    };
+    nombreUbi.push(nuevo);
+});
+
+transportesSnap.forEach((doc) => {
+    const nuevo = {
+        ubicacion: doc.data().estacion,
+        estado: doc.data().estado
+    };
+    transUbi.push(nuevo);
+});
+
+nombreUbi.forEach((doc) => {
+    let contador = 0;
+    transUbi.forEach((docer) => {
+        if (doc.nombre == docer.ubicacion && docer.estado == "Disponible") {
+            contador = contador + 1;
+        };
+    });
+    const nuevo = {
+        nombre: doc.nombre,
+        contado: contador
+    };
+    cantidades.push(nuevo);
+});
+
+console.log(nombreUbi)
+console.log(transUbi)
+console.log(cantidades)
+
+// Llamar al contenedor
+const contenedor = document.getElementById("contetarjetasubi")
+
+cantidades.forEach((doc) => {
+    //Crear la tarjeta
+    let tarjeta = document.createElement("div")
+    tarjeta.className = "cartaubicacion";
+    tarjeta.innerHTML = `
+        <p>${doc.nombre}</p>
+        <h3><strong>Disponibles:</strong> ${doc.contado}</h3>`;
+    contenedor.appendChild(tarjeta);
+});
