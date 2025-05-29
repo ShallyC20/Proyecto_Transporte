@@ -1,4 +1,3 @@
-<!-- detalle.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,9 +9,8 @@
   <link rel="stylesheet" href="../css/mainHeader.css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  
-  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />
+    integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
   <div id="mainHeaderContainer"></div>
@@ -41,7 +39,7 @@
             <button class="volver-btn" onclick="window.history.back()">
               <i class="fas fa-arrow-left"></i> Volver
             </button>
-            <button class="alquilar-btn" onclick="window.location.href='#'">
+            <button class="alquilar-btn" id="btnAlquilar">
               <i class="fas fa-key"></i> Alquilar
             </button>
           </div>
@@ -105,6 +103,13 @@
           const li = document.createElement('li');
           li.textContent = tec;
           ul.appendChild(li);
+        });
+
+        // ✅ Guardar en localStorage al hacer clic en "Alquilar"
+        const btnAlquilar = document.getElementById("btnAlquilar");
+        btnAlquilar.addEventListener("click", () => {
+          localStorage.setItem("vehiculoEnAlquiler", JSON.stringify(data));
+          window.location.href = "/components/Rental_Payments/Renta/PageRental.html";
         });
       }, 100);
     });

@@ -12,18 +12,18 @@
   color: #ffffff;
 }
 
-/* Secciones laterales */
-.left-section,
-.right-section {
+/* Secciones */
+.left-section, .right-section {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.left-section p
-{
-    font-weight: bold;
-    font-size: 35PX;
-    font-family: 'Courier New', Courier, monospace;
+
+.left-section p {
+  font-weight: bold;
+  font-size: 35px;
+  font-family: 'Courier New', Courier, monospace;
+  margin: 0;
 }
 
 .logo-ets {
@@ -31,27 +31,7 @@
   margin: 0;
 }
 
-/* === BUSCADOR === */
-.search-input {
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #ced4da;
-  width: 280px;
-  font-size: 0.95rem;
-  transition: border-color 0.3s;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #0d6efd;
-}
-
-/* === MENÚ HORIZONTAL === */
-.top-nav {
-  background-color: #1b2a47;
-  padding: 0;
-}
-
+/* Menú horizontal */
 .horizontal-menu {
   display: flex;
   gap: 1rem;
@@ -78,7 +58,7 @@
   background-color: #2c3e5e;
 }
 
-/* === SUBMENÚ CON ESTILO === */
+/* Submenú */
 .submenu-mega {
   display: none;
   position: absolute;
@@ -120,70 +100,104 @@
   font-weight: bold;
 }
 
-/* === BOTONES DE AUTENTICACIÓN === */
-.auth-button {
+/* Usuario logueado */
+.header-user-info {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  border: 2px solid #ffffff;
-  background-color: transparent;
-  color: #ffffff;
-  padding: 0.4rem 1rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  height: 20px;
-}
-
-.auth-button:hover {
-  background-color: #ffc107;
-  border-color: #ffc107;
-  color: #1b2a47;
-}
-
-.auth-button.login {
-  background-color: #ffffff;
-  color: #1b2a47;
-  border-color: #ffffff;
-}
-
-.auth-button.login:hover {
-  background-color: #ffc107;
-  color: #1b2a47;
-  border-color: #ffc107;
-}
-
-.auth-button.register {
-  background-color: #0d6efd;
-  color: #ffffff;
-  border-color: #0d6efd;
-}
-
-.auth-button.register:hover {
-  background-color: #ffc107;
-  color: #1b2a47;
-  border-color: #ffc107;
-}
-
-/* === AVATAR Y USUARIO === */
-.avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #0d6efd33;
-  transition: transform 0.2s;
-}
-
-.avatar:hover {
-  transform: scale(1.1);
+  gap: 12px;
 }
 
 .user-name {
   font-size: 1rem;
   font-weight: 500;
   color: #ffffff;
+}
+
+.icon-bell {
+  color: #ffffff;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #f1c40f;
+  transition: transform 0.2s ease;
+}
+
+.avatar:hover {
+  transform: scale(1.1);
+}
+
+/* === NOTIFICACIONES PERSONALIZADAS === */
+.notifications-dropdown {
+  position: relative;
+}
+
+.notifications-dropdown .nav-link {
+  position: relative;
+  background-color: transparent;
+}
+
+.notification-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+/* Submenú especial para notificaciones */
+.submenu-notifications {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  min-width: 260px;
+  z-index: 1000;
+  padding: 10px 0;
+}
+
+.notifications-dropdown:hover .submenu-notifications {
+  display: block;
+}
+
+/* Título */
+.notif-title {
+  padding: 10px 15px;
+  font-weight: bold;
+  font-size: 15px;
+  color: #1b2a47;
+  border-bottom: 1px solid #ddd;
+  margin: 0;
+}
+
+/* Ítems */
+.notif-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  font-size: 14px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.notif-item:hover {
+  background-color: #f2f2f2;
+}
+
+.notif-item i {
+  color: #e0bc5a;
 }

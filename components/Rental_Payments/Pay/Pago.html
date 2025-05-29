@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pago</title>
+  <link rel="stylesheet" href="Pago.css" />
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+  <div class="PaginaPago">
+    <div id="mainHeaderContainer"></div>
+
+    <main class="contenedor-pago">
+      <div class="pago-left" id="pagoIzquierda"></div>
+      <div class="detalle-card" id="resumenAlquiler"></div>
+    </main>
+
+    <div id="mainFooterContainer"></div>
+  </div>
+
+  <div id="alertaExito" class="alerta-centrada">✅ El pago se realizó con éxito.</div>
+
+  <script>
+    // Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCPyRTvy7EEvAxs1dZjwKk68IR4R-ZPlbQ",
+      authDomain: "transportesgeolocalizacion.firebaseapp.com",
+      projectId: "transportesgeolocalizacion",
+      storageBucket: "transportesgeolocalizacion.appspot.com",
+      messagingSenderId: "200393220762",
+      appId: "1:200393220762:web:0f9e9e1ed19b4ba5b4b523",
+      measurementId: "G-PN7FB0RTDM"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch("../Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainer").innerHTML = html;
+          setTimeout(() => {
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
+            if (usuario) {
+              const nombreElemento = document.getElementById("userName");
+              const avatarElemento = document.getElementById("userAvatar");
+              if (nombreElemento) nombreElemento.textContent = usuario.nombre || "Usuario";
+              if (avatarElemento) avatarElemento.src = usuario.imagen || "https://i.ibb.co/FbRJBrW2/imagen-2025-05-29-014716685.png";
+            }
+          }, 100);
+        });
+
+      fetch("../Templates/Footer.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        });
+
+      const datos = JSON.parse(localStorage.getItem("datosPago"));
+      if (datos) {
+        document.getElementById("resumenAlquiler").innerHTML = `
+          <h2>Resumen de Pago</h2>
+          <p><strong>Modelo:</strong> ${datos.modelo}</p>
+          <p><strong>Estación:</strong> ${datos.estacion}</p>
+          <p><strong>Inicio:</strong> ${datos.inicio.replace("T", " ")}</p>
+          <p><strong>Fin:</strong> ${datos.fin.replace("T", " ")}</p>
+          <p><strong>Duración:</strong> ${datos.horas} hora(s)</p>
+          <p><strong>Total:</strong> Bs ${datos.total}</p>
+          <p><strong>Método:</strong> ${datos.metodo}</p>
+        `;
+
+        const pagoHTML = datos.metodo === "Tarjeta"
+          ? `
+            <div class="metodo">
+              <h3>Pago con Tarjeta</h3>
+              <input type="text" placeholder="Número de Tarjeta" />
+              <input type="text" placeholder="Nombre en la Tarjeta" />
+              <input type="text" placeholder="MM/AA" />
+              <input type="text" placeholder="CVV" />
+              <button onclick="confirmarPago()">Pagar</button>
+            </div>
+          `
+          : `
+            <div class="metodo qr">
+              <h3>Pago con QR</h3>
+              <img src="/components/Rental_Payments/Pay/image.png" alt="QR de pago" />
+              <p>Escanea el código con tu app bancaria</p>
+              <button onclick="confirmarPago()">Confirmar Pago</button>
+            </div>
+          `;
+
+        document.getElementById("pagoIzquierda").innerHTML = pagoHTML;
+      }
+    });
+
+    async function confirmarPago() {
+  const alerta = document.getElementById("alertaExito");
+  alerta.classList.add("visible");
+
+  setTimeout(() => {
+    alerta.classList.remove("visible");
+  }, 2000);
+
+  const user = firebase.auth().currentUser;
+  const datos = JSON.parse(localStorage.getItem("datosPago"));
+  if (!user || !datos) {
+    console.warn("Usuario no autenticado o datos vacíos.");
+    return;
+  }
+
+  try {
+    await db.collection("usuarios")
+      .doc(user.uid)
+      .collection("pagos")
+      .add({
+        modelo: datos.modelo,
+        estacion: datos.estacion,
+        inicio: datos.inicio.replace("T", " "),
+        fin: datos.fin.replace("T", " "),
+        horas: datos.horas,
+        total: parseFloat(datos.total),
+        metodo: datos.metodo,
+        creado: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+    console.log("✅ Pago guardado en Firestore.");
+
+    // Redireccionar después de la alerta
+    setTimeout(() => {
+      window.location.href = "/index.html";
+    }, 2100);
+
+  } catch (e) {
+    console.error("❌ Error al guardar en Firestore:", e);
+  }
+}
+  </script>
+</body>
+</html>
