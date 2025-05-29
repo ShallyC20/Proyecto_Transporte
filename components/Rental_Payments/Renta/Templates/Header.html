@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="/components/Rental_Payments/Renta/Templates/Header.css" />
+<link rel="stylesheet" href="Header.css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+<header class="main-header">
+
+  <!-- Sección izquierda: logo y búsqueda -->
+  <div class="left-section">
+    <img src="/../imag/Logo_Blanco.png" alt="Logo ETS" class="logo-ets">
+    <input type="text" class="search-input" placeholder="Buscar transporte o punto..." oninput="buscarTransporte(this.value)" />
+  </div>
+
+  <!-- Menú central -->
+  <nav class="horizontal-menu">
+
+    <!-- Sistema -->
+    <div class="menu-item-dropdown">
+      <span class="nav-link"><i class="material-icons">home</i> Sistema</span>
+      <div class="submenu submenu-mega">
+        <a href="/index.html"><i class="material-icons">dashboard</i> Inicio</a>
+        <a href="/components/sobreNosotros.html"><i class="material-icons">info</i> Acerca de nosotros</a>
+        <a href="/components/contactanos.html"><i class="material-icons">contact_mail</i> Contáctanos</a>
+      </div>
+    </div>
+
+    <!-- Vehículo -->
+    <div class="menu-item-dropdown">
+      <span class="nav-link"><i class="material-icons">directions_bus</i> Vehículo</span>
+      <div class="submenu submenu-mega">
+        <a href="/components/Transporte.html"><i class="material-icons">commute</i> Transporte</a>
+      </div>
+    </div>
+
+    <!-- Ubicación -->
+    <div class="menu-item-dropdown">
+      <span class="nav-link"><i class="material-icons">place</i> Ubicación</span>
+      <div class="submenu submenu-mega">
+        <a href="/components/Puntos_control.html"><i class="material-icons">map</i> Puntos de control</a>
+        <a href="/components/Consultas_Ubicación.html"><i class="material-icons">search</i> Consultas de ubicación</a>
+      </div>
+    </div>
+
+    <!-- Otros -->
+    <div class="menu-item-dropdown">
+      <span class="nav-link"><i class="material-icons">description</i> Otros</span>
+      <div class="submenu submenu-mega">
+        <a href="AlquileresPagos.html"><i class="material-icons">payment</i> Alquileres y Pagos</a>
+        <a href="MensajesMantenimiento.html"><i class="material-icons">build</i> Mantenimiento</a>
+      </div>
+    </div>
+
+    <!-- Historial -->
+    <div class="menu-item-dropdown">
+      <span class="nav-link"><i class="material-icons">history</i> Historial</span>
+      <div class="submenu submenu-mega">
+        <a href="HistorialViajes.html"><i class="material-icons">flight_takeoff</i> Historial de Viajes</a>
+        <a href="HistorialPagos.html"><i class="material-icons">receipt_long</i> Historial de Pagos</a>
+      </div>
+    </div>
+
+  </nav>
+
+  <!-- Botones de login y registro -->
+  <div class="right-section">
+    <a href="/login.html" class="auth-button login">
+      <i class="material-icons">login</i> Iniciar sesión
+    </a>
+    <a href="/register.html" class="auth-button register">
+      <i class="material-icons">person_add</i> Registrarse
+    </a>
+  </div>
+
+</header>

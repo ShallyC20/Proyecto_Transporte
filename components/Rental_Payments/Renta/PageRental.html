@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renta</title>
+    <link rel="stylesheet" href="/components/Rental_Payments/Renta/PageRental.css">
+</head>
+<body>
+    <div class="PaginaRenta">
+        <div id="mainHeaderContainer"></div>
+        
+        <div id="mainFooterContainer"></div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('./Templates/Header.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainer").innerHTML = html;
+          const script1 = document.createElement('script');
+          script1.src = './js/menu.js';
+          script1.onload = () => {
+            const script2 = document.createElement('script');
+            script2.src = './js/headerEvents.js';
+            script2.onload = () => {
+              if (typeof initHeaderEvents === 'function') initHeaderEvents();
+            };
+            document.body.appendChild(script2);
+          };
+          document.body.appendChild(script1);
+        });
+
+      fetch('../../footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        });
+    });
+    </script>
+</body>
+</html>
