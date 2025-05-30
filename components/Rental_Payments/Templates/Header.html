@@ -68,18 +68,81 @@
         </div>
       </div>
 
-      <!-- Avatar con menú desplegable -->
-<div class="user-dropdown">
-  <img id="userAvatar" class="avatar" src="" alt="avatar" />
-  <div class="user-menu">
-    <img id="avatarMenu" class="avatar-big" src="" alt="avatar grande" />
-    <p id="nombreMenu" class="user-name">usuario</p>
-    <a href="/perfil.html" class="user-button">Mi perfil</a>
-    <a href="/index.html" class="user-button logout">Cerrar sesión</a>
-  </div>
-</div>
-
+      <!-- Avatar con menú desplegable por clic -->
+      <div class="user-dropdown" id="userDropdown">
+        <img id="userAvatar" class="avatar" src="" alt="avatar" />
+        <div class="user-menu" id="userMenu">
+          <img id="avatarMenu" class="avatar-big" src="" alt="avatar grande" />
+          <p id="nombreMenu" class="user-name">usuario</p>
+          <a href="/perfil.html" class="user-button">Mi perfil</a>
+          <a href="/index.html" class="user-button logout" onclick="localStorage.removeItem('usuario')">Cerrar sesión</a>
+        </div>
+      </div>
     </div>
   </div>
 </header>
 
+<!-- Scripts funcionales -->
+<script>
+  // Abrir/cerrar menú del avatar al hacer clic
+  document.addEventListener("click", function (e) {
+    const dropdown = document.getElementById("userDropdown");
+    const menu = document.getElementById("userMenu");
+    const avatar = document.getElementById("userAvatar");
+
+    if (!dropdown || !menu || !avatar) return;
+
+    if (avatar.contains(e.target)) {
+      dropdown.classList.toggle("open");
+    } else if (!menu.contains(e.target)) {
+      dropdown.classList.remove("open");
+    }
+  });
+
+  // Cargar datos del usuario desde localStorage
+  setTimeout(() => {
+    const usuarioRaw = localStorage.getItem("usuario");
+    if (!usuarioRaw) return;
+
+    try {
+      const usuario = JSON.parse(usuarioRaw);
+      const nombre = usuario.nombre || "Usuario";
+      const imagen = usuario.imagen || "/imag/monito.png";
+
+      document.getElementById("userName").textContent = nombre;
+      document.getElementById("userAvatar").src = imagen;
+      document.getElementById("avatarMenu").src = imagen;
+      document.getElementById("nombreMenu").textContent = nombre;
+    } catch (error) {
+      console.error("Error al cargar datos del usuario:", error);
+    }
+  }, 100);
+</script>
+
+<!-- Estilos mínimos si no están en tu Header.css -->
+<style>
+  .user-menu {
+    display: none;
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+    text-align: center;
+    z-index: 999;
+  }
+
+  .user-dropdown.open .user-menu {
+    display: block;
+  }
+
+  .avatar-big {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+</style>

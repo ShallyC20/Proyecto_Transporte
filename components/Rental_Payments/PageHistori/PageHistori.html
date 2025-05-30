@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/components/Rental_Payments/PageHistori/PageHistori.css" />
 </head>
 <body>
-  <div id="mainHeaderContainer"></div>
+  <div id="mainHeaderContainers"></div>
 
   <main class="PaginaHistorialViajes">
     <h1>HISTORIAL DE PAGOS</h1>
@@ -31,9 +31,7 @@
           <th>Método de Pago</th>
         </tr>
       </thead>
-      <tbody id="tablaHistorialPagos">
-        <!-- Se insertan los pagos -->
-      </tbody>
+      <tbody id="tablaHistorialPagos"></tbody>
     </table>
 
     <div id="paginacionContainer" class="paginacion"></div>
@@ -46,18 +44,30 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="/js/conexionFireBase.js"></script>
 
+  <!-- Carga del Header con ejecución de scripts -->
   <script>
-    let todosLosPagos = [];
-    let pagosFiltrados = [];
-    const elementosPorPagina = 5;
-    let paginaActual = 1;
-
     document.addEventListener("DOMContentLoaded", async () => {
       // Cargar Header
-      await fetch("/components/Rental_Payments/Templates/Header.html")
+      fetch("/components/Rental_Payments/Templates/Header.html")
         .then(res => res.text())
         .then(html => {
-          document.getElementById("mainHeaderContainer").innerHTML = html;
+          const container = document.getElementById("mainHeaderContainers");
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+
+          const scripts = temp.querySelectorAll("script");
+          scripts.forEach(script => {
+            const newScript = document.createElement("script");
+            if (script.src) {
+              newScript.src = script.src;
+            } else {
+              newScript.textContent = script.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+
+          temp.querySelectorAll("script").forEach(s => s.remove());
+          container.innerHTML = temp.innerHTML;
 
           setTimeout(() => {
             const usuarioRaw = localStorage.getItem("usuario");
@@ -84,16 +94,26 @@
               console.error("Error al parsear usuario desde localStorage:", error);
             }
           }, 100);
-        });
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
+    });
+  </script>
 
-      // Cargar Footer
+  <!-- Lógica del Historial de Pagos -->
+  <script>
+    let todosLosPagos = [];
+    let pagosFiltrados = [];
+    const elementosPorPagina = 5;
+    let paginaActual = 1;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Footer
       fetch("/components/Rental_Payments/Templates/Footer.html")
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainFooterContainer").innerHTML = html;
         });
 
-      // Obtener usuario y pagos
       const usuario = JSON.parse(localStorage.getItem("usuario"));
       if (!usuario || !usuario.correo) return;
 
@@ -170,11 +190,9 @@
 
     function filtrarPorFecha() {
       const fecha = document.getElementById("buscarFecha").value;
-      if (!fecha) {
-        pagosFiltrados = [...todosLosPagos];
-      } else {
-        pagosFiltrados = todosLosPagos.filter(p => p.inicio && p.inicio.startsWith(fecha));
-      }
+      pagosFiltrados = fecha
+        ? todosLosPagos.filter(p => p.inicio && p.inicio.startsWith(fecha))
+        : [...todosLosPagos];
 
       paginaActual = 1;
       renderPagosConPaginacion(pagosFiltrados, paginaActual);

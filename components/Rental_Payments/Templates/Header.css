@@ -270,6 +270,9 @@
   text-align: center;
   z-index: 999;
 }
+.user-dropdown.open .user-menu {
+  display: block;
+}
 
 .user-dropdown:hover .user-menu {
   display: block;

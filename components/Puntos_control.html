@@ -162,45 +162,64 @@
         .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-  // Cargar Header
-  fetch("/components/Rental_Payments/Templates/Header.html")
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById("mainHeaderContainers").innerHTML = html;
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Cargar Header
+    fetch("/components/Rental_Payments/Templates/Header.html")
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("mainHeaderContainers");
 
-      setTimeout(() => {
-        const usuarioRaw = localStorage.getItem("usuario");
-        if (!usuarioRaw) return;
+        // Crear un contenedor temporal
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
 
-        try {
-          const usuario = JSON.parse(usuarioRaw);
-          const nombre = usuario.nombre || "Usuario";
-          const imagen = usuario.imagen || "/imag/monito.png";
+        // Ejecutar scripts embebidos manualmente
+        const scripts = temp.querySelectorAll("script");
+        scripts.forEach(script => {
+          const newScript = document.createElement("script");
+          if (script.src) {
+            newScript.src = script.src;
+          } else {
+            newScript.textContent = script.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
 
-          // Nombre visible fuera del menú
-          const userNameLabel = document.getElementById("userName");
-          if (userNameLabel) userNameLabel.textContent = nombre;
+        // Limpiar los scripts del HTML antes de insertar
+        temp.querySelectorAll("script").forEach(s => s.remove());
 
-          // Imagen avatar pequeña (top derecha)
-          const userAvatar = document.getElementById("userAvatar");
-          if (userAvatar) userAvatar.src = imagen;
+        // Agregar el HTML restante al contenedor
+        container.innerHTML = temp.innerHTML;
 
-          // Imagen y nombre dentro del menú desplegable
-          const avatarMenu = document.getElementById("avatarMenu");
-          const nombreMenu = document.getElementById("nombreMenu");
+        // Esperar a que el DOM del header esté listo
+        setTimeout(() => {
+          const usuarioRaw = localStorage.getItem("usuario");
+          if (!usuarioRaw) return;
 
-          if (avatarMenu) avatarMenu.src = imagen;
-          if (nombreMenu) nombreMenu.textContent = nombre;
+          try {
+            const usuario = JSON.parse(usuarioRaw);
+            const nombre = usuario.nombre || "Usuario";
+            const imagen = usuario.imagen || "/imag/monito.png";
 
-        } catch (error) {
-          console.error("Error al parsear usuario desde localStorage:", error);
-        }
-      }, 100);
-    });
-});
+            const userNameLabel = document.getElementById("userName");
+            if (userNameLabel) userNameLabel.textContent = nombre;
 
-  </script>
+            const userAvatar = document.getElementById("userAvatar");
+            if (userAvatar) userAvatar.src = imagen;
+
+            const avatarMenu = document.getElementById("avatarMenu");
+            const nombreMenu = document.getElementById("nombreMenu");
+            if (avatarMenu) avatarMenu.src = imagen;
+            if (nombreMenu) nombreMenu.textContent = nombre;
+
+          } catch (error) {
+            console.error("Error al parsear usuario desde localStorage:", error);
+          }
+        }, 100);
+      })
+      .catch(err => console.error("Error al cargar el header:", err));
+  });
+</script>
 </body>
 </html>
