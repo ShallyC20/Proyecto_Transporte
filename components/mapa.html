@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/components/mapa.css">
     <title>Document</title>
 </head>
 
 <body>
+    <div id="mainHeaderContainers"></div>
     <div>Este va a ser el mapa XD</div>
     <button onclick="leerDocumentos()">Leer usuarios</button>
     <ul id="listaUsuarios"></ul>
+    <div id="mainFooterContainer"></div>
 </body>
 
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
@@ -18,4 +21,26 @@
 <script type="module" src="/js/conexionFireBase.js"></script>
 <script type="module" src=""></script>
 
+      <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainers").innerHTML = html;
+          setTimeout(() => {
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
+            if (usuario) {
+              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
+              document.getElementById("userAvatar").src = usuario.imagen || "";
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
+    });
+          fetch("/components/Rental_Payments/Templates/Footer.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        });
+  </script>
 </html>
