@@ -6,7 +6,7 @@ const btnLogin = document.getElementById("login");
 btnRegister.addEventListener("click", () => container.classList.add("active"));
 btnLogin.addEventListener("click", () => container.classList.remove("active"));
 
-// REGISTRO (GUARDAR EN FIRESTORE SIN USAR AUTH)
+// === REGISTRO ===
 document.getElementById("form-register").addEventListener("submit", async (e) => {
   e.preventDefault();
   const nombre = document.getElementById("nombre").value.trim();
@@ -14,7 +14,6 @@ document.getElementById("form-register").addEventListener("submit", async (e) =>
   const contrasena = document.getElementById("contrasena").value;
 
   try {
-    // Verificar que el correo no exista antes de registrar
     const querySnapshot = await db.collection("usuarios")
       .where("correo", "==", correo)
       .get();
@@ -24,14 +23,14 @@ document.getElementById("form-register").addEventListener("submit", async (e) =>
       return;
     }
 
-    // Agregar nuevo documento
     await db.collection("usuarios").add({
       nombre,
       correo,
       contra: contrasena,
       borrado: false,
       creado: new Date(),
-      imagen: "" // puedes actualizar esto luego si quieres
+      rol: "usuario",        // ← se añade por defecto
+      imagen: ""             // ← se deja vacío por defecto
     });
 
     alert("¡Registro exitoso!");
@@ -41,7 +40,7 @@ document.getElementById("form-register").addEventListener("submit", async (e) =>
   }
 });
 
-// LOGIN VALIDANDO CONTRA FIRESTORE
+// === LOGIN ===
 document.getElementById("form-login").addEventListener("submit", async (e) => {
   e.preventDefault();
   const correo = document.getElementById("login-correo").value.trim();
@@ -57,7 +56,15 @@ document.getElementById("form-login").addEventListener("submit", async (e) => {
     if (!querySnapshot.empty) {
       const usuario = querySnapshot.docs[0].data();
       localStorage.setItem("usuario", JSON.stringify(usuario));
-      window.location.href = "/inicio.html";
+
+      // Redirección según el rol
+      if (usuario.rol === "usuario") {
+        window.location.href = "/inicio.html";
+      } else if (usuario.rol === "administrador") {
+        window.location.href = "/components/paginadmin.html";
+      } else {
+        alert("Rol no reconocido.");
+      }
     } else {
       alert("Correo o contraseña incorrectos.");
     }
