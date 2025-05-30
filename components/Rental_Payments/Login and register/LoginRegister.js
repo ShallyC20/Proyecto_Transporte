@@ -6,22 +6,32 @@ const btnLogin = document.getElementById("login");
 btnRegister.addEventListener("click", () => container.classList.add("active"));
 btnLogin.addEventListener("click", () => container.classList.remove("active"));
 
-// Registro de usuario
+// REGISTRO (GUARDAR EN FIRESTORE SIN USAR AUTH)
 document.getElementById("form-register").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const nombre = document.getElementById("nombre").value;
-  const correo = document.getElementById("correo").value;
+  const nombre = document.getElementById("nombre").value.trim();
+  const correo = document.getElementById("correo").value.trim();
   const contrasena = document.getElementById("contrasena").value;
 
   try {
-    const userCredential = await auth.createUserWithEmailAndPassword(correo, contrasena);
-    const uid = userCredential.user.uid;
+    // Verificar que el correo no exista antes de registrar
+    const querySnapshot = await db.collection("usuarios")
+      .where("correo", "==", correo)
+      .get();
 
-    await db.collection("usuarios").doc(uid).set({
+    if (!querySnapshot.empty) {
+      alert("El correo ya está registrado.");
+      return;
+    }
+
+    // Agregar nuevo documento
+    await db.collection("usuarios").add({
       nombre,
       correo,
-      creado: firebase.firestore.FieldValue.serverTimestamp(),
-      borrado: false
+      contra: contrasena,
+      borrado: false,
+      creado: new Date(),
+      imagen: "" // puedes actualizar esto luego si quieres
     });
 
     alert("¡Registro exitoso!");
@@ -31,22 +41,25 @@ document.getElementById("form-register").addEventListener("submit", async (e) =>
   }
 });
 
-// Inicio de sesión
+// LOGIN VALIDANDO CONTRA FIRESTORE
 document.getElementById("form-login").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const correo = document.getElementById("login-correo").value;
+  const correo = document.getElementById("login-correo").value.trim();
   const contrasena = document.getElementById("login-contrasena").value;
 
   try {
-    const userCredential = await auth.signInWithEmailAndPassword(correo, contrasena);
-    const uid = userCredential.user.uid;
+    const querySnapshot = await db.collection("usuarios")
+      .where("correo", "==", correo)
+      .where("contra", "==", contrasena)
+      .where("borrado", "==", false)
+      .get();
 
-    const doc = await db.collection("usuarios").doc(uid).get();
-    if (doc.exists) {
-      localStorage.setItem("usuario", JSON.stringify(doc.data()));
+    if (!querySnapshot.empty) {
+      const usuario = querySnapshot.docs[0].data();
+      localStorage.setItem("usuario", JSON.stringify(usuario));
       window.location.href = "/inicio.html";
     } else {
-      alert("Usuario no encontrado en Firestore.");
+      alert("Correo o contraseña incorrectos.");
     }
   } catch (error) {
     alert("Error al iniciar sesión: " + error.message);
