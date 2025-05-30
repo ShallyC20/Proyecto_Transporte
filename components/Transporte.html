@@ -146,22 +146,45 @@
         .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
-    <script>
+  <script>
     document.addEventListener("DOMContentLoaded", async () => {
-      fetch("/components/Rental_Payments/Templates/Header.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("mainHeaderContainers").innerHTML = html;
-          setTimeout(() => {
-            const usuario = JSON.parse(localStorage.getItem("usuario"));
-            if (usuario) {
-              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
-              document.getElementById("userAvatar").src = usuario.imagen || "";
-            }
-          }, 100);
-        })
-        .catch(err => console.error("Error al cargar el header:", err));
+  // Cargar Header
+  fetch("/components/Rental_Payments/Templates/Header.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("mainHeaderContainers").innerHTML = html;
+
+      setTimeout(() => {
+        const usuarioRaw = localStorage.getItem("usuario");
+        if (!usuarioRaw) return;
+
+        try {
+          const usuario = JSON.parse(usuarioRaw);
+          const nombre = usuario.nombre || "Usuario";
+          const imagen = usuario.imagen || "/imag/monito.png";
+
+          // Nombre visible fuera del menú
+          const userNameLabel = document.getElementById("userName");
+          if (userNameLabel) userNameLabel.textContent = nombre;
+
+          // Imagen avatar pequeña (top derecha)
+          const userAvatar = document.getElementById("userAvatar");
+          if (userAvatar) userAvatar.src = imagen;
+
+          // Imagen y nombre dentro del menú desplegable
+          const avatarMenu = document.getElementById("avatarMenu");
+          const nombreMenu = document.getElementById("nombreMenu");
+
+          if (avatarMenu) avatarMenu.src = imagen;
+          if (nombreMenu) nombreMenu.textContent = nombre;
+
+        } catch (error) {
+          console.error("Error al parsear usuario desde localStorage:", error);
+        }
+      }, 100);
     });
-  </script>
+});
+
+  </script>s
 </body>
 </html>

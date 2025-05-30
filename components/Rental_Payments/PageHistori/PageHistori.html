@@ -54,21 +54,40 @@
 
     document.addEventListener("DOMContentLoaded", async () => {
       // Cargar Header
-      fetch("../Templates/Header.html")
+      await fetch("/components/Rental_Payments/Templates/Header.html")
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainHeaderContainer").innerHTML = html;
+
           setTimeout(() => {
-            const usuario = JSON.parse(localStorage.getItem("usuario"));
-            if (usuario) {
-              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
-              document.getElementById("userAvatar").src = usuario.imagen || "";
+            const usuarioRaw = localStorage.getItem("usuario");
+            if (!usuarioRaw) return;
+
+            try {
+              const usuario = JSON.parse(usuarioRaw);
+              const nombre = usuario.nombre || "Usuario";
+              const imagen = usuario.imagen || "/imag/monito.png";
+
+              const userNameLabel = document.getElementById("userName");
+              if (userNameLabel) userNameLabel.textContent = nombre;
+
+              const userAvatar = document.getElementById("userAvatar");
+              if (userAvatar) userAvatar.src = imagen;
+
+              const avatarMenu = document.getElementById("avatarMenu");
+              const nombreMenu = document.getElementById("nombreMenu");
+
+              if (avatarMenu) avatarMenu.src = imagen;
+              if (nombreMenu) nombreMenu.textContent = nombre;
+
+            } catch (error) {
+              console.error("Error al parsear usuario desde localStorage:", error);
             }
           }, 100);
         });
 
       // Cargar Footer
-      fetch("../Templates/Footer.html")
+      fetch("/components/Rental_Payments/Templates/Footer.html")
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainFooterContainer").innerHTML = html;
@@ -129,7 +148,6 @@
         tabla.appendChild(fila);
       });
 
-      // Paginación visual
       if (totalPaginas > 1) {
         const crearBoton = (texto, numero, activo = false) => {
           const btn = document.createElement("button");

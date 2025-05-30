@@ -31,10 +31,9 @@
       <div class="submenu submenu-mega">
         <a href="/components/Puntos_control.html"><i class="material-icons">map</i> Puntos de control</a>
         <a href="/components/Consultas_Ubicación.html"><i class="material-icons">search</i> Consultas de ubicación</a>
-        <a href="/components/mapa.html"><i class="material-icons">map</i>Mapas</a>
+        <a href="/components/mapa.html"><i class="material-icons">map</i> Mapas</a>
       </div>
     </div>
-
 
     <div class="menu-item-dropdown">
       <span class="nav-link"><i class="material-icons">history</i> Historial</span>
@@ -45,32 +44,42 @@
     </div>
   </nav>
 
-  <!-- Usuario logueado -->
-<!-- Usuario logueado con notificaciones personalizadas -->
-<div class="right-section">
-  <div id="headerUserInfo" class="header-user-info">
-    <span class="user-name" id="userName">Usuario</span>
+  <!-- Sección derecha: Notificaciones + Avatar -->
+  <div class="right-section">
+    <div id="headerUserInfo" class="header-user-info">
+      <span class="user-name" id="userName">Usuario</span>
 
-    <div class="menu-item-dropdown notifications-dropdown">
-      <span class="nav-link">
-        <i class="material-icons">notifications</i>
-        <span class="notification-badge">2</span>
-      </span>
-      <div class="submenu submenu-notifications">
-        <p class="notif-title">Notificaciones</p>
-        <div class="notif-item">
-          <i class="material-icons">local_offer</i>
-          <span>¡Nueva oferta en alquileres de bicicleta!</span>
-        </div>
-        <div class="notif-item">
-          <i class="material-icons">schedule</i>
-          <span>Tiempo restante: 2 horas</span>
+      <!-- Notificaciones -->
+      <div class="menu-item-dropdown notifications-dropdown">
+        <span class="nav-link">
+          <i class="material-icons">notifications</i>
+          <span class="notification-badge">2</span>
+        </span>
+        <div class="submenu submenu-notifications">
+          <p class="notif-title">Notificaciones</p>
+          <div class="notif-item">
+            <i class="material-icons">local_offer</i>
+            <span>¡Nueva oferta en alquileres de bicicleta!</span>
+          </div>
+          <div class="notif-item">
+            <i class="material-icons">schedule</i>
+            <span>Tiempo restante: 2 horas</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <img id="userAvatar" class="avatar" src="" alt="avatar" />
+      <!-- Avatar con menú desplegable -->
+<div class="user-dropdown">
+  <img id="userAvatar" class="avatar" src="" alt="avatar" />
+  <div class="user-menu">
+    <img id="avatarMenu" class="avatar-big" src="" alt="avatar grande" />
+    <p id="nombreMenu" class="user-name">usuario</p>
+    <a href="/perfil.html" class="user-button">Mi perfil</a>
+    <a href="/index.html" class="user-button logout">Cerrar sesión</a>
   </div>
 </div>
 
+    </div>
+  </div>
 </header>
+
