@@ -5,7 +5,16 @@ const btnLogin = document.getElementById("login");
 
 btnRegister.addEventListener("click", () => container.classList.add("active"));
 btnLogin.addEventListener("click", () => container.classList.remove("active"));
+window.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const mode = params.get("mode");
 
+  if (mode === "register") {
+    container.classList.add("active"); // Mostrar formulario de registro
+  } else {
+    container.classList.remove("active"); // Mostrar formulario de login
+  }
+});
 // === REGISTRO ===
 document.getElementById("form-register").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -61,7 +70,7 @@ document.getElementById("form-login").addEventListener("submit", async (e) => {
       if (usuario.rol === "usuario") {
         window.location.href = "/inicio.html";
       } else if (usuario.rol === "administrador") {
-        window.location.href = "/components/paginadmin.html";
+        window.location.href = "/admin.html";
       } else {
         alert("Rol no reconocido.");
       }
