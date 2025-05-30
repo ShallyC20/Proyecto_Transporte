@@ -24,7 +24,6 @@
   <div id="alertaExito" class="alerta-centrada">✅ El pago se realizó con éxito.</div>
 
   <script>
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyCPyRTvy7EEvAxs1dZjwKk68IR4R-ZPlbQ",
       authDomain: "transportesgeolocalizacion.firebaseapp.com",
@@ -99,46 +98,55 @@
     });
 
     async function confirmarPago() {
-  const alerta = document.getElementById("alertaExito");
-  alerta.classList.add("visible");
+      const alerta = document.getElementById("alertaExito");
+      alerta.classList.add("visible");
 
-  setTimeout(() => {
-    alerta.classList.remove("visible");
-  }, 2000);
+      setTimeout(() => {
+        alerta.classList.remove("visible");
+      }, 2000);
 
-  const user = firebase.auth().currentUser;
-  const datos = JSON.parse(localStorage.getItem("datosPago"));
-  if (!user || !datos) {
-    console.warn("Usuario no autenticado o datos vacíos.");
-    return;
-  }
+      const user = firebase.auth().currentUser;
+      const datos = JSON.parse(localStorage.getItem("datosPago"));
+      const vehiculo = JSON.parse(localStorage.getItem("vehiculoEnAlquiler"));
 
-  try {
-    await db.collection("usuarios")
-      .doc(user.uid)
-      .collection("pagos")
-      .add({
-        modelo: datos.modelo,
-        estacion: datos.estacion,
-        inicio: datos.inicio.replace("T", " "),
-        fin: datos.fin.replace("T", " "),
-        horas: datos.horas,
-        total: parseFloat(datos.total),
-        metodo: datos.metodo,
-        creado: firebase.firestore.FieldValue.serverTimestamp()
-      });
+      if (!user || !datos || !vehiculo || !vehiculo.docId) {
+        console.warn("Faltan datos de usuario, pago o vehículo.");
+        return;
+      }
 
-    console.log("✅ Pago guardado en Firestore.");
+      try {
+        // Guardar el pago
+        await db.collection("usuarios")
+          .doc(user.uid)
+          .collection("pagos")
+          .add({
+            modelo: datos.modelo,
+            estacion: datos.estacion,
+            inicio: datos.inicio.replace("T", " "),
+            fin: datos.fin.replace("T", " "),
+            horas: datos.horas,
+            total: parseFloat(datos.total),
+            metodo: datos.metodo,
+            creado: firebase.firestore.FieldValue.serverTimestamp()
+          });
 
-    // Redireccionar después de la alerta
-    setTimeout(() => {
-      window.location.href = "/index.html";
-    }, 2100);
+        // Actualizar estado del vehículo
+        await db.collection("transporte")
+          .doc(vehiculo.docId)
+          .update({
+            estado: "En uso"
+          });
 
-  } catch (e) {
-    console.error("❌ Error al guardar en Firestore:", e);
-  }
-}
+        console.log("✅ Pago registrado y vehículo marcado como 'En uso'.");
+
+        setTimeout(() => {
+          window.location.href = "/index.html";
+        }, 2100);
+
+      } catch (e) {
+        console.error("❌ Error al confirmar el pago:", e);
+      }
+    }
   </script>
 </body>
 </html>

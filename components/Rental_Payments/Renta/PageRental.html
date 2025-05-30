@@ -83,7 +83,16 @@
         document.getElementById("modelo").value = data.nombre;
         document.getElementById("estacion").value = data.estacion;
         const ahora = new Date();
-        document.getElementById("fechaInicio").value = ahora.toISOString().slice(0, 16);
+        function formatoFechaLocal(date) {
+  const año = date.getFullYear();
+  const mes = String(date.getMonth() + 1).padStart(2, '0');
+  const dia = String(date.getDate()).padStart(2, '0');
+  const hora = String(date.getHours()).padStart(2, '0');
+  const minutos = String(date.getMinutes()).padStart(2, '0');
+  return `${año}-${mes}-${dia}T${hora}:${minutos}`;
+}
+
+document.getElementById("fechaInicio").value = formatoFechaLocal(ahora);
 
         let badgeClass = "";
         if (data.estado === "Disponible") badgeClass = "badge-disponible";
@@ -100,18 +109,27 @@
             <p><strong>Tarifa:</strong> Bs ${data.tarifa.toFixed(2)}/hora</p>
             <p><strong>Estación:</strong> ${data.estacion}</p>
             <p><strong>Descripción:</strong><br>${data.descripcion}</p>
-            <p><strong>Tecnología:</strong></p>
-            <ul>${data.tecnologia.map(t => `<li>${t}</li>`).join("")}</ul>
           </div>
         `;
 
-        document.getElementById("duracion").addEventListener("input", () => {
-          const horas = parseInt(document.getElementById("duracion").value) || 0;
-          const fechaInicio = new Date(document.getElementById("fechaInicio").value);
-          const fechaFinal = new Date(fechaInicio.getTime() + horas * 60 * 60 * 1000);
-          document.getElementById("horaFinal").value = fechaFinal.toISOString().slice(0, 16);
-          document.getElementById("precio").value = (horas * data.tarifa).toFixed(2);
-        });
+function formatoFechaLocal(date) {
+  const año = date.getFullYear();
+  const mes = String(date.getMonth() + 1).padStart(2, '0');
+  const dia = String(date.getDate()).padStart(2, '0');
+  const hora = String(date.getHours()).padStart(2, '0');
+  const minutos = String(date.getMinutes()).padStart(2, '0');
+  return `${año}-${mes}-${dia}T${hora}:${minutos}`;
+}
+
+// Lógica del evento input
+document.getElementById("duracion").addEventListener("input", () => {
+  const horas = parseInt(document.getElementById("duracion").value) || 0;
+  const fechaInicio = new Date(document.getElementById("fechaInicio").value);
+  const fechaFinal = new Date(fechaInicio.getTime() + horas * 60 * 60 * 1000);
+
+  document.getElementById("horaFinal").value = formatoFechaLocal(fechaFinal);
+  document.getElementById("precio").value = (horas * data.tarifa).toFixed(2);
+});
 
         document.getElementById("confirmarAlquiler").addEventListener("click", () => {
           const horas = parseInt(document.getElementById("duracion").value);
