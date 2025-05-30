@@ -25,7 +25,7 @@ document.getElementById("form-register").addEventListener("submit", async (e) =>
     });
 
     alert("¡Registro exitoso!");
-    window.location.href = "/index.html";
+    window.location.href = "/inicio.html";
   } catch (error) {
     alert("Error al registrar: " + error.message);
   }
@@ -44,7 +44,7 @@ document.getElementById("form-login").addEventListener("submit", async (e) => {
     const doc = await db.collection("usuarios").doc(uid).get();
     if (doc.exists) {
       localStorage.setItem("usuario", JSON.stringify(doc.data()));
-      window.location.href = "/index.html";
+      window.location.href = "/inicio.html";
     } else {
       alert("Usuario no encontrado en Firestore.");
     }
