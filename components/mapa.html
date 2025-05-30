@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div id="mainHeaderContainer"></div>
+    <div id="mainHeaderContainers"></div>
     <section class="mapprincipal">
         <div class="titulo">
             <h2>Ubicaciones - <strong>Visualización de puntos de Control</strong></h2>
@@ -54,6 +54,23 @@
             .then(html => {
                 document.getElementById("mainFooterContainer").innerHTML = html;
             });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        fetch("/components/Rental_Payments/Templates/Header.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("mainHeaderContainers").innerHTML = html;
+                setTimeout(() => {
+                    const usuario = JSON.parse(localStorage.getItem("usuario"));
+                    if (usuario) {
+                        document.getElementById("userName").textContent = usuario.nombre || "Usuario";
+                        document.getElementById("userAvatar").src = usuario.imagen || "";
+                    }
+                }, 100);
+            })
+            .catch(err => console.error("Error al cargar el header:", err));
     });
 </script>
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>

@@ -8,3 +8,303 @@ body
     margin: 0;
     border: 0;
 }
+/* Contenedor general */
+/* Contenedor principal */
+.PaginaRenta {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Centrado del contenido */
+.contenedor-centro {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+/* Tarjeta contenedora */
+.tarjeta-alquiler {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  width: 100%;
+  background-color: #2a2b34;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* FORMULARIO */
+.formulario-alquiler {
+  flex: 1 1 50%;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.formulario-alquiler h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #aabcf7;
+}
+
+.formulario-alquiler label {
+  display: block;
+  margin-top: 0.6rem;
+  font-weight: 600;
+  color: #eaeaea;
+}
+.formulario-alquiler input,
+.formulario-alquiler select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #444;
+  font-size: 1rem;
+  background-color: #1e1f26;
+  color: #eaeaea;
+}
+
+#precio[readonly],
+#modelo[readonly],
+#estacion[readonly],
+#fechaInicio[readonly] {
+  background-color: #282a36;
+  border: 1px solid #555;
+}
+
+/* Botón */
+#confirmarAlquiler {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #aabcf7;
+  color: #1e1f26;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.8rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#confirmarAlquiler:hover {
+  background-color: #9fb4ff;
+}
+
+/* Resumen */
+.resumen-alquiler {
+  background-color: #1e1f26;
+  color: #dcdcdc;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  font-size: 1rem;
+}
+
+/* DETALLES VEHÍCULO */
+.detalles-transporte {
+  flex: 1 1 50%;
+  background-color: #2a2b34;
+  color: white;
+  padding: 2rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tarjeta del vehículo */
+.detalle-card {
+  width: 100%;
+  max-width: 350px;
+  background-color: #1e1f26;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Imagen del vehículo */
+.imagen-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.imagen-container img {
+  width: 100%;
+  max-width: 220px;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  object-fit: contain;
+  background-color: white;
+}
+
+/* Nombre del vehículo */
+.detalle-nombre {
+  color: #aabcf7;
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+/* Información */
+.detalle-info p {
+  margin: 0.5rem 0;
+  line-height: 1.4;
+  font-size: 0.95rem;
+}
+
+.detalle-info ul {
+  padding-left: 1.2rem;
+  margin-top: 0.3rem;
+}
+
+.detalle-info li {
+  font-size: 0.9rem;
+}
+
+/* Badges */
+.badge-disponible {
+  display: inline-block;
+  background-color: #83a866;
+  color: #1e1f26;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  text-align: center;
+  margin: 0 auto 1rem auto;
+  display: block;
+}
+
+.badge-en-uso {
+  background-color: #ffbb33;
+  color: #1e1f26;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-weight: bold;
+  width: fit-content;
+  margin: 0 auto 1rem auto;
+}
+
+.badge-mante {
+  background-color: #e74c3c;
+  color: white;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-weight: bold;
+  width: fit-content;
+  margin: 0 auto 1rem auto;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .tarjeta-alquiler {
+    flex-direction: column;
+  }
+
+  .formulario-alquiler,
+  .detalles-transporte {
+    border-radius: 0;
+  }
+
+  .formulario-alquiler {
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+  }
+
+  .detalles-transporte {
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+  }
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.8rem 0 1.5rem;
+  color: #eaeaea;
+  font-weight: 500;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: #ccc;
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+}
+
+.slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background-color: white;
+  bottom: 3px;
+  left: 4px;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #aabcf7;
+}
+
+input:checked + .slider::before {
+  transform: translateX(24px);
+}
+.selector-pago {
+  display: flex;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #444;
+}
+
+.selector-pago input[type="radio"] {
+  display: none;
+}
+
+.opcion-pago {
+  flex: 1;
+  padding: 0.8rem;
+  text-align: center;
+  background-color: #1e1f26;
+  color: #eaeaea;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  font-weight: 600;
+  user-select: none;
+}
+
+.selector-pago input[type="radio"]:checked + .opcion-pago {
+  background-color: #aabcf7;
+  color: #1e1f26;
+}
+

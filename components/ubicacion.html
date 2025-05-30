@@ -24,7 +24,7 @@
 </head>
 <body>
 
-  <div id="mainHeaderContainer"></div>
+  <div id="mainHeaderContainers"></div>
 
   <main class="main-content">
     <section class="info-section">
@@ -48,21 +48,7 @@
   </main>
   
   <!-- Script para cargar el Header y Activar Funcionalidades -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      fetch("../components/mainHeader.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("mainHeaderContainer").innerHTML = html;
-          
-          // Cargar script del menú después de insertar el HTML
-          const menuScript = document.createElement("script");
-          menuScript.src = "../js/menu.js";
-          document.body.appendChild(menuScript);
-        })
-        .catch(err => console.log("Error al cargar mainHeader.html:", err));
-    });
-  </script>
+
 
   <!-- Script externo -->
   <script src="../js/ubicacion.js"></script>
@@ -79,5 +65,23 @@
         .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
+      <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainers").innerHTML = html;
+          setTimeout(() => {
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
+            if (usuario) {
+              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
+              document.getElementById("userAvatar").src = usuario.imagen || "";
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
+    });
+  </script>
+
 </body>
 </html>

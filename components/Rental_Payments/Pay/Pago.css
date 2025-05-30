@@ -1,0 +1,140 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #ffffff;
+}
+
+.PaginaPago {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.contenedor-pago {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding: 2rem;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.pago-left {
+  flex: 1 1 300px;
+  max-width: 400px;
+  background-color: #2a2a3d;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.metodo {
+  background-color: #1f1f2f;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
+}
+
+.metodo h3 {
+  color: #aabcf7;
+  font-size: 1.4rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.metodo input {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border-radius: 12px;
+  border: none;
+  background-color: #2e2f45;
+  color: #e0e0e0;
+  font-size: 1rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.metodo input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #aabcf7;
+}
+
+.metodo button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #aabcf7;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  color: #1e1f26;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.metodo button:hover {
+  background-color: #94aaf5;
+}
+
+.metodo.qr {
+  text-align: center;
+}
+
+.metodo.qr img {
+  max-width: 200px;
+  margin-top: 0.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.1);
+}
+
+.detalle-card {
+  flex: 1 1 300px;
+  max-width: 400px;
+  background-color: #1e1f26;
+  border-radius: 20px;
+  padding: 2rem;
+  color: white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.detalle-card h2 {
+  text-align: center;
+  color: #aabcf7;
+  margin-bottom: 1.5rem;
+}
+
+.detalle-card p {
+  margin: 0.4rem 0;
+  font-size: 0.96rem;
+  line-height: 1.4;
+}
+
+.detalle-card strong {
+  color: #f0f0f0;
+}
+.alerta-centrada {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  background-color: #2a2a3d;
+  color: #aabcf7;
+  padding: 1.2rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  z-index: 9999;
+}
+
+.alerta-centrada.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}

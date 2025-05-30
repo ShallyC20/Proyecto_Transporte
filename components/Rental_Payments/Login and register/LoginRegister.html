@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+  />
+  <link rel="stylesheet" href="LoginRegister.css" />
+  <title>Login Page</title>
+</head>
+
+<body>
+  <div class="Login-Register">  
+    <div class="Container-RL" id="container">
+      
+      <!-- REGISTRO -->
+      <div class="form-container sign-up">
+        <form id="form-register">
+          <div class="social-icons">
+            <img src="Logo.png" alt="Logo" />
+          </div>
+          <h1>Crea una Cuenta</h1>
+          <span>o usa tu correo para registrarte</span>
+          <input type="text" id="nombre" placeholder="Nombre" required />
+          <input type="email" id="correo" placeholder="Correo" required />
+          <input type="password" id="contrasena" placeholder="Contraseña" required />
+          <button type="submit">Registrate</button>
+        </form>
+      </div>
+
+      <!-- INICIO DE SESIÓN -->
+      <div class="form-container sign-in">
+        <form id="form-login">
+          <div class="social-icons">
+            <img src="Logo.png" alt="Logo" />
+          </div>
+          <h1>Inicia Sesión</h1>
+          <span>o usa tu correo y contraseña</span>
+          <input type="email" id="login-correo" placeholder="Correo" required />
+          <input type="password" id="login-contrasena" placeholder="Contraseña" required />
+          <button type="submit">Inicia Sesión</button>
+        </form>
+      </div>
+
+      <!-- PANEL DESLIZANTE -->
+      <div class="toggle-container">
+        <div class="toggle">
+          <div class="toggle-panel toggle-left">
+            <h1>Bienvenido de vuelta</h1>
+            <p>Ingresa tus detalles personales para acceder a tu cuenta</p>
+            <button class="hidden" id="login">Inicia Sesión</button>
+          </div>
+          <div class="toggle-panel toggle-right">
+            <h1>¡Hola, Amig@!</h1>
+            <p>Regístrate con tus datos personales para usar el sistema</p>
+            <button class="hidden" id="register">Regístrate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
+
+  <!-- Conexión a Firebase (tu archivo de config) -->
+  <script src="../../../js/conexionFireBase.js"></script>
+
+  <!-- Lógica de login/registro -->
+  <script src="LoginRegister.js"></script>
+</body>
+</html>

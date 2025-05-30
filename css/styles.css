@@ -14,11 +14,6 @@ body {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-header {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
 
 .header-content {
   width: 100%;

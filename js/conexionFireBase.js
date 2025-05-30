@@ -1,18 +1,17 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyCPyRTvy7EEvAxs1dZjwKk68IR4R-ZPlbQ",
-    authDomain: "transportesgeolocalizacion.firebaseapp.com",
-    projectId: "transportesgeolocalizacion",
-    storageBucket: "transportesgeolocalizacion.firebasestorage.app",
-    messagingSenderId: "200393220762",
-    appId: "1:200393220762:web:0f9e9e1ed19b4ba5b4b523",
-    measurementId: "G-PN7FB0RTDM"
+  apiKey: "AIzaSyCPyRTvy7EEvAxs1dZjwKk68IR4R-ZPlbQ",
+  authDomain: "transportesgeolocalizacion.firebaseapp.com",
+  projectId: "transportesgeolocalizacion",
+  storageBucket: "transportesgeolocalizacion.firebasestorage.app",
+  messagingSenderId: "200393220762",
+  appId: "1:200393220762:web:0f9e9e1ed19b4ba5b4b523",
+  measurementId: "G-PN7FB0RTDM"
 };
 
 // Inicia el Firebase
 firebase.initializeApp(firebaseConfig);
-
-// Obtiene la base de datos de Firebase, mas que todo el FireStore
-const db = firebase.firestore();
+window.db = firebase.firestore();
+window.auth = firebase.auth();
 
 let usuarios = db.collection("usuarios");
 let transportes = db.collection("transporte");
