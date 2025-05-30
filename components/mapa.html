@@ -3,24 +3,43 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/mapas.css" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/components/mapa.css">
     <title>Document</title>
 </head>
 
 <body>
     <div id="mainHeaderContainers"></div>
-    <div>Este va a ser el mapa XD</div>
-    <button onclick="leerDocumentos()">Leer usuarios</button>
-    <ul id="listaUsuarios"></ul>
+    <section class="mapprincipal">
+        <div class="titulo">
+            <h2>Ubicaciones - <strong>Visualización de puntos de Control</strong></h2>
+        </div>
+        <div class="tarjetaMapaPrin">
+            <div class="contmapa">
+                <div id="map" class="mapa"></div>
+            </div>
+            <div id="coordenadas" class="coordenadas"></div>
+        </div>
+    </section>
+    <section class="infoubicaciones">
+        <div id="contetarjetasubi" class="contetarjetasubi">
+        </div>
+    </section>
+    <!-- Footer -->
     <div id="mainFooterContainer"></div>
 </body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
 
-<script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
-<script type="module" src="/js/conexionFireBase.js"></script>
-<script type="module" src=""></script>
-
+        fetch('/components/footer.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("mainFooterContainer").innerHTML = html;
+            });
+    });
+</script>
       <script>
     document.addEventListener("DOMContentLoaded", async () => {
       fetch("/components/Rental_Payments/Templates/Header.html")
@@ -37,10 +56,10 @@
         })
         .catch(err => console.error("Error al cargar el header:", err));
     });
-          fetch("/components/Rental_Payments/Templates/Footer.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("mainFooterContainer").innerHTML = html;
-        });
   </script>
+<script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script type="module" src="/js/mapas.js"></script>
+
 </html>
