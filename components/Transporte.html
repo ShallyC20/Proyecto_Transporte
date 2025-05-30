@@ -12,7 +12,7 @@
 </head>
 <body>
 
-  <div id="mainHeaderContainer"></div>
+  <div id="mainHeaderContainers"></div>
 
   <section class="pagina-transporte">
     <header class="header">
@@ -144,6 +144,23 @@
           document.getElementById("mainFooterContainer").innerHTML = html;
         })
         .catch(err => console.error("Error al cargar el footer:", err));
+    });
+  </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainers").innerHTML = html;
+          setTimeout(() => {
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
+            if (usuario) {
+              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
+              document.getElementById("userAvatar").src = usuario.imagen || "";
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
     });
   </script>
 </body>

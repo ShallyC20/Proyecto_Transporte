@@ -14,7 +14,7 @@
 </head>
 <body>
 
-  <div id="mainHeaderContainer"></div>
+  <div id="mainHeaderContainers"></div>
 
   <header class="header">
     <h2>Sistema de Alquiler - <strong>Consultas de ubicación y disponibilidad</strong></h2>
@@ -48,11 +48,6 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('../components/mainHeader.html')
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("mainHeaderContainer").innerHTML = html;
-        });
 
       fetch('../components/footer.html')
         .then(res => res.text())
@@ -63,6 +58,23 @@
       if (typeof cargarUbicacionesDesdeFirebase === 'function') {
         cargarUbicacionesDesdeFirebase();
       }
+    });
+  </script>
+      <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainers").innerHTML = html;
+          setTimeout(() => {
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
+            if (usuario) {
+              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
+              document.getElementById("userAvatar").src = usuario.imagen || "";
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
     });
   </script>
 </body>
