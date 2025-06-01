@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Renta</title>
   <link rel="stylesheet" href="/components/Rental_Payments/Renta/PageRental.css" />
 </head>
+
 <body>
   <div class="PaginaRenta">
     <div id="mainHeaderContainer"></div>
@@ -84,15 +86,15 @@
         document.getElementById("estacion").value = data.estacion;
         const ahora = new Date();
         function formatoFechaLocal(date) {
-  const año = date.getFullYear();
-  const mes = String(date.getMonth() + 1).padStart(2, '0');
-  const dia = String(date.getDate()).padStart(2, '0');
-  const hora = String(date.getHours()).padStart(2, '0');
-  const minutos = String(date.getMinutes()).padStart(2, '0');
-  return `${año}-${mes}-${dia}T${hora}:${minutos}`;
-}
+          const año = date.getFullYear();
+          const mes = String(date.getMonth() + 1).padStart(2, '0');
+          const dia = String(date.getDate()).padStart(2, '0');
+          const hora = String(date.getHours()).padStart(2, '0');
+          const minutos = String(date.getMinutes()).padStart(2, '0');
+          return `${año}-${mes}-${dia}T${hora}:${minutos}`;
+        }
 
-document.getElementById("fechaInicio").value = formatoFechaLocal(ahora);
+        document.getElementById("fechaInicio").value = formatoFechaLocal(ahora);
 
         let badgeClass = "";
         if (data.estado === "Disponible") badgeClass = "badge-disponible";
@@ -112,24 +114,24 @@ document.getElementById("fechaInicio").value = formatoFechaLocal(ahora);
           </div>
         `;
 
-function formatoFechaLocal(date) {
-  const año = date.getFullYear();
-  const mes = String(date.getMonth() + 1).padStart(2, '0');
-  const dia = String(date.getDate()).padStart(2, '0');
-  const hora = String(date.getHours()).padStart(2, '0');
-  const minutos = String(date.getMinutes()).padStart(2, '0');
-  return `${año}-${mes}-${dia}T${hora}:${minutos}`;
-}
+        function formatoFechaLocal(date) {
+          const año = date.getFullYear();
+          const mes = String(date.getMonth() + 1).padStart(2, '0');
+          const dia = String(date.getDate()).padStart(2, '0');
+          const hora = String(date.getHours()).padStart(2, '0');
+          const minutos = String(date.getMinutes()).padStart(2, '0');
+          return `${año}-${mes}-${dia}T${hora}:${minutos}`;
+        }
 
-// Lógica del evento input
-document.getElementById("duracion").addEventListener("input", () => {
-  const horas = parseInt(document.getElementById("duracion").value) || 0;
-  const fechaInicio = new Date(document.getElementById("fechaInicio").value);
-  const fechaFinal = new Date(fechaInicio.getTime() + horas * 60 * 60 * 1000);
+        // Lógica del evento input
+        document.getElementById("duracion").addEventListener("input", () => {
+          const horas = parseInt(document.getElementById("duracion").value) || 0;
+          const fechaInicio = new Date(document.getElementById("fechaInicio").value);
+          const fechaFinal = new Date(fechaInicio.getTime() + horas * 60 * 60 * 1000);
 
-  document.getElementById("horaFinal").value = formatoFechaLocal(fechaFinal);
-  document.getElementById("precio").value = (horas * data.tarifa).toFixed(2);
-});
+          document.getElementById("horaFinal").value = formatoFechaLocal(fechaFinal);
+          document.getElementById("precio").value = (horas * data.tarifa).toFixed(2);
+        });
 
         document.getElementById("confirmarAlquiler").addEventListener("click", () => {
           const horas = parseInt(document.getElementById("duracion").value);
@@ -160,4 +162,5 @@ document.getElementById("duracion").addEventListener("input", () => {
     });
   </script>
 </body>
+
 </html>
