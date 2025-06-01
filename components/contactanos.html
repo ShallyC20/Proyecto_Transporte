@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,8 +15,9 @@
 
   <!-- Estilos de Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  
+
 </head>
+
 <body>
 
   <div id="mainHeaderContainers"></div>
@@ -37,24 +39,13 @@
       <h2>Envíanos un mensaje</h2>
       <form id="formularioContacto" action="https://formspree.io/f/xblonpdd" method="POST">
         <label for="nombre">Nombre:</label>
-        <input
-          type="text"
-          id="nombre"
-          name="nombre"
-          required
-          pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
-          title="Solo se permiten letras y espacios"
-        >
-        <div id="nombreError" class="error-message" style="display:none;">Por favor ingresa solo letras y espacios.</div>
+        <input type="text" id="nombre" name="nombre" required pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+$"
+          title="Solo se permiten letras y espacios">
+        <div id="nombreError" class="error-message" style="display:none;">Por favor ingresa solo letras y espacios.
+        </div>
 
         <label for="email">Correo electrónico:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          required
-          title="Introduce un correo electrónico válido"
-        >
+        <input type="email" id="email" name="email" required title="Introduce un correo electrónico válido">
         <div id="emailError" class="error-message" style="display:none;">Por favor ingresa un correo válido.</div>
 
         <label for="mensaje">Mensaje:</label>
@@ -139,17 +130,59 @@
       .bindPopup("Escuela Militar de Ingeniería (EMI) - Bajo Irpavi")
       .openPopup();
   </script>
-    <script>
+  <script>
     document.addEventListener("DOMContentLoaded", async () => {
+      // Cargar Header
       fetch("/components/Rental_Payments/Templates/Header.html")
         .then(res => res.text())
         .then(html => {
-          document.getElementById("mainHeaderContainers").innerHTML = html;
+          const container = document.getElementById("mainHeaderContainers");
+
+          // Crear un contenedor temporal
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+
+          // Ejecutar scripts embebidos manualmente
+          const scripts = temp.querySelectorAll("script");
+          scripts.forEach(script => {
+            const newScript = document.createElement("script");
+            if (script.src) {
+              newScript.src = script.src;
+            } else {
+              newScript.textContent = script.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+
+          // Limpiar los scripts del HTML antes de insertar
+          temp.querySelectorAll("script").forEach(s => s.remove());
+
+          // Agregar el HTML restante al contenedor
+          container.innerHTML = temp.innerHTML;
+
+          // Esperar a que el DOM del header esté listo
           setTimeout(() => {
-            const usuario = JSON.parse(localStorage.getItem("usuario"));
-            if (usuario) {
-              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
-              document.getElementById("userAvatar").src = usuario.imagen || "";
+            const usuarioRaw = localStorage.getItem("usuario");
+            if (!usuarioRaw) return;
+
+            try {
+              const usuario = JSON.parse(usuarioRaw);
+              const nombre = usuario.nombre || "Usuario";
+              const imagen = usuario.imagen || "/imag/monito.png";
+
+              const userNameLabel = document.getElementById("userName");
+              if (userNameLabel) userNameLabel.textContent = nombre;
+
+              const userAvatar = document.getElementById("userAvatar");
+              if (userAvatar) userAvatar.src = imagen;
+
+              const avatarMenu = document.getElementById("avatarMenu");
+              const nombreMenu = document.getElementById("nombreMenu");
+              if (avatarMenu) avatarMenu.src = imagen;
+              if (nombreMenu) nombreMenu.textContent = nombre;
+
+            } catch (error) {
+              console.error("Error al parsear usuario desde localStorage:", error);
             }
           }, 100);
         })
@@ -158,4 +191,5 @@
   </script>
 
 </body>
+
 </html>

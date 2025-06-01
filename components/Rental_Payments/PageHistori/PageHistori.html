@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Historial de Pagos</title>
   <link rel="stylesheet" href="/components/Rental_Payments/PageHistori/PageHistori.css" />
 </head>
+
 <body>
-  <div id="mainHeaderContainer"></div>
+  <div id="mainHeaderContainers"></div>
 
   <main class="PaginaHistorialViajes">
     <h1>HISTORIAL DE PAGOS</h1>
@@ -31,9 +33,7 @@
           <th>Método de Pago</th>
         </tr>
       </thead>
-      <tbody id="tablaHistorialPagos">
-        <!-- Se insertan los pagos -->
-      </tbody>
+      <tbody id="tablaHistorialPagos"></tbody>
     </table>
 
     <div id="paginacionContainer" class="paginacion"></div>
@@ -46,6 +46,62 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="/js/conexionFireBase.js"></script>
 
+  <!-- Carga del Header con ejecución de scripts -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Cargar Header
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          const container = document.getElementById("mainHeaderContainers");
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+
+          const scripts = temp.querySelectorAll("script");
+          scripts.forEach(script => {
+            const newScript = document.createElement("script");
+            if (script.src) {
+              newScript.src = script.src;
+            } else {
+              newScript.textContent = script.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+
+          temp.querySelectorAll("script").forEach(s => s.remove());
+          container.innerHTML = temp.innerHTML;
+
+          setTimeout(() => {
+            const usuarioRaw = localStorage.getItem("usuario");
+            if (!usuarioRaw) return;
+
+            try {
+              const usuario = JSON.parse(usuarioRaw);
+              const nombre = usuario.nombre || "Usuario";
+              const imagen = usuario.imagen || "/imag/monito.png";
+
+              const userNameLabel = document.getElementById("userName");
+              if (userNameLabel) userNameLabel.textContent = nombre;
+
+              const userAvatar = document.getElementById("userAvatar");
+              if (userAvatar) userAvatar.src = imagen;
+
+              const avatarMenu = document.getElementById("avatarMenu");
+              const nombreMenu = document.getElementById("nombreMenu");
+
+              if (avatarMenu) avatarMenu.src = imagen;
+              if (nombreMenu) nombreMenu.textContent = nombre;
+
+            } catch (error) {
+              console.error("Error al parsear usuario desde localStorage:", error);
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
+    });
+  </script>
+
+  <!-- Lógica del Historial de Pagos -->
   <script>
     let todosLosPagos = [];
     let pagosFiltrados = [];
@@ -53,28 +109,13 @@
     let paginaActual = 1;
 
     document.addEventListener("DOMContentLoaded", async () => {
-      // Cargar Header
-      fetch("../Templates/Header.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("mainHeaderContainer").innerHTML = html;
-          setTimeout(() => {
-            const usuario = JSON.parse(localStorage.getItem("usuario"));
-            if (usuario) {
-              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
-              document.getElementById("userAvatar").src = usuario.imagen || "";
-            }
-          }, 100);
-        });
-
-      // Cargar Footer
-      fetch("../Templates/Footer.html")
+      // Footer
+      fetch("/components/Rental_Payments/Templates/Footer.html")
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainFooterContainer").innerHTML = html;
         });
 
-      // Obtener usuario y pagos
       const usuario = JSON.parse(localStorage.getItem("usuario"));
       if (!usuario || !usuario.correo) return;
 
@@ -129,7 +170,6 @@
         tabla.appendChild(fila);
       });
 
-      // Paginación visual
       if (totalPaginas > 1) {
         const crearBoton = (texto, numero, activo = false) => {
           const btn = document.createElement("button");
@@ -152,15 +192,14 @@
 
     function filtrarPorFecha() {
       const fecha = document.getElementById("buscarFecha").value;
-      if (!fecha) {
-        pagosFiltrados = [...todosLosPagos];
-      } else {
-        pagosFiltrados = todosLosPagos.filter(p => p.inicio && p.inicio.startsWith(fecha));
-      }
+      pagosFiltrados = fecha
+        ? todosLosPagos.filter(p => p.inicio && p.inicio.startsWith(fecha))
+        : [...todosLosPagos];
 
       paginaActual = 1;
       renderPagosConPaginacion(pagosFiltrados, paginaActual);
     }
   </script>
 </body>
+
 </html>

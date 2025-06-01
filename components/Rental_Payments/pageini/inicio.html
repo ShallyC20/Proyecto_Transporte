@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <title>BISITRACK - Renta</title>
   <link rel="stylesheet" href="/components/Rental_Payments/pageini/inicio.css" />
 </head>
+
 <body>
 
   <!-- HEADER -->
@@ -26,151 +28,159 @@
             Con BISITRACK puedes monitorear, optimizar y gestionar tu red de vehículos en tiempo real.
           </p>
           <div class="pageini-buttons">
-            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=login" class="pageini-btn-outline">Iniciar sesión</a>
-            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=register" class="pageini-btn-filled">Registrarse</a>
+            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=login"
+              class="pageini-btn-outline">Iniciar sesión</a>
+            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=register"
+              class="pageini-btn-filled">Registrarse</a>
           </div>
         </div>
       </div>
     </section>
 
     <!-- SERVICIO -->
-<section id="servicio" class="pageini-carousel-section">
-  <h2 class="pageini-carousel-title">Servicio de Transporte</h2>
+    <section id="servicio" class="pageini-carousel-section">
+      <h2 class="pageini-carousel-title">Servicio de Transporte</h2>
 
-  <!-- TEXTO INFORMATIVO -->
-  <div class="pageini-info-transporte">
-    <p>
-      ¡Explora la ciudad de forma ecológica! BISITRACK te ofrece estaciones inteligentes de bicicletas y monopatines eléctricos en puntos clave de La Paz:
-      <strong>EMI - Obrajes</strong>, <strong>Irpavi</strong>, <strong>Obrajes</strong> y <strong>Alto Irpavi</strong>.
-      Desde cada estación puedes alquilar tu transporte, planificar tu ruta y moverte con total libertad.
-    </p>
-  </div>
-
-  <!-- CARRUSEL DE TARJETAS -->
-  <div class="pageini-carousel-container">
-    <button class="pageini-carousel-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
-
-    <div class="pageini-carousel" id="pageini-carousel">
-
-      <!-- Tarjeta 1 -->
-      <div class="pageini-card">
-        <img src="/components/Rental_Payments/pageini/emi.png" alt="Unidad 1">
-        <h3>Escuela Militar de Ingeniería</h3>
-        <p>Punto principal de alquiler en Obrajes, con acceso rápido a toda la zona sur.</p>
+      <!-- TEXTO INFORMATIVO -->
+      <div class="pageini-info-transporte">
+        <p>
+          ¡Explora la ciudad de forma ecológica! BISITRACK te ofrece estaciones inteligentes de bicicletas y monopatines
+          eléctricos en puntos clave de La Paz:
+          <strong>EMI - Obrajes</strong>, <strong>Irpavi</strong>, <strong>Obrajes</strong> y <strong>Alto
+            Irpavi</strong>.
+          Desde cada estación puedes alquilar tu transporte, planificar tu ruta y moverte con total libertad.
+        </p>
       </div>
 
-      <!-- Tarjeta 2 -->
-      <div class="pageini-card">
-        <img src="/components/Rental_Payments/pageini/Irpavi.png" alt="Ruta 2">
-        <h3>Irpavi</h3>
-        <p>Ideal para desplazarte entre residenciales y avenidas principales de la zona este.</p>
+      <!-- CARRUSEL DE TARJETAS -->
+      <div class="pageini-carousel-container">
+        <button class="pageini-carousel-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
+
+        <div class="pageini-carousel" id="pageini-carousel">
+
+          <!-- Tarjeta 1 -->
+          <div class="pageini-card">
+            <img src="/components/Rental_Payments/pageini/emi.png" alt="Unidad 1">
+            <h3>Escuela Militar de Ingeniería</h3>
+            <p>Punto principal de alquiler en Obrajes, con acceso rápido a toda la zona sur.</p>
+          </div>
+
+          <!-- Tarjeta 2 -->
+          <div class="pageini-card">
+            <img src="/components/Rental_Payments/pageini/Irpavi.png" alt="Ruta 2">
+            <h3>Irpavi</h3>
+            <p>Ideal para desplazarte entre residenciales y avenidas principales de la zona este.</p>
+          </div>
+
+          <!-- Tarjeta 3 -->
+          <div class="pageini-card">
+            <img src="/components/Rental_Payments/pageini/Obrajes.png" alt="Horarios">
+            <h3>Obrajes</h3>
+            <p>Zona intermedia con alta conectividad hacia el centro y la parte sur de la ciudad.</p>
+          </div>
+
+          <!-- Tarjeta 4 -->
+          <div class="pageini-card">
+            <img src="/components/Rental_Payments/pageini/Altoirpavi.png" alt="Reportes">
+            <h3>Alto Irpavi</h3>
+            <p>Zona residencial con caminos ideales para recorrer en monopatín o bicicleta eléctrica.</p>
+          </div>
+
+        </div>
+
+        <button class="pageini-carousel-btn right" onclick="scrollCarousel(1)">&#10095;</button>
       </div>
 
-      <!-- Tarjeta 3 -->
-      <div class="pageini-card">
-        <img src="/components/Rental_Payments/pageini/Obrajes.png" alt="Horarios">
-        <h3>Obrajes</h3>
-        <p>Zona intermedia con alta conectividad hacia el centro y la parte sur de la ciudad.</p>
-      </div>
-
-      <!-- Tarjeta 4 -->
-      <div class="pageini-card">
-        <img src="/components/Rental_Payments/pageini/Altoirpavi.png" alt="Reportes">
-        <h3>Alto Irpavi</h3>
-        <p>Zona residencial con caminos ideales para recorrer en monopatín o bicicleta eléctrica.</p>
-      </div>
-
-    </div>
-
-    <button class="pageini-carousel-btn right" onclick="scrollCarousel(1)">&#10095;</button>
-  </div>
-
-  <!-- MAPA DE UBICACIONES -->
-  <div id="mapa-transporte" style="height: 400px; margin-top: 50px; border-radius: 12px;"></div>
-</section>
+      <!-- MAPA DE UBICACIONES -->
+      <div id="mapa-transporte" style="height: 400px; margin-top: 50px; border-radius: 12px;"></div>
+    </section>
 
     <!-- NOSOTROS -->
-<section id="nosotros" class="pageini-nosotros">
-  <h2 class="pageini-nosotros-title">Sobre Nosotros</h2>
-  <div class="pageini-nosotros-cards">
+    <section id="nosotros" class="pageini-nosotros">
+      <h2 class="pageini-nosotros-title">Sobre Nosotros</h2>
+      <div class="pageini-nosotros-cards">
 
-    <!-- Tarjeta 1 -->
-    <div class="pageini-card">
-      <img src="/components/Rental_Payments/pageini/imagen 1.jpg" alt="Artículo 1">
-      <h3>Somos BISITRACK</h3>
-      <p>Nacimos con el objetivo de transformar la movilidad urbana en La Paz. A través del alquiler de bicicletas y monopatines eléctricos, brindamos una alternativa ecológica, moderna y accesible para moverse por la ciudad.</p>
-      
-    </div>
+        <!-- Tarjeta 1 -->
+        <div class="pageini-card">
+          <img src="/components/Rental_Payments/pageini/imagen 1.jpg" alt="Artículo 1">
+          <h3>Somos BISITRACK</h3>
+          <p>Nacimos con el objetivo de transformar la movilidad urbana en La Paz. A través del alquiler de bicicletas y
+            monopatines eléctricos, brindamos una alternativa ecológica, moderna y accesible para moverse por la ciudad.
+          </p>
 
-    <!-- Tarjeta 2 -->
-    <div class="pageini-card">
-      <img src="/components/Rental_Payments/pageini/imagen 2.jpg" alt="Artículo 2">
-      <h3>Misión</h3>
-      <p>Ofrecer soluciones de transporte sostenible que reduzcan el tráfico y la contaminación, conectando barrios y zonas clave como EMI, Obrajes e Irpavi con estaciones automatizadas y tecnología inteligente.</p>
-      
-    </div>
+        </div>
 
-    <!-- Tarjeta 3 -->
-    <div class="pageini-card">
-      <img src="/components/Rental_Payments/pageini/imange 3.webp" alt="Artículo 3">
-      <h3>Compromiso con la ciudad</h3>
-      <p>BISITRACK apuesta por un futuro más verde. Nuestros vehículos están disponibles todos los días, con mantenimiento constante, soporte amigable y una experiencia simple desde tu celular.</p>
-      
-    </div>
+        <!-- Tarjeta 2 -->
+        <div class="pageini-card">
+          <img src="/components/Rental_Payments/pageini/imagen 2.jpg" alt="Artículo 2">
+          <h3>Misión</h3>
+          <p>Ofrecer soluciones de transporte sostenible que reduzcan el tráfico y la contaminación, conectando barrios
+            y zonas clave como EMI, Obrajes e Irpavi con estaciones automatizadas y tecnología inteligente.</p>
 
-  </div>
-</section>
+        </div>
+
+        <!-- Tarjeta 3 -->
+        <div class="pageini-card">
+          <img src="/components/Rental_Payments/pageini/imange 3.webp" alt="Artículo 3">
+          <h3>Compromiso con la ciudad</h3>
+          <p>BISITRACK apuesta por un futuro más verde. Nuestros vehículos están disponibles todos los días, con
+            mantenimiento constante, soporte amigable y una experiencia simple desde tu celular.</p>
+
+        </div>
+
+      </div>
+    </section>
 
     <!-- CONTACTOS -->
-<section id="contactos" class="pageini-contacto">
-  <div class="pageini-contacto-container">
-    
-    <!-- Formulario -->
-    <div class="pageini-contacto-form">
-      <h2>Contact Us</h2>
-      <form>
-        <input type="text" placeholder="Full Name" required />
-        <input type="email" placeholder="Email Address" required />
-        <textarea placeholder="Message" rows="5" required></textarea>
-        <button type="submit">Send</button>
-      </form>
-    </div>
+    <section id="contactos" class="pageini-contacto">
+      <div class="pageini-contacto-container">
 
-    <!-- Enlaces -->
-    <div class="pageini-contacto-links">
-      <div>
-        <h3>Company</h3>
-        <ul>
-          <li><a href="#">Incio</a></li>
-          <li><a href="#">Servicio</a></li>
-          <li><a href="#">Nosotros</a></li>
-          <li><a href="#">Contactos</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Services</h3>
-        <ul>
-          <li><a href="#">Web Design</a></li>
-          <li><a href="#">Graphics Design</a></li>
-          <li><a href="#">App Design</a></li>
-          <li><a href="#">SEO</a></li>
-          <li><a href="#">Marketing</a></li>
-          <li><a href="#">Analytic</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Follow Us</h3>
-        <div class="pageini-social">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-google"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <!-- Formulario -->
+        <div class="pageini-contacto-form">
+          <h2>Contact Us</h2>
+          <form>
+            <input type="text" placeholder="Full Name" required />
+            <input type="email" placeholder="Email Address" required />
+            <textarea placeholder="Message" rows="5" required></textarea>
+            <button type="submit">Send</button>
+          </form>
         </div>
-      </div>
-    </div>
 
-  </div>
-</section>
+        <!-- Enlaces -->
+        <div class="pageini-contacto-links">
+          <div>
+            <h3>Company</h3>
+            <ul>
+              <li><a href="#">Incio</a></li>
+              <li><a href="#">Servicio</a></li>
+              <li><a href="#">Nosotros</a></li>
+              <li><a href="#">Contactos</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Services</h3>
+            <ul>
+              <li><a href="#">Web Design</a></li>
+              <li><a href="#">Graphics Design</a></li>
+              <li><a href="#">App Design</a></li>
+              <li><a href="#">SEO</a></li>
+              <li><a href="#">Marketing</a></li>
+              <li><a href="#">Analytic</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Follow Us</h3>
+            <div class="pageini-social">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-google"></i></a>
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
   </div>
 
@@ -204,38 +214,39 @@
         });
     });
   </script>
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-  function scrollCarousel(direction) {
-    const container = document.getElementById('pageini-carousel');
-    const card = container.querySelector('.pageini-card');
-    const scrollAmount = card.offsetWidth + 30;
-    container.scrollTo({
-      left: container.scrollLeft + direction * scrollAmount,
-      behavior: 'smooth'
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    function scrollCarousel(direction) {
+      const container = document.getElementById('pageini-carousel');
+      const card = container.querySelector('.pageini-card');
+      const scrollAmount = card.offsetWidth + 30;
+      container.scrollTo({
+        left: container.scrollLeft + direction * scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+
+    const map = L.map('mapa-transporte').setView([-16.525, -68.11], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    const ubicaciones = [
+      { nombre: "EMI - Obrajes", lat: -16.52686, lng: -68.10520 },
+      { nombre: "Irpavi", lat: -16.54150, lng: -68.08000 },
+      { nombre: "Obrajes", lat: -16.53720, lng: -68.10730 },
+      { nombre: "Alto Irpavi", lat: -16.53100, lng: -68.06000 }
+    ];
+
+    ubicaciones.forEach(ubi => {
+      L.marker([ubi.lat, ubi.lng])
+        .addTo(map)
+        .bindPopup(`<strong>${ubi.nombre}</strong>`);
     });
-  }
-
-  const map = L.map('mapa-transporte').setView([-16.525, -68.11], 14);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
-
-  const ubicaciones = [
-    { nombre: "EMI - Obrajes", lat: -16.52686, lng: -68.10520 },
-    { nombre: "Irpavi",       lat: -16.54150, lng: -68.08000 },
-    { nombre: "Obrajes",      lat: -16.53720, lng: -68.10730 },
-    { nombre: "Alto Irpavi",  lat: -16.53100, lng: -68.06000 }
-  ];
-
-  ubicaciones.forEach(ubi => {
-    L.marker([ubi.lat, ubi.lng])
-      .addTo(map)
-      .bindPopup(`<strong>${ubi.nombre}</strong>`);
-  });
-</script>
+  </script>
 
 </body>
+
 </html>

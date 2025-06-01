@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Historial de Viajes</title>
   <link rel="stylesheet" href="/components/Rental_Payments/PageHistoriPay/PageHistoriPay.css" />
 </head>
+
 <body>
   <div id="mainHeaderContainer"></div>
 
@@ -30,9 +32,7 @@
           <th>Estación Final</th>
         </tr>
       </thead>
-      <tbody id="tablaHistorialPagos">
-        <!-- Filas insertadas por JavaScript -->
-      </tbody>
+      <tbody id="tablaHistorialPagos"></tbody>
     </table>
 
     <div id="paginacionContainer" class="paginacion"></div>
@@ -52,28 +52,65 @@
     let paginaActual = 1;
 
     document.addEventListener("DOMContentLoaded", async () => {
-      // Cargar Header
-      fetch("../Templates/Header.html")
+      // === Cargar Header y ejecutar sus scripts ===
+      await fetch("/components/Rental_Payments/Templates/Header.html")
         .then(res => res.text())
         .then(html => {
-          document.getElementById("mainHeaderContainer").innerHTML = html;
+          const container = document.getElementById("mainHeaderContainer");
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+
+          // Extraer y ejecutar scripts
+          const scripts = temp.querySelectorAll("script");
+          scripts.forEach(script => {
+            const nuevoScript = document.createElement("script");
+            if (script.src) {
+              nuevoScript.src = script.src;
+            } else {
+              nuevoScript.textContent = script.textContent;
+            }
+            document.body.appendChild(nuevoScript);
+          });
+
+          temp.querySelectorAll("script").forEach(s => s.remove());
+          container.innerHTML = temp.innerHTML;
+
+          // Mostrar usuario
           setTimeout(() => {
-            const usuario = JSON.parse(localStorage.getItem("usuario"));
-            if (usuario) {
-              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
-              document.getElementById("userAvatar").src = usuario.imagen || "";
+            const usuarioRaw = localStorage.getItem("usuario");
+            if (!usuarioRaw) return;
+
+            try {
+              const usuario = JSON.parse(usuarioRaw);
+              const nombre = usuario.nombre || "Usuario";
+              const imagen = usuario.imagen || "/imag/monito.png";
+
+              const userNameLabel = document.getElementById("userName");
+              if (userNameLabel) userNameLabel.textContent = nombre;
+
+              const userAvatar = document.getElementById("userAvatar");
+              if (userAvatar) userAvatar.src = imagen;
+
+              const avatarMenu = document.getElementById("avatarMenu");
+              const nombreMenu = document.getElementById("nombreMenu");
+              if (avatarMenu) avatarMenu.src = imagen;
+              if (nombreMenu) nombreMenu.textContent = nombre;
+
+            } catch (error) {
+              console.error("Error al parsear usuario:", error);
             }
           }, 100);
-        });
+        })
+        .catch(err => console.error("Error cargando header:", err));
 
-      // Cargar Footer
-      fetch("../Templates/Footer.html")
+      // === Cargar Footer ===
+      fetch("/components/Rental_Payments/Templates/Footer.html")
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainFooterContainer").innerHTML = html;
         });
 
-      // Obtener datos de Firestore
+      // === Cargar historial de pagos ===
       const usuario = JSON.parse(localStorage.getItem("usuario"));
       if (!usuario || !usuario.correo) return;
 
@@ -119,8 +156,6 @@
 
       datosPagina.forEach(pago => {
         const [fecha, hora] = pago.inicio ? pago.inicio.split(" ") : ["-", "-"];
-
-        // Calcular hora final
         let horaFinal = "-";
         if (hora && pago.horas) {
           const [h, m] = hora.split(":").map(Number);
@@ -139,7 +174,6 @@
         tabla.appendChild(fila);
       });
 
-      // Botones de paginación
       if (totalPaginas > 1) {
         const crearBoton = (texto, numero, activo = false) => {
           const btn = document.createElement("button");
@@ -162,15 +196,13 @@
 
     function filtrarPorFecha() {
       const fecha = document.getElementById("buscarFecha").value;
-      if (!fecha) {
-        pagosFiltrados = [...todosLosPagos];
-      } else {
-        pagosFiltrados = todosLosPagos.filter(p => p.inicio && p.inicio.startsWith(fecha));
-      }
-
+      pagosFiltrados = fecha
+        ? todosLosPagos.filter(p => p.inicio && p.inicio.startsWith(fecha))
+        : [...todosLosPagos];
       paginaActual = 1;
       renderPagosConPaginacion(pagosFiltrados, paginaActual);
     }
   </script>
 </body>
+
 </html>

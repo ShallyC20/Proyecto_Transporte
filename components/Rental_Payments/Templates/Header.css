@@ -13,7 +13,8 @@
 }
 
 /* Secciones */
-.left-section, .right-section {
+.left-section,
+.right-section {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -201,6 +202,7 @@
 .notif-item i {
   color: #e0bc5a;
 }
+
 .auth-button {
   display: flex;
   align-items: center;
@@ -211,7 +213,7 @@
   padding: 0.5rem 1rem;
   border-radius: 6px;
   font-size: 0.9rem;
-  font-weight:bold;
+  font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
   font-family: inherit;
@@ -243,4 +245,79 @@
 .auth-button.register:hover {
   background-color: #ffffff;
   color: #000000;
+}
+
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.user-dropdown .avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 2px solid #f1c40f;
+  cursor: pointer;
+}
+
+.user-menu {
+  display: none;
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  min-width: 200px;
+  text-align: center;
+  z-index: 999;
+}
+
+.user-dropdown.open .user-menu {
+  display: block;
+}
+
+.user-dropdown:hover .user-menu {
+  display: block;
+}
+
+.user-menu .avatar-big {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+}
+
+.user-menu .user-name {
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.user-button {
+  display: block;
+  margin: 0.5rem auto;
+  padding: 0.5rem;
+  width: 80%;
+  border: none;
+  border-radius: 8px;
+  text-decoration: none;
+  color: white;
+  background-color: #00bcd4;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.user-button.logout {
+  background-color: #ff5252;
+}
+
+.user-button:hover {
+  background-color: #019aaa;
+}
+
+.user-button.logout:hover {
+  background-color: #e53935;
 }
