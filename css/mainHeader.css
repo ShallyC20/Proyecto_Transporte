@@ -14,6 +14,8 @@ body.menu-open #mainDetalleContainer {
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .left-section,
@@ -204,4 +206,99 @@ body.menu-open main {
 .tag-green {
   background-color: #2ecc71;
   color: white;
+}
+
+
+.top-nav {
+  background-color: #1b2a47;
+  padding: 0.5rem 1rem;
+}
+
+.horizontal-menu {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: bold;
+}
+
+.menu-item-dropdown {
+  position: relative;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  background-color: #444;
+  padding: 0.5rem 0;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  min-width: 150px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.submenu a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: white;
+  text-decoration: none;
+}
+
+.submenu a:hover {
+  background-color: #555;
+}
+
+.menu-item-dropdown:hover .submenu {
+  display: block;
+}
+
+.auth-button {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: #2c3e5e;
+  color: #ffffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: inherit;
+}
+
+.auth-button i {
+  font-size: 18px;
+}
+
+.auth-button:hover {
+  background-color: #3d537a;
+  transform: scale(1.05);
+}
+
+.auth-button.login {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.auth-button.login:hover {
+  background-color: #0d6efd;
+  color: #ffffff;
+}
+
+.auth-button.register {
+  background-color: #0d6efd;
+}
+
+.auth-button.register:hover {
+  background-color: #ffffff;
+  color: #000000;
 }

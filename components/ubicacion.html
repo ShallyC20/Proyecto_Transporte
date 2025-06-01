@@ -6,8 +6,11 @@
   <title>Ubicación del Punto de Control</title>
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="../css/mainHeader.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  
+  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <!-- Content Security Policy Actualizada -->
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self' https://www.google.com https://maps.google.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
@@ -21,10 +24,8 @@
 </head>
 <body>
 
-  <!-- Main Header -->
-  <div id="mainHeaderContainer"></div>
+  <div id="mainHeaderContainers"></div>
 
-  <!-- Contenido Principal -->
   <main class="main-content">
     <section class="info-section">
       <h2>Ubicación del Punto de Control</h2>
@@ -45,56 +46,42 @@
       <button class="btn-back" onclick="window.history.back()">← Volver</button>
     </section>
   </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="footer-section">
-        <img src="../imag/icono1.png" alt="Bicicleta" class="footer-icon" />
-      </div>
-      <div class="footer-section about">
-        <h4>Acerca de Nosotros</h4>
-        <ul>
-          <li><a href="#">Acerca de nosotros</a></li>
-          <li><a href="#">Contáctanos</a></li>
-        </ul>
-      </div>
-      <div class="footer-section social">
-        <h4>Nuestras Redes</h4>
-        <ul>
-          <li><a href="#">WhatsApp</a></li>
-          <li><a href="#">Facebook</a></li>
-          <li><a href="#">Instagram</a></li>
-          <li><a href="#">Twitter</a></li>
-        </ul>
-      </div>
-      <div class="footer-section">
-        <img src="../imag/icono2.png" alt="Scooter" class="footer-icon" />
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2025 Sistema de Geolocalización. Todos los derechos reservados.</p>
-    </div>
-  </footer>
-
+  
   <!-- Script para cargar el Header y Activar Funcionalidades -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      fetch("../components/mainHeader.html")
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("mainHeaderContainer").innerHTML = html;
-          
-          // Cargar script del menú después de insertar el HTML
-          const menuScript = document.createElement("script");
-          menuScript.src = "../js/menu.js";
-          document.body.appendChild(menuScript);
-        })
-        .catch(err => console.log("Error al cargar mainHeader.html:", err));
-    });
-  </script>
+
 
   <!-- Script externo -->
   <script src="../js/ubicacion.js"></script>
+  
+  <div id="mainFooterContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el footer:", err));
+    });
+  </script>
+      <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainers").innerHTML = html;
+          setTimeout(() => {
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
+            if (usuario) {
+              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
+              document.getElementById("userAvatar").src = usuario.imagen || "";
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
+    });
+  </script>
+
 </body>
 </html>

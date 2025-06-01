@@ -1,4 +1,3 @@
-<!-- detalle.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,6 +8,9 @@
   <link rel="stylesheet" href="../css/detalle.css" />
   <link rel="stylesheet" href="../css/mainHeader.css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
   <div id="mainHeaderContainer"></div>
@@ -32,7 +34,15 @@
           <p id="detalleDescripcion"></p>
           <p><strong>Tecnología:</strong></p>
           <ul id="detalleTecnologia"></ul>
-          <button class="volver-btn" onclick="window.history.back()">← Volver</button>
+          
+          <div class="botones-detalle">
+            <button class="volver-btn" onclick="window.history.back()">
+              <i class="fas fa-arrow-left"></i> Volver
+            </button>
+            <button class="alquilar-btn" id="btnAlquilar">
+              <i class="fas fa-key"></i> Alquilar
+            </button>
+          </div>
         </div>
       </div>
     </section>
@@ -64,19 +74,19 @@
         return;
       }
 
-      setTimeout(() => {
+      window.requestAnimationFrame(() => {
         document.getElementById('mainDetalleContainer').style.display = 'block';
         document.getElementById('detalleImagen').src = data.imagen;
         document.getElementById('detalleImagen').alt = data.alt;
         document.getElementById('detalleNombre').textContent = data.nombre;
-        document.getElementById('detalleTarifa').textContent = data.tarifa.toFixed(2);
-        document.getElementById('detalleEstacion').textContent = data.estacion;
-        document.getElementById('detalleDescripcion').textContent = data.descripcion;
+        document.getElementById('detalleTarifa').textContent = data.tarifa?.toFixed(2) || '0.00';
+        document.getElementById('detalleEstacion').textContent = data.estacion || '-';
+        document.getElementById('detalleDescripcion').textContent = data.descripcion || 'No disponible.';
 
         const badge = document.getElementById('detalleBadge');
-        badge.textContent = data.estado;
+        badge.textContent = data.estado || 'Desconocido';
 
-        switch (data.estado) {
+        switch ((data.estado || '').trim()) {
           case "Disponible":
             badge.classList.add('badge-disponible'); break;
           case "En uso":
@@ -88,12 +98,67 @@
         }
 
         const ul = document.getElementById('detalleTecnologia');
-        data.tecnologia.forEach(tec => {
+        if (Array.isArray(data.tecnologia) && data.tecnologia.length > 0) {
+          data.tecnologia.forEach(tec => {
+            const li = document.createElement('li');
+            li.textContent = tec;
+            ul.appendChild(li);
+          });
+        } else {
           const li = document.createElement('li');
-          li.textContent = tec;
+          li.textContent = 'Sin tecnología registrada.';
+          li.style.fontStyle = 'italic';
           ul.appendChild(li);
+        }
+
+        const btnAlquilar = document.getElementById("btnAlquilar");
+        btnAlquilar.addEventListener("click", () => {
+          const estado = (data.estado || '').trim();
+          switch (estado) {
+            case "Disponible":
+              localStorage.setItem("vehiculoEnAlquiler", JSON.stringify(data));
+              window.location.href = "/components/Rental_Payments/Renta/PageRental.html";
+              break;
+            case "En uso":
+              Swal.fire({
+                icon: 'warning',
+                title: 'Vehículo en uso',
+                text: 'Este vehículo ya está siendo utilizado. Intenta con otro.',
+                confirmButtonColor: '#f1c40f'
+              });
+              break;
+            case "Mantenimiento":
+              Swal.fire({
+                icon: 'error',
+                title: 'Vehículo en mantenimiento',
+                text: 'Este vehículo está fuera de servicio temporalmente.',
+                confirmButtonColor: '#e74c3c'
+              });
+              break;
+            default:
+              Swal.fire({
+                icon: 'question',
+                title: 'Estado desconocido',
+                text: 'No se puede determinar el estado del vehículo.',
+                confirmButtonColor: '#7f8c8d'
+              });
+              break;
+          }
         });
-      }, 100);
+      });
+    });
+  </script>
+
+  <div id="mainFooterContainer"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
 </body>

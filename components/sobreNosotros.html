@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sobre Nosotros</title>
+  <link rel="stylesheet" href="../css/sobreNosotros.css" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Header dinámico -->
+  <div id="mainHeaderContainers"></div>
+
+  <main class="about-container">
+    <section class="about-description">
+      <h2>¿Quiénes somos?</h2>
+      <p>
+        Somos un equipo apasionado por la tecnología y la movilidad urbana. Nuestra misión es ofrecer soluciones innovadoras para facilitar el transporte y mejorar la calidad de vida en la ciudad.
+      </p>
+      <p>
+        Desde 2020, hemos desarrollado sistemas inteligentes para el monitoreo de bicicletas y patinetas, promoviendo el uso de medios sostenibles y seguros.
+      </p>
+    </section>
+
+    <section class="about-values">
+      <h2>Nuestros valores</h2>
+      <ul>
+        <li><i class="fas fa-check-circle"></i> Compromiso con la sostenibilidad</li>
+        <li><i class="fas fa-check-circle"></i> Innovación constante</li>
+        <li><i class="fas fa-check-circle"></i> Transparencia y responsabilidad</li>
+        <li><i class="fas fa-check-circle"></i> Enfoque en el usuario</li>
+      </ul>
+    </section>
+
+    <section class="about-team">
+      <h2>Conoce a nuestro equipo</h2>
+      <div class="team-grid">
+        <div class="team-member">
+          <img src="../imag/denis.jpg" alt="Miembro del equipo">
+          <h3>Denis Ramos</h3>
+          <p>Fundador</p>
+        </div>
+        <div class="team-member">
+          <img src="../imag/carla.jpg" alt="Miembro del equipo">
+          <h3>Carla Marcela</h3>
+          <p>Diseñadora / Desarrolladora</p>
+        </div>
+        <div class="team-member">
+          <img src="../imag/andres.jpg" alt="Miembro del equipo">
+          <h3>Andrés Marca</h3>
+          <p>Programador</p>
+        </div>
+        <div class="team-member">
+          <img src="../imag/galia.jpg" alt="Miembro del equipo">
+          <h3>Galia Laura</h3>
+          <p>Programadora</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer dinámico -->
+  <div id="mainFooterContainer"></div>
+
+  <!-- Script base -->
+  <script src="../js/script.js" defer></script>
+
+  <!-- Cargar Footer -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      fetch('../components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        })
+        .catch(err => console.error("Error al cargar el footer:", err));
+    });
+  </script>
+
+  <!-- Cargar Header con usuario -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainHeaderContainers").innerHTML = html;
+          setTimeout(() => {
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
+            if (usuario) {
+              document.getElementById("userName").textContent = usuario.nombre || "Usuario";
+              document.getElementById("userAvatar").src = usuario.imagen || "";
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
+    });
+  </script>
+
+</body>
+</html>

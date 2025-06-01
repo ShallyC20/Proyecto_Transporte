@@ -1,0 +1,76 @@
+<link rel="stylesheet" href="/components/Rental_Payments/Templates/Header.css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+<header class="main-header">
+  <!-- Sección izquierda -->
+  <div class="left-section">
+    <img src="/../imag/Logo_Blanco.png" alt="Logo ETS" class="logo-ets">
+    <p>BISITRACK</p>
+  </div>
+
+  <!-- Menú central -->
+  <nav class="horizontal-menu">
+    <div class="menu-item-dropdown">
+      <span class="nav-link"><i class="material-icons">home</i> Sistema</span>
+      <div class="submenu submenu-mega">
+        <a href="/inicio.html"><i class="material-icons">dashboard</i> Inicio</a>
+        <a href="/components/sobreNosotros.html"><i class="material-icons">info</i> Acerca de nosotros</a>
+        <a href="/components/contactanos.html"><i class="material-icons">contact_mail</i> Contáctanos</a>
+      </div>
+    </div>
+
+    <div class="menu-item-dropdown">
+      <span class="nav-link"><i class="material-icons">directions_bus</i> Vehículo</span>
+      <div class="submenu submenu-mega">
+        <a href="/components/Transporte.html"><i class="material-icons">commute</i> Transporte</a>
+      </div>
+    </div>
+
+    <div class="menu-item-dropdown">
+      <span class="nav-link"><i class="material-icons">place</i> Ubicación</span>
+      <div class="submenu submenu-mega">
+        <a href="/components/Puntos_control.html"><i class="material-icons">map</i> Puntos de control</a>
+        <a href="/components/Consultas_Ubicación.html"><i class="material-icons">search</i> Consultas de ubicación</a>
+        <a href="/components/mapa.html"><i class="material-icons">map</i>Mapas</a>
+      </div>
+    </div>
+
+
+    <div class="menu-item-dropdown">
+      <span class="nav-link"><i class="material-icons">history</i> Historial</span>
+      <div class="submenu submenu-mega">
+        <a href="/components/Rental_Payments/PageHistoriPay/PageHistoriPay.html"><i class="material-icons">flight_takeoff</i> Historial de Viajes</a>
+        <a href="/components/Rental_Payments/PageHistori/PageHistori.html"><i class="material-icons">receipt_long</i> Historial de Pagos</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Usuario logueado -->
+<!-- Usuario logueado con notificaciones personalizadas -->
+<div class="right-section">
+  <div id="headerUserInfo" class="header-user-info">
+    <span class="user-name" id="userName">Usuario</span>
+
+    <div class="menu-item-dropdown notifications-dropdown">
+      <span class="nav-link">
+        <i class="material-icons">notifications</i>
+        <span class="notification-badge">2</span>
+      </span>
+      <div class="submenu submenu-notifications">
+        <p class="notif-title">Notificaciones</p>
+        <div class="notif-item">
+          <i class="material-icons">local_offer</i>
+          <span>¡Nueva oferta en alquileres de bicicleta!</span>
+        </div>
+        <div class="notif-item">
+          <i class="material-icons">schedule</i>
+          <span>Tiempo restante: 2 horas</span>
+        </div>
+      </div>
+    </div>
+
+    <img id="userAvatar" class="avatar" src="" alt="avatar" />
+  </div>
+</div>
+
+</header>
