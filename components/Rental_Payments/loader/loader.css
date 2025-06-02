@@ -1,3 +1,9 @@
+  body {
+    visibility: hidden;
+  }
+#main-content {
+  display: none !important;
+}
 #loader {
   position: fixed;
   width: 100%;
