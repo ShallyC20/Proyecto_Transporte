@@ -13,7 +13,8 @@ body {
 /* CONTENEDOR GENERAL */
 .pageini-hero {
   position: relative;
-  background-image: url('/components/Rental_Payments/pageini/vici.webp'); /* Cambia esta imagen si necesitas */
+  background-image: url('/components/Rental_Payments/pageini/vici.webp');
+  /* Cambia esta imagen si necesitas */
   background-size: cover;
   background-position: center;
   height: 100vh;
@@ -308,7 +309,8 @@ body {
   scroll-behavior: smooth;
   gap: 30px;
   padding: 20px 10px;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .pageini-carousel::-webkit-scrollbar {
