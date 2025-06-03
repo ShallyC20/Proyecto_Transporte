@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="/css/mapas.css" />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
@@ -30,16 +33,35 @@
     <!-- Footer -->
     <div id="mainFooterContainer"></div>
 </body>
+
+<script type="module" src="/js/menu.js"></script>
+<script type="module" src="/js/headerEvents.js"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
+        fetch('/components/mainHeader.html')
+            .then(res => res.text())
+            .then(html => {
+                html = document.getElementById("mainHeaderContainer");
+                const script1 = document.createElement('script');
+                script1.src = './js/menu.js';
+                script1.onload = () => {
+                    const script2 = document.createElement('script');
+                    script2.src = './js/headerEvents.js';
+                    script2.onload = () => {
+                        if (typeof initHeaderEvents === 'function') initHeaderEvents();
+                    };
+                };
+            });
 
-        fetch('/components/footer.html')
+        fetch('../components/footer.html')
             .then(res => res.text())
             .then(html => {
                 document.getElementById("mainFooterContainer").innerHTML = html;
             });
     });
 </script>
+
 <script>
     document.addEventListener("DOMContentLoaded", async () => {
         // Cargar Header
@@ -97,13 +119,30 @@
                 }, 100);
             })
             .catch(err => console.error("Error al cargar el header:", err));
+        fetch("/components/Rental_Payments/Templates/Header.html")
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("mainHeaderContainers").innerHTML = html;
+                setTimeout(() => {
+                    const usuario = JSON.parse(localStorage.getItem("usuario"));
+                    if (usuario) {
+                        document.getElementById("userName").textContent = usuario.nombre || "Usuario";
+                        document.getElementById("userAvatar").src = usuario.imagen || "";
+                    }
+                }, 100);
+            })
+            .catch(err => console.error("Error al cargar el header:", err));
     });
 </script>
+
   <script src="/components/Rental_Payments/loader/insertloader.js"></script>
   <script>
     window.loaderDuration = 2000; // 5 segundos
   </script>
   <script src="/components/Rental_Payments/loader/loader.js"></script>
+
+</script>
+
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>

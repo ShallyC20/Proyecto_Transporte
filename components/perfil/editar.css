@@ -1,0 +1,143 @@
+/* Reset y fuente */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  background: #f2f4f8;
+  color: #333;
+}
+
+/* Contenedor principal */
+.editar-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #fff;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  border-radius: 16px;
+}
+
+/* Encabezado */
+.editar-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: linear-gradient(to right, #0062ff, #60c5ff);
+  border-radius: 12px;
+  color: white;
+}
+
+.editar-header h1 {
+  margin: 0;
+  font-size: 2.2rem;
+}
+
+.editar-header p {
+  margin: 10px 0 0;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Diseño horizontal de columnas */
+.editar-form-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+/* Columnas */
+.form-column {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Inputs y selects */
+form label {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+form input,
+form select,
+form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+  resize: vertical;
+}
+
+form textarea {
+  min-height: 100px;
+}
+
+/* Botón guardar */
+.btn-guardar {
+  padding: 12px;
+  background: linear-gradient(to right, #28a745, #3ddc84);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.3s ease;
+}
+
+.btn-guardar:hover {
+  background: linear-gradient(to right, #218838, #2ecc71);
+}
+
+/* Avatares */
+.avatar-selection {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.avatar-selection img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.avatar-selection img:hover {
+  transform: scale(1.1);
+}
+
+.avatar-selection img.selected {
+  border-color: #007bff;
+}
+
+.avatar-texto {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .editar-form-horizontal {
+    flex-direction: column;
+  }
+
+  .editar-container {
+    margin: 20px;
+    padding: 20px;
+  }
+
+  .editar-header h1 {
+    font-size: 1.8rem;
+  }
+}
