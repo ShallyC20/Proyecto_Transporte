@@ -62,14 +62,14 @@
   <script src="/js/conexionFireBase.js"></script>
 
   <script>
-    let ubicaciones = [];
+    var ubicacionesmap = [];
 
     document.addEventListener("DOMContentLoaded", () => {
       // Cargar header
       fetch("./mainHeader.html")
         .then(res => res.text())
         .then(html => {
-          document.getElementById("mainHeaderContainer").innerHTML = html;
+          html = document.getElementById("mainHeaderContainer");
 
           const scriptMenu = document.createElement("script");
           scriptMenu.src = "../js/menu.js";
@@ -86,9 +86,9 @@
 
       // Cargar datos desde Firestore
       db.collection("ubicaciones").get().then((querySnapshot) => {
-        ubicaciones = [];
-        querySnapshot.forEach((doc) => ubicaciones.push(doc.data()));
-        renderUbicaciones(ubicaciones);
+        ubicacionesmap = [];
+        querySnapshot.forEach((doc) => ubicacionesmap.push(doc.data()));
+        renderUbicaciones(ubicacionesmap);
       });
 
       inicializarFiltros();
