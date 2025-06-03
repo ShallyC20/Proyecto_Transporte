@@ -1,102 +1,192 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Geolocalización de Bicicletas y Patinetas</title>
-  <link rel="stylesheet" href="./css/styles.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sanchez:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-  <!-- Firebase Core y Firestore -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-  <!-- Configuración Firebase -->
-  <script src="js/conexionFireBase.js"></script>
-
-  <!-- Carrusel de Firestore -->
-  <script src="js/carruselFirebase.js"></script>
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <title>BISITRACK - Renta</title>
+  <link rel="stylesheet" href="/components/Rental_Payments/pageini/inicio.css" />
+  <link rel="stylesheet" href="/components/Rental_Payments/loader/loader.css" onload="document.body.style.visibility='visible'">
+  <style>
+        body {
+      visibility: hidden;
+    }
+  </style>
 </head>
 <body>
+
+  <!-- HEADER -->
   <div id="mainHeaderContainer"></div>
-    <header>
-      <div class="header-content">
-        <h1>BICITRACK</h1>
-        <p>Más cerca, más rápido y más económico.</p>
-      </div>
-    </header>
-  <div id="inicio">
 
+  <!-- Página principal -->
+  <div class="PaginaInicio">
 
-    <section class="descripcion">
-      <h2>¿Cómo funciona la web?</h2>
-      <p>
-        Accede a bicicletas y patinetas desde distintas estaciones con nuestra página. Gracias a la integración con GPS y sensores inteligentes, conoce la ubicación en tiempo real, recibe notificaciones y gestiona pagos fácilmente.
-      </p>
-    </section>
-
-    <section class="explora-destinos">
-      <h2>Explora Destinos</h2>
-      <p>Explorar alrededores con bicicleta o patineta nos ahorra tiempo y nos hace más libres.</p>
-
-      <div class="carousel-destinos">
-        <button class="carousel-btnD left" id="btn-destinos-left">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="carousel-trackD" id="carouselDestinos"></div>
-        <button class="carousel-btnD right" id="btn-destinos-right">
-          <i class="fas fa-chevron-right"></i>
-        </button>
+    <!-- INICIO -->
+    <section id="inicio" class="pageini-hero">
+      <div class="pageini-overlay">
+        <div class="pageini-container">
+          <h1 class="pageini-title">
+            <span class="pageini-yellow">BICITRACK</span>
+          </h1>
+          <p class="pageini-subtext">
+            Con BISITRACK puedes monitorear, optimizar y gestionar tu red de vehículos en tiempo real.
+          </p>
+          <div class="pageini-buttons">
+            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=login" class="pageini-btn-outline">Iniciar sesión</a>
+            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=register" class="pageini-btn-filled">Registrarse</a>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="caracteristicas">
-      <h2>Características Principales</h2>
-      <ul>
-        <li><i class="fas fa-map-marker-alt"></i> Geolocalización en tiempo real</li>
-        <li><i class="fas fa-bell"></i> Notificaciones instantáneas</li>
-        <li><i class="fas fa-mobile-alt"></i> Página Web</li>
-        <li><i class="fas fa-recycle"></i> Movilidad sostenible</li>
-      </ul>
-    </section>
+    <!-- SERVICIO -->
+<section id="servicio" class="pageini-carousel-section">
+  <h2 class="pageini-carousel-title">Servicio de Transporte</h2>
 
-    <section class="vehiculos">
-      <h2>Vehículos</h2>
-      <div class="carousel-container">
-        <button class="carousel-btn left" id="btn-scroll-left">
-          <i class="fas fa-chevron-left"></i>
-        </button>
-        <div class="carousel-track" id="carouselTrack"></div>
-        <button class="carousel-btn right" id="btn-scroll-right">
-          <i class="fas fa-chevron-right"></i>
-        </button>
-      </div>
-    </section>
+  <!-- TEXTO INFORMATIVO -->
+  <div class="pageini-info-transporte">
+    <p>
+      ¡Explora la ciudad de forma ecológica! BISITRACK te ofrece estaciones inteligentes de bicicletas y monopatines eléctricos en puntos clave de La Paz:
+      <strong>EMI - Obrajes</strong>, <strong>Irpavi</strong>, <strong>Obrajes</strong> y <strong>Alto Irpavi</strong>.
+      Desde cada estación puedes alquilar tu transporte, planificar tu ruta y moverte con total libertad.
+    </p>
   </div>
 
-  <main id="contenido" style="display: none;"></main>
+  <!-- CARRUSEL DE TARJETAS -->
+  <div class="pageini-carousel-container">
+    <button class="pageini-carousel-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
 
-  <section id="resultadosBusqueda" style="display: none; padding: 2rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h3>Resultados de búsqueda:</h3>
-      <button id="btnCerrarBusqueda" style="padding: 0.5rem 1rem; background-color: #1b2a47; color: white; border: none; border-radius: 6px; cursor: pointer;">Volver</button>
+    <div class="pageini-carousel" id="pageini-carousel">
+
+      <!-- Tarjeta 1 -->
+      <div class="pageini-card">
+        <img src="/components/Rental_Payments/pageini/emi.png" alt="Unidad 1">
+        <h3>Escuela Militar de Ingeniería</h3>
+        <p>Punto principal de alquiler en Obrajes, con acceso rápido a toda la zona sur.</p>
+      </div>
+
+      <!-- Tarjeta 2 -->
+      <div class="pageini-card">
+        <img src="/components/Rental_Payments/pageini/Irpavi.png" alt="Ruta 2">
+        <h3>Irpavi</h3>
+        <p>Ideal para desplazarte entre residenciales y avenidas principales de la zona este.</p>
+      </div>
+
+      <!-- Tarjeta 3 -->
+      <div class="pageini-card">
+        <img src="/components/Rental_Payments/pageini/Obrajes.png" alt="Horarios">
+        <h3>Obrajes</h3>
+        <p>Zona intermedia con alta conectividad hacia el centro y la parte sur de la ciudad.</p>
+      </div>
+
+      <!-- Tarjeta 4 -->
+      <div class="pageini-card">
+        <img src="/components/Rental_Payments/pageini/Altoirpavi.png" alt="Reportes">
+        <h3>Alto Irpavi</h3>
+        <p>Zona residencial con caminos ideales para recorrer en monopatín o bicicleta eléctrica.</p>
+      </div>
+
     </div>
-    <div id="listaResultados" class="grid-resultados"></div>
-  </section>
 
+    <button class="pageini-carousel-btn right" onclick="scrollCarousel(1)">&#10095;</button>
+  </div>
+
+  <!-- MAPA DE UBICACIONES -->
+  <div id="mapa-transporte" style="height: 400px; margin-top: 50px; border-radius: 12px;"></div>
+</section>
+
+    <!-- NOSOTROS -->
+<section id="nosotros" class="pageini-nosotros">
+  <h2 class="pageini-nosotros-title">Sobre Nosotros</h2>
+  <div class="pageini-nosotros-cards">
+
+    <!-- Tarjeta 1 -->
+    <div class="pageini-card">
+      <img src="/components/Rental_Payments/pageini/imagen 1.jpg" alt="Artículo 1">
+      <h3>Somos BISITRACK</h3>
+      <p>Nacimos con el objetivo de transformar la movilidad urbana en La Paz. A través del alquiler de bicicletas y monopatines eléctricos, brindamos una alternativa ecológica, moderna y accesible para moverse por la ciudad.</p>
+      
+    </div>
+
+    <!-- Tarjeta 2 -->
+    <div class="pageini-card">
+      <img src="/components/Rental_Payments/pageini/imagen 2.jpg" alt="Artículo 2">
+      <h3>Misión</h3>
+      <p>Ofrecer soluciones de transporte sostenible que reduzcan el tráfico y la contaminación, conectando barrios y zonas clave como EMI, Obrajes e Irpavi con estaciones automatizadas y tecnología inteligente.</p>
+      
+    </div>
+
+    <!-- Tarjeta 3 -->
+    <div class="pageini-card">
+      <img src="/components/Rental_Payments/pageini/imange 3.webp" alt="Artículo 3">
+      <h3>Compromiso con la ciudad</h3>
+      <p>BISITRACK apuesta por un futuro más verde. Nuestros vehículos están disponibles todos los días, con mantenimiento constante, soporte amigable y una experiencia simple desde tu celular.</p>
+      
+    </div>
+
+  </div>
+</section>
+
+    <!-- CONTACTOS -->
+<section id="contactos" class="pageini-contacto">
+  <div class="pageini-contacto-container">
+    
+    <!-- Formulario -->
+    <div class="pageini-contacto-form">
+      <h2>Contact Us</h2>
+      <form>
+        <input type="text" placeholder="Full Name" required />
+        <input type="email" placeholder="Email Address" required />
+        <textarea placeholder="Message" rows="5" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+
+    <!-- Enlaces -->
+    <div class="pageini-contacto-links">
+      <div>
+        <h3>Company</h3>
+        <ul>
+          <li><a href="#">Incio</a></li>
+          <li><a href="#">Servicio</a></li>
+          <li><a href="#">Nosotros</a></li>
+          <li><a href="#">Contactos</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Services</h3>
+        <ul>
+          <li><a href="#">Web Design</a></li>
+          <li><a href="#">Graphics Design</a></li>
+          <li><a href="#">App Design</a></li>
+          <li><a href="#">SEO</a></li>
+          <li><a href="#">Marketing</a></li>
+          <li><a href="#">Analytic</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Follow Us</h3>
+        <div class="pageini-social">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-google"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+  </div>
+
+  <!-- FOOTER -->
   <div id="mainFooterContainer"></div>
 
+  <!-- JS -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('./components/mainHeader.html')
+      fetch('/components/Rental_Payments/pageini/headerini.html')
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainHeaderContainer").innerHTML = html;
@@ -113,13 +203,50 @@
           document.body.appendChild(script1);
         });
 
-      fetch('./components/footer.html')
+      fetch('../Templates/Footer.html')
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainFooterContainer").innerHTML = html;
         });
     });
   </script>
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  function scrollCarousel(direction) {
+    const container = document.getElementById('pageini-carousel');
+    const card = container.querySelector('.pageini-card');
+    const scrollAmount = card.offsetWidth + 30;
+    container.scrollTo({
+      left: container.scrollLeft + direction * scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+
+  const map = L.map('mapa-transporte').setView([-16.525, -68.11], 14);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  const ubicaciones = [
+    { nombre: "EMI - Obrajes", lat: -16.52686, lng: -68.10520 },
+    { nombre: "Irpavi",       lat: -16.54150, lng: -68.08000 },
+    { nombre: "Obrajes",      lat: -16.53720, lng: -68.10730 },
+    { nombre: "Alto Irpavi",  lat: -16.53100, lng: -68.06000 }
+  ];
+
+  ubicaciones.forEach(ubi => {
+    L.marker([ubi.lat, ubi.lng])
+      .addTo(map)
+      .bindPopup(`<strong>${ubi.nombre}</strong>`);
+  });
+</script>
+  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
+  <script>
+    window.loaderDuration = 1000; // 5 segundos
+  </script>
+  <script src="/components/Rental_Payments/loader/loader.js"></script>
 
 </body>
 </html>

@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div id="mainHeaderContainer"></div>
+    <div id="mainHeaderContainers"></div>
     <section class="mapprincipal">
         <div class="titulo">
             <h2>Ubicaciones - <strong>Visualización de puntos de Control</strong></h2>
@@ -32,22 +32,6 @@
 </body>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        fetch('/components/mainHeader.html')
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("mainHeaderContainer").innerHTML = html;
-                const script1 = document.createElement('script');
-                script1.src = './js/menu.js';
-                script1.onload = () => {
-                    const script2 = document.createElement('script');
-                    script2.src = './js/headerEvents.js';
-                    script2.onload = () => {
-                        if (typeof initHeaderEvents === 'function') initHeaderEvents();
-                    };
-                    document.body.appendChild(script2);
-                };
-                document.body.appendChild(script1);
-            });
 
         fetch('/components/footer.html')
             .then(res => res.text())
@@ -56,6 +40,70 @@
             });
     });
 </script>
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        // Cargar Header
+        fetch("/components/Rental_Payments/Templates/Header.html")
+            .then(res => res.text())
+            .then(html => {
+                const container = document.getElementById("mainHeaderContainers");
+
+                // Crear un contenedor temporal
+                const temp = document.createElement("div");
+                temp.innerHTML = html;
+
+                // Ejecutar scripts embebidos manualmente
+                const scripts = temp.querySelectorAll("script");
+                scripts.forEach(script => {
+                    const newScript = document.createElement("script");
+                    if (script.src) {
+                        newScript.src = script.src;
+                    } else {
+                        newScript.textContent = script.textContent;
+                    }
+                    document.body.appendChild(newScript);
+                });
+
+                // Limpiar los scripts del HTML antes de insertar
+                temp.querySelectorAll("script").forEach(s => s.remove());
+
+                // Agregar el HTML restante al contenedor
+                container.innerHTML = temp.innerHTML;
+
+                // Esperar a que el DOM del header esté listo
+                setTimeout(() => {
+                    const usuarioRaw = localStorage.getItem("usuario");
+                    if (!usuarioRaw) return;
+
+                    try {
+                        const usuario = JSON.parse(usuarioRaw);
+                        const nombre = usuario.nombre || "Usuario";
+                        const imagen = usuario.imagen || "/imag/monito.png";
+
+                        const userNameLabel = document.getElementById("userName");
+                        if (userNameLabel) userNameLabel.textContent = nombre;
+
+                        const userAvatar = document.getElementById("userAvatar");
+                        if (userAvatar) userAvatar.src = imagen;
+
+                        const avatarMenu = document.getElementById("avatarMenu");
+                        const nombreMenu = document.getElementById("nombreMenu");
+                        if (avatarMenu) avatarMenu.src = imagen;
+                        if (nombreMenu) nombreMenu.textContent = nombre;
+
+                    } catch (error) {
+                        console.error("Error al parsear usuario desde localStorage:", error);
+                    }
+                }, 100);
+            })
+            .catch(err => console.error("Error al cargar el header:", err));
+    });
+</script>
+  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
+  <script>
+    window.loaderDuration = 2000; // 5 segundos
+  </script>
+  <script src="/components/Rental_Payments/loader/loader.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>

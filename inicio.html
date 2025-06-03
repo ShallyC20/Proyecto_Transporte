@@ -1,0 +1,227 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geolocalización de Bicicletas y Patinetas</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sanchez:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Firebase Core y Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+  <!-- Configuración Firebase -->
+  <script src="js/conexionFireBase.js"></script>
+
+  <!-- Carrusel de Firestore -->
+  <script src="js/carruselFirebase.js"></script>
+</head>
+<body>
+
+  <div id="mainHeaderContainer"></div>
+
+  <header>
+    <div class="header-content">
+      <h1>BICITRACK</h1>
+      <p>Más cerca, más rápido y más económico.</p>
+    </div>
+  </header>
+
+  <div id="inicio">
+    <section class="descripcion">
+      <h2>¿Cómo funciona la web?</h2>
+      <p>
+        Accede a bicicletas y patinetas desde distintas estaciones con nuestra página. Gracias a la integración con GPS y sensores inteligentes, conoce la ubicación en tiempo real, recibe notificaciones y gestiona pagos fácilmente.
+      </p>
+    </section>
+
+    <section class="explora-destinos">
+      <h2>Explora Destinos</h2>
+      <p>Explorar alrededores con bicicleta o patineta nos ahorra tiempo y nos hace más libres.</p>
+
+      <div class="carousel-destinos">
+        <button class="carousel-btnD left" id="btn-destinos-left">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="carousel-trackD" id="carouselDestinos"></div>
+        <button class="carousel-btnD right" id="btn-destinos-right">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </section>
+
+    <section class="caracteristicas">
+      <h2>Características Principales</h2>
+      <ul>
+        <li><i class="fas fa-map-marker-alt"></i> Geolocalización en tiempo real</li>
+        <li><i class="fas fa-bell"></i> Notificaciones instantáneas</li>
+        <li><i class="fas fa-mobile-alt"></i> Página Web</li>
+        <li><i class="fas fa-recycle"></i> Movilidad sostenible</li>
+      </ul>
+    </section>
+
+    <section class="vehiculos">
+      <h2>Vehículos</h2>
+      <div class="carousel-container">
+        <button class="carousel-btn left" id="btn-scroll-left">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="carousel-track" id="carouselTrack"></div>
+        <button class="carousel-btn right" id="btn-scroll-right">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </section>
+  </div>
+
+  <main id="contenido" style="display: none;"></main>
+
+  <section id="resultadosBusqueda" style="display: none; padding: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h3>Resultados de búsqueda:</h3>
+      <button id="btnCerrarBusqueda" style="padding: 0.5rem 1rem; background-color: #1b2a47; color: white; border: none; border-radius: 6px; cursor: pointer;">Volver</button>
+    </div>
+    <div id="listaResultados" class="grid-resultados"></div>
+  </section>
+
+  <div id="mainFooterContainer"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Cargar footer
+      fetch('./components/footer.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        });
+
+      // Cargar Header
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          const container = document.getElementById("mainHeaderContainer");
+
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+
+          const scripts = temp.querySelectorAll("script");
+          scripts.forEach(script => {
+            const newScript = document.createElement("script");
+            if (script.src) {
+              newScript.src = script.src;
+            } else {
+              newScript.textContent = script.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+
+          temp.querySelectorAll("script").forEach(s => s.remove());
+          container.innerHTML = temp.innerHTML;
+
+          // Agregar buscador justo debajo del header cargado
+          const buscadorHTML = `
+            <div class="search-bar-container">
+              <input type="text" id="busquedaInput" placeholder="Buscar bicicleta, patineta o ubicación..." />
+              <button id="btnBuscar"><i class="fas fa-search"></i></button>
+            </div>
+          `;
+          container.insertAdjacentHTML("beforeend", buscadorHTML);
+
+          // Personalización de usuario
+          setTimeout(() => {
+            const usuarioRaw = localStorage.getItem("usuario");
+            if (!usuarioRaw) return;
+
+            try {
+              const usuario = JSON.parse(usuarioRaw);
+              const nombre = usuario.nombre || "Usuario";
+              const imagen = usuario.imagen || "/imag/monito.png";
+
+              const userNameLabel = document.getElementById("userName");
+              if (userNameLabel) userNameLabel.textContent = nombre;
+
+              const userAvatar = document.getElementById("userAvatar");
+              if (userAvatar) userAvatar.src = imagen;
+
+              const avatarMenu = document.getElementById("avatarMenu");
+              const nombreMenu = document.getElementById("nombreMenu");
+              if (avatarMenu) avatarMenu.src = imagen;
+              if (nombreMenu) nombreMenu.textContent = nombre;
+            } catch (error) {
+              console.error("Error al parsear usuario desde localStorage:", error);
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
+    });
+  </script>
+
+  <script>
+    document.addEventListener("click", (e) => {
+      if (e.target.closest("#btnBuscar")) {
+        const termino = document.getElementById("busquedaInput").value.toLowerCase().trim();
+        if (!termino) return;
+
+        const resultados = [];
+        const db = firebase.firestore();
+
+        db.collection("vehiculos").get().then(snapshot => {
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (
+              data.tipo.toLowerCase().includes(termino) ||
+              data.ubicacion.toLowerCase().includes(termino)
+            ) {
+              resultados.push(data);
+            }
+          });
+
+          mostrarResultados(resultados);
+        });
+      }
+
+      if (e.target.id === "btnCerrarBusqueda") {
+        document.getElementById("resultadosBusqueda").style.display = "none";
+        document.getElementById("inicio").style.display = "block";
+      }
+    });
+
+    function mostrarResultados(resultados) {
+      const contenedor = document.getElementById("listaResultados");
+      contenedor.innerHTML = "";
+
+      if (resultados.length === 0) {
+        contenedor.innerHTML = "<p>No se encontraron resultados.</p>";
+      } else {
+        resultados.forEach(item => {
+          const div = document.createElement("div");
+          div.classList.add("resultado-item");
+          div.innerHTML = `
+            <h4>${item.tipo}</h4>
+            <p>Ubicación: ${item.ubicacion}</p>
+            <p>Estado: ${item.estado || "Disponible"}</p>
+          `;
+          contenedor.appendChild(div);
+        });
+      }
+
+      document.getElementById("inicio").style.display = "none";
+      document.getElementById("resultadosBusqueda").style.display = "block";
+    }
+  </script>
+
+  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
+  <script>
+    window.loaderDuration = 500;
+  </script>
+  <script src="/components/Rental_Payments/loader/loader.js"></script>
+
+</body>
+</html>

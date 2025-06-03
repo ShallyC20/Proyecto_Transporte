@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Historial de Pagos</title>
+  <link rel="stylesheet" href="/components/Rental_Payments/PageHistori/PageHistori.css" />
+</head>
+
+<body>
+  <div id="mainHeaderContainers"></div>
+
+  <main class="PaginaHistorialViajes">
+    <h1>HISTORIAL DE PAGOS</h1>
+
+    <div class="resumen-y-busqueda">
+      <p class="cantidad-total">Cantidad total: <span id="totalPagos">0</span> pagos</p>
+      <div class="busqueda">
+        <input type="date" id="buscarFecha" />
+        <button onclick="filtrarPorFecha()">Buscar</button>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Modelo</th>
+          <th>Fecha y Hora de Inicio</th>
+          <th>Duración (horas)</th>
+          <th>Estación</th>
+          <th>Precio (Bs)</th>
+          <th>Método de Pago</th>
+        </tr>
+      </thead>
+      <tbody id="tablaHistorialPagos"></tbody>
+    </table>
+
+    <div id="paginacionContainer" class="paginacion"></div>
+  </main>
+
+  <div id="mainFooterContainer"></div>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="/js/conexionFireBase.js"></script>
+
+  <!-- Carga del Header con ejecución de scripts -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Cargar Header
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          const container = document.getElementById("mainHeaderContainers");
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+
+          const scripts = temp.querySelectorAll("script");
+          scripts.forEach(script => {
+            const newScript = document.createElement("script");
+            if (script.src) {
+              newScript.src = script.src;
+            } else {
+              newScript.textContent = script.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+
+          temp.querySelectorAll("script").forEach(s => s.remove());
+          container.innerHTML = temp.innerHTML;
+
+          setTimeout(() => {
+            const usuarioRaw = localStorage.getItem("usuario");
+            if (!usuarioRaw) return;
+
+            try {
+              const usuario = JSON.parse(usuarioRaw);
+              const nombre = usuario.nombre || "Usuario";
+              const imagen = usuario.imagen || "/imag/monito.png";
+
+              const userNameLabel = document.getElementById("userName");
+              if (userNameLabel) userNameLabel.textContent = nombre;
+
+              const userAvatar = document.getElementById("userAvatar");
+              if (userAvatar) userAvatar.src = imagen;
+
+              const avatarMenu = document.getElementById("avatarMenu");
+              const nombreMenu = document.getElementById("nombreMenu");
+
+              if (avatarMenu) avatarMenu.src = imagen;
+              if (nombreMenu) nombreMenu.textContent = nombre;
+
+            } catch (error) {
+              console.error("Error al parsear usuario desde localStorage:", error);
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error al cargar el header:", err));
+    });
+  </script>
+
+  <!-- Lógica del Historial de Pagos -->
+  <script>
+    let todosLosPagos = [];
+    let pagosFiltrados = [];
+    const elementosPorPagina = 5;
+    let paginaActual = 1;
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Footer
+      fetch("/components/Rental_Payments/Templates/Footer.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        });
+
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      if (!usuario || !usuario.correo) return;
+
+      try {
+        const db = firebase.firestore();
+        const usuariosRef = db.collection("usuarios");
+        const querySnapshot = await usuariosRef.where("correo", "==", usuario.correo).get();
+
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          const pagosRef = userDoc.ref.collection("pagos");
+          const pagosSnap = await pagosRef.orderBy("creado", "desc").get();
+
+          todosLosPagos = pagosSnap.docs.map(doc => doc.data());
+          pagosFiltrados = [...todosLosPagos];
+          renderPagosConPaginacion(pagosFiltrados);
+        } else {
+          document.getElementById("tablaHistorialPagos").innerHTML = `<tr><td colspan="6" style="text-align:center;">No se encontraron pagos.</td></tr>`;
+        }
+      } catch (error) {
+        console.error("Error al cargar historial:", error);
+        document.getElementById("tablaHistorialPagos").innerHTML = `<tr><td colspan="6" style="text-align:center; color: red;">Error al cargar los datos.</td></tr>`;
+      }
+    });
+
+    function renderPagosConPaginacion(pagos, pagina = 1) {
+      const tabla = document.getElementById("tablaHistorialPagos");
+      const totalContador = document.getElementById("totalPagos");
+      const paginacionContainer = document.getElementById("paginacionContainer");
+
+      tabla.innerHTML = "";
+      paginacionContainer.innerHTML = "";
+
+      const totalPagos = pagos.length;
+      totalContador.textContent = totalPagos;
+
+      const totalPaginas = Math.ceil(totalPagos / elementosPorPagina);
+      const inicio = (pagina - 1) * elementosPorPagina;
+      const fin = inicio + elementosPorPagina;
+      const datosPagina = pagos.slice(inicio, fin);
+
+      datosPagina.forEach(pago => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${pago.modelo || '-'}</td>
+          <td>${pago.inicio ? pago.inicio.replace("T", " ") : '-'}</td>
+          <td>${pago.horas ?? '-'}</td>
+          <td>${pago.estacion || '-'}</td>
+          <td>Bs ${pago.total ?? '0.00'}</td>
+          <td>${pago.metodo || '-'}</td>
+        `;
+        tabla.appendChild(fila);
+      });
+
+      if (totalPaginas > 1) {
+        const crearBoton = (texto, numero, activo = false) => {
+          const btn = document.createElement("button");
+          btn.textContent = texto;
+          if (activo) btn.classList.add("activo");
+          btn.onclick = () => {
+            paginaActual = numero;
+            renderPagosConPaginacion(pagos, numero);
+          };
+          paginacionContainer.appendChild(btn);
+        };
+
+        if (pagina > 1) crearBoton("‹", pagina - 1);
+        for (let i = 1; i <= totalPaginas; i++) {
+          crearBoton(i, i, i === pagina);
+        }
+        if (pagina < totalPaginas) crearBoton("›", pagina + 1);
+      }
+    }
+
+    function filtrarPorFecha() {
+      const fecha = document.getElementById("buscarFecha").value;
+      pagosFiltrados = fecha
+        ? todosLosPagos.filter(p => p.inicio && p.inicio.startsWith(fecha))
+        : [...todosLosPagos];
+
+      paginaActual = 1;
+      renderPagosConPaginacion(pagosFiltrados, paginaActual);
+    }
+  </script>
+      <script src="/components/Rental_Payments/loader/insertloader.js"></script>
+  <script>
+    window.loaderDuration = 2500; // 5 segundos
+  </script>
+  <script src="/components/Rental_Payments/loader/loader.js"></script>
+</body>
+
+</html>

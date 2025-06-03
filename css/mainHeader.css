@@ -30,11 +30,6 @@ body.menu-open #mainDetalleContainer {
   margin-left: 40px;
 }
 
-.logo-etsF {
-  height: 120px;
-  margin-left: 90px;
-}
-
 .logo-container {
   display: flex;
   justify-content: center;

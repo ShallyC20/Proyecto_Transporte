@@ -107,7 +107,7 @@ function cargarUbicacionesDesdeFirebase() {
   });
 }
 
-// 🔍 Buscar transporte en Firestore
+// Buscar transporte en Firestore
 function buscarTransporte(valor) {
   const contenedor = document.getElementById('resultadosBusqueda');
   const lista = document.getElementById('listaResultados');

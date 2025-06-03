@@ -1,6 +1,6 @@
-<!-- components/Transporte.html -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,12 +9,12 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
 
-  <div id="mainHeaderContainer"></div>
+  <div id="mainHeaderContainers"></div>
 
   <section class="pagina-transporte">
     <header class="header">
@@ -44,8 +44,9 @@
     <div class="product-grid" id="gridTransportes"></div>
   </section>
 
-  <!-- Firebase y lógica -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
   <script src="/js/conexionFireBase.js"></script>
 
@@ -81,7 +82,7 @@
             <div class="card-info">
               <h4>${producto.nombre}</h4>
               <p>Estación: ${producto.estacion}</p>
-              <p><strong>Bs${producto.tarifa.toFixed(2)}/hora</strong></p>
+              <p><strong>Bs${producto.tarifa?.toFixed(2) || '0.00'}/hora</strong></p>
             </div>
           `;
 
@@ -115,7 +116,12 @@
       }
 
       db.collection("transporte").get().then(snapshot => {
-        productos = snapshot.docs.map(doc => doc.data());
+        productos = snapshot.docs.map(doc => {
+          const data = doc.data();
+          data.docId = doc.id; // 🔑 Agregamos el ID del documento
+          return data;
+        });
+
         renderProductos(productos);
       }).catch(err => {
         console.error('Error al obtener datos de Firebase:', err);
@@ -142,5 +148,70 @@
         .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      // Cargar Header
+      fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          const container = document.getElementById("mainHeaderContainers");
+
+          // Crear un contenedor temporal
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+
+          // Ejecutar scripts embebidos manualmente
+          const scripts = temp.querySelectorAll("script");
+          scripts.forEach(script => {
+            const newScript = document.createElement("script");
+            if (script.src) {
+              newScript.src = script.src;
+            } else {
+              newScript.textContent = script.textContent;
+            }
+            document.body.appendChild(newScript);
+          });
+
+          // Limpiar los scripts del HTML antes de insertar
+          temp.querySelectorAll("script").forEach(s => s.remove());
+
+          // Agregar el HTML restante al contenedor
+          container.innerHTML = temp.innerHTML;
+
+          // Esperar a que el DOM del header esté listo
+          setTimeout(() => {
+            const usuarioRaw = localStorage.getItem("usuario");
+            if (!usuarioRaw) return;
+
+            try {
+              const usuario = JSON.parse(usuarioRaw);
+              const nombre = usuario.nombre || "Usuario";
+              const imagen = usuario.imagen || "/imag/monito.png";
+
+              const userNameLabel = document.getElementById("userName");
+              if (userNameLabel) userNameLabel.textContent = nombre;
+
+              const userAvatar = document.getElementById("userAvatar");
+              if (userAvatar) userAvatar.src = imagen;
+
+              const avatarMenu = document.getElementById("avatarMenu");
+              const nombreMenu = document.getElementById("nombreMenu");
+              if (avatarMenu) avatarMenu.src = imagen;
+              if (nombreMenu) nombreMenu.textContent = nombre;
+
+          } catch (error) {
+            console.error("Error al parsear usuario desde localStorage:", error);
+          }
+        }, 100);
+      })
+      .catch(err => console.error("Error al cargar el header:", err));
+  });
+</script>
+  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
+  <script>
+    window.loaderDuration = 2000; // 5 segundos
+  </script>
+  <script src="/components/Rental_Payments/loader/loader.js"></script>
 </body>
+
 </html>

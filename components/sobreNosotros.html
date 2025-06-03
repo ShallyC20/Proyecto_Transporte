@@ -6,18 +6,12 @@
   <title>Sobre Nosotros</title>
   <link rel="stylesheet" href="../css/sobreNosotros.css" />
   <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-  
-  integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
-  crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
 
-  <div id="mainHeaderContainer"></div>
-
-  <header class="about-header">
-    <h1> Sobre Nosotros</h1>
-  </header>
+  <!-- Header dinámico -->
+  <div id="mainHeaderContainers"></div>
 
   <main class="about-container">
     <section class="about-description">
@@ -33,10 +27,10 @@
     <section class="about-values">
       <h2>Nuestros valores</h2>
       <ul>
-        <li><i class="material-icons">check_circle</i> Compromiso con la sostenibilidad</li>
-        <li><i class="material-icons">check_circle</i> Innovación constante</li>
-        <li><i class="material-icons">check_circle</i> Transparencia y responsabilidad</li>
-        <li><i class="material-icons">check_circle</i> Enfoque en el usuario</li>
+        <li><i class="fas fa-check-circle"></i> Compromiso con la sostenibilidad</li>
+        <li><i class="fas fa-check-circle"></i> Innovación constante</li>
+        <li><i class="fas fa-check-circle"></i> Transparencia y responsabilidad</li>
+        <li><i class="fas fa-check-circle"></i> Enfoque en el usuario</li>
       </ul>
     </section>
 
@@ -48,7 +42,7 @@
           <h3>Denis Ramos</h3>
           <p>Fundador</p>
         </div>
-                <div class="team-member">
+        <div class="team-member">
           <img src="../imag/carla.jpg" alt="Miembro del equipo">
           <h3>Carla Arancibia</h3>
           <p>Diseñadora / Desarrolladora</p>
@@ -58,19 +52,22 @@
           <h3>Andrés Marca</h3>
           <p>Programador</p>
         </div>
-          <div class="team-member">
+        <div class="team-member">
           <img src="../imag/galia.jpg" alt="Miembro del equipo">
           <h3>Galia Laura</h3>
-          <p>Proga</p>
+          <p>Programadora</p>
         </div>
       </div>
     </section>
   </main>
 
-  <script src="../js/script.js" defer></script>
-
+  <!-- Footer dinámico -->
   <div id="mainFooterContainer"></div>
 
+  <!-- Script base -->
+  <script src="../js/script.js" defer></script>
+
+  <!-- Cargar Footer -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       fetch('../components/footer.html')
@@ -81,5 +78,71 @@
         .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
+
+  <!-- Cargar Header con usuario -->
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Cargar Header
+    fetch("/components/Rental_Payments/Templates/Header.html")
+      .then(res => res.text())
+      .then(html => {
+        const container = document.getElementById("mainHeaderContainers");
+
+        // Crear un contenedor temporal
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+
+        // Ejecutar scripts embebidos manualmente
+        const scripts = temp.querySelectorAll("script");
+        scripts.forEach(script => {
+          const newScript = document.createElement("script");
+          if (script.src) {
+            newScript.src = script.src;
+          } else {
+            newScript.textContent = script.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+
+        // Limpiar los scripts del HTML antes de insertar
+        temp.querySelectorAll("script").forEach(s => s.remove());
+
+        // Agregar el HTML restante al contenedor
+        container.innerHTML = temp.innerHTML;
+
+        // Esperar a que el DOM del header esté listo
+        setTimeout(() => {
+          const usuarioRaw = localStorage.getItem("usuario");
+          if (!usuarioRaw) return;
+
+          try {
+            const usuario = JSON.parse(usuarioRaw);
+            const nombre = usuario.nombre || "Usuario";
+            const imagen = usuario.imagen || "/imag/monito.png";
+
+            const userNameLabel = document.getElementById("userName");
+            if (userNameLabel) userNameLabel.textContent = nombre;
+
+            const userAvatar = document.getElementById("userAvatar");
+            if (userAvatar) userAvatar.src = imagen;
+
+            const avatarMenu = document.getElementById("avatarMenu");
+            const nombreMenu = document.getElementById("nombreMenu");
+            if (avatarMenu) avatarMenu.src = imagen;
+            if (nombreMenu) nombreMenu.textContent = nombre;
+
+          } catch (error) {
+            console.error("Error al parsear usuario desde localStorage:", error);
+          }
+        }, 100);
+      })
+      .catch(err => console.error("Error al cargar el header:", err));
+  });
+</script>
+  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
+  <script>
+    window.loaderDuration = 500; // 5 segundos
+  </script>
+  <script src="/components/Rental_Payments/loader/loader.js"></script>
 </body>
 </html>

@@ -1,0 +1,194 @@
+/* RESET GENERAL */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Contenedor principal */
+.PaginaHistorialViajes {
+  max-width: 1200px;
+  margin: 60px auto;
+  background: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título */
+.PaginaHistorialViajes h1 {
+  text-align: center;
+  color: #2d3e50;
+  margin-bottom: 30px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+/* Resumen y búsqueda */
+.resumen-y-busqueda {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cantidad-total {
+  font-weight: bold;
+  font-size: 18px;
+  color: #2d3e50;
+}
+
+.busqueda {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.busqueda input[type="date"] {
+  padding: 8px 16px;
+  border: 2px solid #6fd3e4;
+  border-radius: 20px;
+  outline: none;
+  font-size: 14px;
+  width: 240px;
+}
+
+.busqueda button {
+  background-color: #2d3e50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.busqueda button:hover {
+  background-color: #1a2c40;
+}
+
+/* Tabla general */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #6fd3e4;
+  color: #2d3e50;
+}
+
+thead th {
+  padding: 14px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 14px;
+  color: #2d3e50;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f4f9fc;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Paginación */
+.paginacion {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+
+.paginacion button {
+  background-color: #e0f7fa;
+  border: none;
+  color: #007c91;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-weight: bold;
+}
+
+.paginacion button:hover {
+  background-color: #b2ebf2;
+}
+
+.paginacion .activo {
+  background-color: #4dd0e1;
+  color: white;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .PaginaHistorialViajes {
+    padding: 20px 15px;
+  }
+
+  .resumen-y-busqueda {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .busqueda input[type="date"] {
+    width: 100%;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody tr {
+    margin-bottom: 1rem;
+    background-color: #f9fcfe;
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  tbody td {
+    padding: 10px;
+    border-bottom: none;
+    text-align: right;
+    position: relative;
+  }
+
+  tbody td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 16px;
+    top: 10px;
+    font-weight: bold;
+    color: #555;
+    text-align: left;
+  }
+}
