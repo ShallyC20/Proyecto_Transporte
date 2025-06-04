@@ -1,3 +1,4 @@
+// conexionFireBase.js
 const firebaseConfig = {
     apiKey: "AIzaSyCPyRTvy7EEvAxs1dZjwKk68IR4R-ZPlbQ",
     authDomain: "transportesgeolocalizacion.firebaseapp.com",

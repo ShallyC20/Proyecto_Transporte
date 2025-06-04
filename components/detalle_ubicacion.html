@@ -1,0 +1,149 @@
+<!-- detalle_ubicacion.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Detalle de Ubicación</title>
+  <link rel="stylesheet" href="/css/footer.css" />
+  <link rel="stylesheet" href="/css/styles.css" />
+  <link rel="stylesheet" href="/css/detalle_ubicacion.css" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+</head>
+<body>
+  <div id="mainHeaderContainer"></div>
+
+  <header class="header">
+    <h2>Sistema de Alquiler - <strong>Detalle del Vehículo</strong></h2>
+  </header>
+
+  <main class="detalle-container" id="detalleContainer">
+    <!-- Contenido cargado dinámicamente -->
+  </main>
+
+  <div id="mainFooterContainer"></div>
+
+  <script src="/js/conexionFireBase.js"></script>
+  <script>
+    function getQueryParam(param) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(param);
+    }
+
+    async function mostrarDetalle(estacionNombre) {
+    const container = document.getElementById("detalleContainer");
+    container.innerHTML = "";
+
+    if (!estacionNombre) {
+        container.innerHTML = "<p>No se especificó ninguna estación.</p>";
+        return;
+    }
+
+    try {
+        const ubicacionSnap = await ubicaciones.where("nombre", "==", estacionNombre).get();
+
+        if (ubicacionSnap.empty) {
+        container.innerHTML = `<p>No se encontró la estación: <b>${estacionNombre}</b></p>`;
+        return;
+        }
+
+        const doc = ubicacionSnap.docs[0];
+        const data = doc.data();
+
+        const lat = data.geo?.[0] ?? "No disponible";
+        const long = data.geo?.[1] ?? "No disponible";
+
+        const transporteSnap = await transportes.where("estacion", "==", estacionNombre).where("borrado", "==", false).get();
+
+        // Contadores por tipo y estado
+        const stats = {
+        bicicleta: { enUso: 0, mantenimiento: 0, disponible: 0, total: 0 },
+        patineta: { enUso: 0, mantenimiento: 0, disponible: 0, total: 0 }
+        };
+
+        transporteSnap.forEach(t => {
+        const tr = t.data();
+        const tipo = (tr.tipo || "").toLowerCase();
+        const estado = (tr.estado || "").toLowerCase();
+
+        if (!stats[tipo]) return;
+
+        if (estado.includes("uso")) stats[tipo].enUso++;
+        else if (estado.includes("mantenimiento")) stats[tipo].mantenimiento++;
+        else if (estado.includes("disponible")) stats[tipo].disponible++;
+
+        stats[tipo].total++;
+        });
+
+        container.innerHTML = `
+        <div class="detalle-imagen">
+            <img src="${data.imagen || ''}" alt="Imagen de ${data.nombre}" />
+        </div>
+        <div class="detalle-info">
+            <h2>${data.nombre}</h2>
+            <p><strong>Latitud:</strong> ${lat}</p>
+            <p><strong>Longitud:</strong> ${long}</p>
+
+            <div class="stats">
+            <h3> Bicicletas</h3>
+            <p>En uso: <span class="en-uso">${stats.bicicleta.enUso}</span></p>
+            <p>En mantenimiento: <span class="mantenimiento">${stats.bicicleta.mantenimiento}</span></p>
+            <p>Disponibles: <span class="disponible">${stats.bicicleta.disponible}</span></p>
+            <p><strong>Total bicicletas:</strong> ${stats.bicicleta.total}</p>
+            </div>
+
+            <div class="stats">
+            <h3> Patinetas</h3>
+            <p>En uso: <span class="en-uso">${stats.patineta.enUso}</span></p>
+            <p>En mantenimiento: <span class="mantenimiento">${stats.patineta.mantenimiento}</span></p>
+            <p>Disponibles: <span class="disponible">${stats.patineta.disponible}</span></p>
+            <p><strong>Total patinetas:</strong> ${stats.patineta.total}</p>
+            </div>
+
+            <button class="volver-btn" onclick="window.history.back()">&larr; Volver</button>
+        </div>
+        `;
+    } catch (error) {
+        console.error("Error al obtener detalles:", error);
+        container.innerHTML = "<p>Error al cargar los detalles de la estación.</p>";
+    }
+    }
+
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const header = document.getElementById("mainHeaderContainer");
+        const footer = document.getElementById("mainFooterContainer");
+
+        if (header && header.innerHTML.trim() === "") {
+            fetch("/components/Rental_Payments/Templates/Header.html")
+                .then(res => res.text())
+                .then(data => {
+                    header.innerHTML = data;
+                });
+        }
+
+        if (footer && footer.innerHTML.trim() === "") {
+            fetch("./footer.html")
+                .then(res => res.text())
+                .then(data => {
+                    footer.innerHTML = data;
+                });
+        }
+
+        const estacion = getQueryParam("estacion");
+        mostrarDetalle(estacion);
+    });
+
+  </script>
+
+  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
+  <script>
+    window.loaderDuration = 500;
+  </script>
+  <script src="/components/Rental_Payments/loader/loader.js"></script>
+</body>
+</html>
