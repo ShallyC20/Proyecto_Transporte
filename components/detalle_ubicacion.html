@@ -9,6 +9,10 @@
   <link rel="stylesheet" href="/css/styles.css" />
   <link rel="stylesheet" href="/css/detalle_ubicacion.css" />
 
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
@@ -80,9 +84,13 @@
         });
 
         container.innerHTML = `
-        <div class="detalle-imagen">
+        <div class="detalle-imagen-con-mapa">
+          <div class="detalle-imagen">
             <img src="${data.imagen || ''}" alt="Imagen de ${data.nombre}" />
+          </div>
+          <div id="mapDetalle"></div>
         </div>
+
         <div class="detalle-info">
             <h2>${data.nombre}</h2>
             <p><strong>Latitud:</strong> ${lat}</p>
@@ -107,6 +115,26 @@
             <button class="volver-btn" onclick="window.history.back()">&larr; Volver</button>
         </div>
         `;
+        // Inicializar el mapa solo si las coordenadas están disponibles y son números válidos
+        if (!isNaN(lat) && !isNaN(long)) {
+          if (window.detalleMapa) {
+            window.detalleMapa.remove();
+          }
+
+          // Crear nuevo mapa
+          window.detalleMapa = L.map('mapDetalle').setView([lat, long], 15);
+
+          // Agregar capa base
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+          }).addTo(window.detalleMapa);
+
+          // Agregar marcador con popup
+          L.marker([lat, long]).addTo(window.detalleMapa)
+            .bindPopup(`<b>${data.nombre}</b>`)
+            .openPopup();
+        }
+
     } catch (error) {
         console.error("Error al obtener detalles:", error);
         container.innerHTML = "<p>Error al cargar los detalles de la estación.</p>";
