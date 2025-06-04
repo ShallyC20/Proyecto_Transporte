@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BISITRACK - Renta</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <title>BISITRACK - Renta</title>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <link rel="stylesheet" href="/components/Rental_Payments/pageini/inicio.css" />
   <link rel="stylesheet" href="/components/Rental_Payments/loader/loader.css" onload="document.body.style.visibility='visible'">
   <style>
@@ -80,50 +80,51 @@
       </div>
     </section>
 
-    <!-- CONTACTOS -->
-<section id="contactos" class="pageini-contacto">
-  <div class="pageini-contacto-container">
-    
-    <!-- Formulario -->
-    <div class="pageini-contacto-form">
-      <h2>Contact Us</h2>
-      <form>
-        <input type="text" placeholder="Full Name" required />
-        <input type="email" placeholder="Email Address" required />
-        <textarea placeholder="Message" rows="5" required></textarea>
-        <button type="submit">Send</button>
-      </form>
-    </div>
-
-    <!-- Enlaces -->
-    <div class="pageini-contacto-links">
-      <div>
-        <h3>Company</h3>
-        <ul>
-          <li><a href="#">Incio</a></li>
-          <li><a href="#">Servicio</a></li>
-          <li><a href="#">Nosotros</a></li>
-          <li><a href="#">Contactos</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Services</h3>
-        <ul>
-          <li><a href="#">Web Design</a></li>
-          <li><a href="#">Graphics Design</a></li>
-          <li><a href="#">App Design</a></li>
-          <li><a href="#">SEO</a></li>
-          <li><a href="#">Marketing</a></li>
-          <li><a href="#">Analytic</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Follow Us</h3>
-        <div class="pageini-social">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-google"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+    <!-- CONTACTOS / COMENTARIOS -->
+    <section id="contactos" class="pageini-contacto">
+      <div class="pageini-contacto-container">
+        <div class="pageini-contacto-form">
+          <h2>Comentarios</h2>
+          <form id="formXSS">
+            <input type="text" id="nombreXSS" placeholder="Full Name" required />
+            <textarea id="mensajeXSS" placeholder="Message" rows="5" required></textarea>
+            <button type="submit">Send</button>
+          </form>
+        </div>
+        <div class="pageini-contacto-links">
+          <div>
+            <h3>Company</h3>
+            <ul>
+              <li><a href="#">Inicio</a></li>
+              <li><a href="#">Servicio</a></li>
+              <li><a href="#">Nosotros</a></li>
+              <li><a href="#">Contactos</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Services</h3>
+            <ul>
+              <li><a href="#">Web Design</a></li>
+              <li><a href="#">Graphics Design</a></li>
+              <li><a href="#">App Design</a></li>
+              <li><a href="#">SEO</a></li>
+              <li><a href="#">Marketing</a></li>
+              <li><a href="#">Analytic</a></li>
+            </ul>
+          </div>
+          <div>
+            <h3>Último comentario</h3>
+            <div id="comentariosXSS" style="
+              margin-top: 10px;
+              padding: 10px;
+              border: 1px solid #ccc;
+              max-height: 200px;
+              overflow-y: auto;
+              font-size: 14px;
+              background-color: #f8f8f8;
+              border-radius: 8px;
+            "></div>
+          </div>
         </div>
       </div>
     </section>
@@ -180,20 +181,9 @@
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainHeaderContainer").innerHTML = html;
-          const script1 = document.createElement('script');
-          script1.src = './js/menu.js';
-          script1.onload = () => {
-            const script2 = document.createElement('script');
-            script2.src = './js/headerEvents.js';
-            script2.onload = () => {
-              if (typeof initHeaderEvents === 'function') initHeaderEvents();
-            };
-            document.body.appendChild(script2);
-          };
-          document.body.appendChild(script1);
         });
 
-      fetch('../Templates/Footer.html')
+      fetch('/components/Rental_Payments/Templates/Footer.html')
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainFooterContainer").innerHTML = html;
@@ -223,15 +213,9 @@ const ubicaciones = [
   { nombre: "Alto Irpavi", lat: -16.53100, lng: -68.06000 }
 ];
 
-  ubicaciones.forEach(ubi => {
-    L.marker([ubi.lat, ubi.lng])
-      .addTo(map)
-      .bindPopup(`<strong>${ubi.nombre}</strong>`);
-  });
-</script>
-  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
-  <script>
-    window.loaderDuration = 1000; // 5 segundos
+ubicaciones.forEach(ubi => {
+  L.marker([ubi.lat, ubi.lng]).addTo(map).bindPopup(`<strong>${ubi.nombre}</strong>`);
+});
   </script>
 
 </body>
