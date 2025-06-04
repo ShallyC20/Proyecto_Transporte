@@ -50,7 +50,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('../components/mainHeader.html')
+      fetch('/components/Rental_Payments/Templates/Header.html')
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainHeaderContainer").innerHTML = html;
@@ -161,5 +161,10 @@
         .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
+  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
+  <script>
+    window.loaderDuration = 500; // 5 segundos
+  </script>
+  <script src="/components/Rental_Payments/loader/loader.js"></script>
 </body>
 </html>

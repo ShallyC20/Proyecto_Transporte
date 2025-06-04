@@ -22,6 +22,10 @@ async function cargarDestinos() {
         <img src="${imagenDestino}" alt="${data.nombre}">
         <div class="destino-nombre">${data.nombre}</div>
       `;
+      card.addEventListener("click", () => {
+        const nombreEstacion = encodeURIComponent(data.nombre);
+        window.location.href = `/components/detalle_ubicacion.html?estacion=${nombreEstacion}`;
+      });
       destinoTrack.appendChild(card);
     });
   } catch (error) {

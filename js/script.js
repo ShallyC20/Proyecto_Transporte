@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("../components/mainHeader.html")
     .then(res => res.text())
     .then(html => {
-      document.getElementById("mainHeaderContainer").innerHTML = html;
+      html = document.getElementById("mainHeaderContainer");
 
       const script = document.createElement("script");
       script.src = "../js/headerEvents.js";

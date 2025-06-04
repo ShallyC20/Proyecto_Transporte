@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Perfil</title>
+  <link rel="stylesheet" href="editar.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div id="mainHeaderContainer"></div>
+
+  <div class="editar-container">
+    <div class="editar-header">
+      <h1>Editar Perfil</h1>
+      <p>Actualiza tu información personal y visual</p>
+    </div>
+
+    <form id="formEditar" class="editar-form-horizontal">
+
+      <div class="form-column">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono">
+
+        <label for="fecha">Fecha de Nacimiento:</label>
+        <input type="date" id="fecha">
+
+        <label for="NIT">NIT:</label>
+        <input type="text">
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" placeholder="Cuéntanos algo sobre ti..."></textarea>
+        <label for="genero">Género:</label>
+        <select id="genero">
+          <option value="">Seleccione</option>
+          <option value="Masculino">Masculino</option>
+          <option value="Femenino">Femenino</option>
+          <option value="Otro">Otro</option>
+        </select>
+
+        <label for="km">Kilómetros recorridos:</label>
+        <select id="km">
+          <option value="0">0</option>
+          <option value="1-10">1-10</option>
+          <option value="11-50">11-50</option>
+          <option value="51-100">51-100</option>
+          <option value="100+">100+</option>
+        </select>
+
+        <label for="horas">Horas de recorrido:</label>
+        <select id="horas">
+          <option value="0">0</option>
+          <option value="1-2">1-2</option>
+          <option value="3-5">3-5</option>
+          <option value="6+">6+</option>
+        </select>
+      </div>
+
+      <div class="form-column">
+        <label for="vehiculos">Vehículo(s) favorito(s):</label>
+        <select id="vehiculos" multiple>
+          <option value="motopatin verde">Motopatín verde</option>
+          <option value="motopatin naranja">Motopatín naranja</option>
+          <option value="motopatin roja">Motopatín roja</option>
+          <option value="motopatin morada">Motopatín morada</option>
+        </select>
+
+        <label for="puntos">Punto(s) favorito(s):</label>
+        <select id="puntos" multiple>
+          <option value="Irpavi">Irpavi</option>
+          <option value="Megacenter">Megacenter</option>
+          <option value="Achumani">Achumani</option>
+          <option value="Obrajes">Obrajes</option>
+        </select>
+
+        <label for="imagenInput">Imagen de perfil:</label>
+        <input type="file" id="imagenInput" accept="image/*">
+
+
+
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="mainFooterContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script type="module" src="/js/conexionFireBase.js"></script>
+  <script type="module" src="editar.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      // === Cargar Header y ejecutar sus scripts ===
+      await fetch("/components/Rental_Payments/Templates/Header.html")
+        .then(res => res.text())
+        .then(html => {
+          const container = document.getElementById("mainHeaderContainer");
+          const temp = document.createElement("div");
+          temp.innerHTML = html;
+
+          // Extraer y ejecutar scripts
+          const scripts = temp.querySelectorAll("script");
+          scripts.forEach(script => {
+            const nuevoScript = document.createElement("script");
+            if (script.src) {
+              nuevoScript.src = script.src;
+            } else {
+              nuevoScript.textContent = script.textContent;
+            }
+            document.body.appendChild(nuevoScript);
+          });
+
+          temp.querySelectorAll("script").forEach(s => s.remove());
+          container.innerHTML = temp.innerHTML;
+
+          // Mostrar usuario
+          setTimeout(() => {
+            const usuarioRaw = localStorage.getItem("usuario");
+            if (!usuarioRaw) return;
+
+            try {
+              const usuario = JSON.parse(usuarioRaw);
+              const nombre = usuario.nombre || "Usuario";
+              const imagen = usuario.imagen || "/imag/monito.png";
+
+              const userNameLabel = document.getElementById("userName");
+              if (userNameLabel) userNameLabel.textContent = nombre;
+
+              const userAvatar = document.getElementById("userAvatar");
+              if (userAvatar) userAvatar.src = imagen;
+
+              const avatarMenu = document.getElementById("avatarMenu");
+              const nombreMenu = document.getElementById("nombreMenu");
+              if (avatarMenu) avatarMenu.src = imagen;
+              if (nombreMenu) nombreMenu.textContent = nombre;
+
+            } catch (error) {
+              console.error("Error al parsear usuario:", error);
+            }
+          }, 100);
+        })
+        .catch(err => console.error("Error cargando header:", err));
+
+      // === Cargar Footer ===
+      fetch("/components/footer.html")
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById("mainFooterContainer").innerHTML = html;
+        });
+    });
+  </script>
+</body>
+
+</html>
