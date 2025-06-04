@@ -1,0 +1,126 @@
+.pageini-contacto {
+  background: #f7f9fc;
+  font-family: "Segoe UI", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.pageini-contacto-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 40px;
+  justify-content: space-evenly;
+  background-color: #fff;
+  padding: 40px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+.pageini-contacto-form {
+  flex: 1 1 400px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.pageini-contacto-form h2 {
+  color: #0d4ce3;
+  margin-bottom: 24px;
+  font-size: 28px;
+}
+
+.pageini-contacto-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pageini-contacto-form input,
+.pageini-contacto-form textarea {
+  border: 1px solid #e0e6f0;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pageini-contacto-form input:focus,
+.pageini-contacto-form textarea:focus {
+  border-color: #0d4ce3;
+  box-shadow: 0 0 0 3px rgba(13, 76, 227, 0.15);
+  outline: none;
+}
+
+.pageini-contacto-form button {
+  padding: 14px;
+  background-color: #0d4ce3;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.pageini-contacto-form button:hover {
+  background-color: #0a3ab8;
+}
+
+.pageini-contacto-links {
+  flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 400px;
+}
+
+.pageini-contacto-links h3 {
+  color: #0d4ce3;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.pageini-contacto-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.pageini-contacto-links ul li {
+  margin-bottom: 10px;
+}
+
+.pageini-contacto-links ul li a {
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.pageini-contacto-links ul li a:hover {
+  color: #0d4ce3;
+}
+
+.pageini-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.pageini-social a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #444;
+  font-size: 20px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.pageini-social a:hover {
+  color: #0d4ce3;
+}

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <title>BISITRACK - Renta</title>
+    <link rel="stylesheet" href="/css/contacIndex.css" />
   <link rel="stylesheet" href="/components/Rental_Payments/pageini/inicio.css" />
   <link rel="stylesheet" href="/components/Rental_Payments/loader/loader.css" onload="document.body.style.visibility='visible'">
   <style>
@@ -131,20 +132,20 @@
 <section id="contactos" class="pageini-contacto">
   <div class="pageini-contacto-container">
 
-    <!-- Formulario de contacto -->
     <div class="pageini-contacto-form">
       <h2>Contáctanos</h2>
-      <form>
-        <input type="text" placeholder="Nombre completo" required />
-        <input type="email" placeholder="Correo electrónico" required />
-        <textarea placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
+      <form id="contactForm" action="https://formspree.io/f/xgvyvaon" method="POST">
+        <input type="text" name="name" placeholder="Nombre completo" required />
+        <input type="email" name="email" placeholder="Correo electrónico" required />
+        <textarea name="message" placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
+        
         <button type="submit">Enviar mensaje</button>
       </form>
+      <p id="formResponse" style="display: none; margin-top: 10px;"></p>
     </div>
 
     <!-- Enlaces de navegación y redes sociales -->
     <div class="pageini-contacto-links">
-      <!-- Enlaces -->
       <div>
         <h3>Enlaces</h3>
         <ul>
@@ -155,36 +156,16 @@
         </ul>
       </div>
 
-      <!-- Servicios -->
-      <div>
-        <h3>Servicios</h3>
-        <ul>
-          <li><a href="#">Diseño web</a></li>
-          <li><a href="#">Diseño gráfico</a></li>
-          <li><a href="#">Desarrollo de apps</a></li>
-          <li><a href="#">Posicionamiento SEO</a></li>
-          <li><a href="#">Marketing digital</a></li>
-          <li><a href="#">Analítica web</a></li>
-        </ul>
-      </div>
-
       <!-- Redes sociales -->
       <div>
         <h3>Síguenos</h3>
         <div class="pageini-social">
-          <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook">
-            <i class="fab fa-facebook-f"></i> Facebook
-          </a><br>
-          <a href="https://twitter.com/" target="_blank" aria-label="Twitter">
+          <a href="https://x.com/BiciTrack56" target="_blank" aria-label="Twitter">
             <i class="fab fa-twitter"></i> Twitter
           </a><br>
-          <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram">
+          <a href="https://www.instagram.com/bici.track/" target="_blank" aria-label="Instagram">
             <i class="fab fa-instagram"></i> Instagram
-          </a><br>
-          <a href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn">
-            <i class="fab fa-linkedin-in"></i> LinkedIn
-          </a><br>
-          <a href="mailto:info@bisitrack.com" aria-label="Correo electrónico">
+          <a href="mailto:loliconbodoke@gmail.com" aria-label="Correo electrónico">
             <i class="fas fa-envelope"></i> Correo
           </a>
         </div>
@@ -193,8 +174,6 @@
 
   </div>
 </section>
-
-
 
   </div>
 
@@ -221,11 +200,6 @@
           document.body.appendChild(script1);
         });
 
-      fetch('./components/footer.html')
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("mainFooterContainer").innerHTML = html;
-        });
     });
   </script>
 <!-- Leaflet JS -->
@@ -260,6 +234,41 @@
       .bindPopup(`<strong>${ubi.nombre}</strong>`);
   });
 </script>
+
+<script>
+  document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const data = new FormData(form);
+    const responseMsg = document.getElementById("formResponse");
+
+    fetch(form.action, {
+      method: "POST",
+      body: data,
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        form.reset();
+        responseMsg.textContent = "¡Mensaje enviado correctamente!";
+        responseMsg.style.color = "green";
+        responseMsg.style.display = "block";
+      } else {
+        responseMsg.textContent = "Ocurrió un error al enviar el mensaje.";
+        responseMsg.style.color = "red";
+        responseMsg.style.display = "block";
+      }
+    }).catch(error => {
+      responseMsg.textContent = "Error de conexión. Intenta de nuevo.";
+      responseMsg.style.color = "red";
+      responseMsg.style.display = "block";
+    });
+  });
+</script>
+
+
   <script src="/components/Rental_Payments/loader/insertloader.js"></script>
   <script>
     window.loaderDuration = 1000; // 5 segundos
