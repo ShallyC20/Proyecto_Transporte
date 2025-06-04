@@ -127,56 +127,74 @@
   </div>
 </section>
 
-    <!-- CONTACTOS -->
+<!-- CONTACTO -->
 <section id="contactos" class="pageini-contacto">
   <div class="pageini-contacto-container">
-    
-    <!-- Formulario -->
+
+    <!-- Formulario de contacto -->
     <div class="pageini-contacto-form">
-      <h2>Contact Us</h2>
+      <h2>Contáctanos</h2>
       <form>
-        <input type="text" placeholder="Full Name" required />
-        <input type="email" placeholder="Email Address" required />
-        <textarea placeholder="Message" rows="5" required></textarea>
-        <button type="submit">Send</button>
+        <input type="text" placeholder="Nombre completo" required />
+        <input type="email" placeholder="Correo electrónico" required />
+        <textarea placeholder="Escribe tu mensaje aquí..." rows="5" required></textarea>
+        <button type="submit">Enviar mensaje</button>
       </form>
     </div>
 
-    <!-- Enlaces -->
+    <!-- Enlaces de navegación y redes sociales -->
     <div class="pageini-contacto-links">
+      <!-- Enlaces -->
       <div>
-        <h3>Company</h3>
+        <h3>Enlaces</h3>
         <ul>
-          <li><a href="#">Incio</a></li>
-          <li><a href="#">Servicio</a></li>
-          <li><a href="#">Nosotros</a></li>
-          <li><a href="#">Contactos</a></li>
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#servicio">Servicio</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#contactos">Contacto</a></li>
         </ul>
       </div>
+
+      <!-- Servicios -->
       <div>
-        <h3>Services</h3>
+        <h3>Servicios</h3>
         <ul>
-          <li><a href="#">Web Design</a></li>
-          <li><a href="#">Graphics Design</a></li>
-          <li><a href="#">App Design</a></li>
-          <li><a href="#">SEO</a></li>
-          <li><a href="#">Marketing</a></li>
-          <li><a href="#">Analytic</a></li>
+          <li><a href="#">Diseño web</a></li>
+          <li><a href="#">Diseño gráfico</a></li>
+          <li><a href="#">Desarrollo de apps</a></li>
+          <li><a href="#">Posicionamiento SEO</a></li>
+          <li><a href="#">Marketing digital</a></li>
+          <li><a href="#">Analítica web</a></li>
         </ul>
       </div>
+
+      <!-- Redes sociales -->
       <div>
-        <h3>Follow Us</h3>
+        <h3>Síguenos</h3>
         <div class="pageini-social">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-google"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="https://www.facebook.com/" target="_blank" aria-label="Facebook">
+            <i class="fab fa-facebook-f"></i> Facebook
+          </a><br>
+          <a href="https://twitter.com/" target="_blank" aria-label="Twitter">
+            <i class="fab fa-twitter"></i> Twitter
+          </a><br>
+          <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram">
+            <i class="fab fa-instagram"></i> Instagram
+          </a><br>
+          <a href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in"></i> LinkedIn
+          </a><br>
+          <a href="mailto:info@bisitrack.com" aria-label="Correo electrónico">
+            <i class="fas fa-envelope"></i> Correo
+          </a>
         </div>
       </div>
     </div>
 
   </div>
 </section>
+
+
 
   </div>
 
@@ -203,7 +221,7 @@
           document.body.appendChild(script1);
         });
 
-      fetch('../Templates/Footer.html')
+      fetch('./components/footer.html')
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainFooterContainer").innerHTML = html;
