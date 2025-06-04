@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Transporte</title>
+  <title>Visualización de Transporte</title>
 
   <!-- Estilos -->
   <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-
 <body>
 
   <div id="mainHeaderContainers"></div>
@@ -21,9 +18,9 @@
       <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
       <div class="filters">
         <select id="filterTipo">
-          <option value="Todo">Todos</option>
-          <option value="Bicicleta">Bicicletas</option>
-          <option value="Patineta">Patinetas</option>
+          <option value="todo">Todos</option>
+          <option value="bicicleta">Bicicletas</option>
+          <option value="patineta">Patinetas</option>
         </select>
 
         <select id="filterEstado">
@@ -50,6 +47,7 @@
   <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
   <script src="../js/conexionFirebase.js"></script>
 
+  <!-- Lógica de transporte -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const grid = document.getElementById('gridTransportes');
@@ -78,11 +76,11 @@
 
           card.innerHTML = `
             <div class="badge ${badgeClass}">${producto.estado}</div>
-            <img src="${producto.imagen || 'https://via.placeholder.com/150'}" alt="${producto.alt || producto.nombre}">
+            <img src="${producto.imagen || 'https://via.placeholder.com/150'}" alt="${producto.nombre}">
             <div class="card-info">
               <h4>${producto.nombre}</h4>
               <p>Estación: ${producto.estacion}</p>
-              <p><strong>Bs${producto.tarifa?.toFixed(2) || '0.00'}/hora</strong></p>
+              <p><strong>Bs ${producto.tarifa?.toFixed(2) || '0.00'}/hora</strong></p>
             </div>
           `;
 
@@ -98,69 +96,74 @@
       function aplicarFiltros() {
         let filtrados = [...productos];
 
-        if (tipo.value !== "Todo") {
-          filtrados = filtrados.filter(p => p.tipo === tipo.value);
+        // Filtro por tipo (independiente de mayúsculas)
+        if (tipo.value !== "todo") {
+          filtrados = filtrados.filter(p => (p.tipo || "").toLowerCase() === tipo.value.toLowerCase());
         }
 
+        // Filtro por estado
         if (estado.value !== "Todo") {
           filtrados = filtrados.filter(p => p.estado === estado.value);
         }
 
+        // Ordenamiento por tarifa
         if (tarifa.value === "asc") {
-          filtrados.sort((a, b) => a.tarifa - b.tarifa);
+          filtrados.sort((a, b) => (a.tarifa || 0) - (b.tarifa || 0));
         } else if (tarifa.value === "desc") {
-          filtrados.sort((a, b) => b.tarifa - a.tarifa);
+          filtrados.sort((a, b) => (b.tarifa || 0) - (a.tarifa || 0));
         }
 
         renderProductos(filtrados);
       }
 
       db.collection("transporte").get().then(snapshot => {
-        productos = snapshot.docs.map(doc => {
-          const data = doc.data();
-          data.docId = doc.id; // 🔑 Agregamos el ID del documento
-          return data;
-        });
+        productos = snapshot.docs
+          .map(doc => ({ ...doc.data(), docId: doc.id }))
+          .filter(p => !p.borrado); // Excluye los eliminados
 
-        renderProductos(productos);
+        aplicarFiltros(); // Mostrar con filtros aplicados
       }).catch(err => {
         console.error('Error al obtener datos de Firebase:', err);
         grid.innerHTML = '<p style="color:red;">No se pudieron cargar los transportes.</p>';
       });
 
+      // Aplicar filtros en cada cambio
       [tipo, estado, tarifa].forEach(select => {
         select.addEventListener('change', aplicarFiltros);
       });
     });
   </script>
 
+  <!-- Loader y header/footer -->
+  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
+  <script> window.loaderDuration = 2000; </script>
+  <script src="/components/Rental_Payments/loader/loader.js"></script>
+
   <script src="../js/script.js" defer></script>
 
+  <!-- Cargar Footer -->
   <div id="mainFooterContainer"></div>
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       fetch('../components/footer.html')
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainFooterContainer").innerHTML = html;
-        })
-        .catch(err => console.error("Error al cargar el footer:", err));
+        });
     });
   </script>
+
+  <!-- Cargar Header -->
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      // Cargar Header
+    document.addEventListener("DOMContentLoaded", () => {
       fetch("/components/Rental_Payments/Templates/Header.html")
         .then(res => res.text())
         .then(html => {
           const container = document.getElementById("mainHeaderContainers");
-
-          // Crear un contenedor temporal
           const temp = document.createElement("div");
           temp.innerHTML = html;
 
-          // Ejecutar scripts embebidos manualmente
+          // Ejecutar scripts del header
           const scripts = temp.querySelectorAll("script");
           scripts.forEach(script => {
             const newScript = document.createElement("script");
@@ -172,46 +175,29 @@
             document.body.appendChild(newScript);
           });
 
-          // Limpiar los scripts del HTML antes de insertar
           temp.querySelectorAll("script").forEach(s => s.remove());
-
-          // Agregar el HTML restante al contenedor
           container.innerHTML = temp.innerHTML;
 
-          // Esperar a que el DOM del header esté listo
+          // Cargar datos de usuario si existen
           setTimeout(() => {
             const usuarioRaw = localStorage.getItem("usuario");
             if (!usuarioRaw) return;
-
             try {
               const usuario = JSON.parse(usuarioRaw);
               const nombre = usuario.nombre || "Usuario";
               const imagen = usuario.imagen || "/imag/monito.png";
 
-              const userNameLabel = document.getElementById("userName");
-              if (userNameLabel) userNameLabel.textContent = nombre;
-
-              const userAvatar = document.getElementById("userAvatar");
-              if (userAvatar) userAvatar.src = imagen;
-
-              const avatarMenu = document.getElementById("avatarMenu");
-              const nombreMenu = document.getElementById("nombreMenu");
-              if (avatarMenu) avatarMenu.src = imagen;
-              if (nombreMenu) nombreMenu.textContent = nombre;
-
-          } catch (error) {
-            console.error("Error al parsear usuario desde localStorage:", error);
-          }
-        }, 100);
-      })
-      .catch(err => console.error("Error al cargar el header:", err));
-  });
-</script>
-  <script src="/components/Rental_Payments/loader/insertloader.js"></script>
-  <script>
-    window.loaderDuration = 2000; // 5 segundos
+              document.getElementById("userName").textContent = nombre;
+              document.getElementById("userAvatar").src = imagen;
+              document.getElementById("avatarMenu").src = imagen;
+              document.getElementById("nombreMenu").textContent = nombre;
+            } catch (e) {
+              console.error("Error al cargar datos de usuario:", e);
+            }
+          }, 100);
+        });
+    });
   </script>
-  <script src="/components/Rental_Payments/loader/loader.js"></script>
-</body>
 
+</body>
 </html>
