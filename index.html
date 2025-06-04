@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BISITRACK - Renta</title>
+  <link rel="stylesheet" href="/css/contacIndex.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <link rel="stylesheet" href="/components/Rental_Payments/pageini/inicio.css" />
-  <link rel="stylesheet" href="/components/Rental_Payments/loader/loader.css" onload="document.body.style.visibility='visible'">
+  <link rel="stylesheet" href="/components/Rental_Payments/loader/loader.css"
+    onload="document.body.style.visibility='visible'">
   <style>
-    body { visibility: hidden; }
+    body {
+      visibility: hidden;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- HEADER -->
@@ -25,10 +31,13 @@
       <div class="pageini-overlay">
         <div class="pageini-container">
           <h1 class="pageini-title"><span class="pageini-yellow">BICITRACK</span></h1>
-          <p class="pageini-subtext">Con BISITRACK puedes monitorear, optimizar y gestionar tu red de vehículos en tiempo real.</p>
+          <p class="pageini-subtext">Con BISITRACK puedes monitorear, optimizar y gestionar tu red de vehículos en
+            tiempo real.</p>
           <div class="pageini-buttons">
-            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=login" class="pageini-btn-outline">Iniciar sesión</a>
-            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=register" class="pageini-btn-filled">Registrarse</a>
+            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=login"
+              class="pageini-btn-outline">Iniciar sesión</a>
+            <a href="/components/Rental_Payments/Login and register/LoginRegister.html?mode=register"
+              class="pageini-btn-filled">Registrarse</a>
           </div>
         </div>
       </div>
@@ -39,18 +48,32 @@
       <h2 class="pageini-carousel-title">Servicio de Transporte</h2>
       <div class="pageini-info-transporte">
         <p>
-          ¡Explora la ciudad de forma ecológica! BISITRACK te ofrece estaciones inteligentes de bicicletas y monopatines eléctricos en puntos clave de La Paz:
-          <strong>EMI - Obrajes</strong>, <strong>Irpavi</strong>, <strong>Obrajes</strong> y <strong>Alto Irpavi</strong>.
+          ¡Explora la ciudad de forma ecológica! BISITRACK te ofrece estaciones inteligentes de bicicletas y monopatines
+          eléctricos en puntos clave de La Paz:
+          <strong>EMI - Obrajes</strong>, <strong>Irpavi</strong>, <strong>Obrajes</strong> y <strong>Alto
+            Irpavi</strong>.
         </p>
       </div>
 
       <div class="pageini-carousel-container">
         <button class="pageini-carousel-btn left" onclick="scrollCarousel(-1)">&#10094;</button>
         <div class="pageini-carousel" id="pageini-carousel">
-          <div class="pageini-card"><img src="/components/Rental_Payments/pageini/emi.png" alt="Unidad 1"><h3>Escuela Militar de Ingeniería</h3><p>Punto principal de alquiler en Obrajes, con acceso rápido a toda la zona sur.</p></div>
-          <div class="pageini-card"><img src="/components/Rental_Payments/pageini/Irpavi.png" alt="Ruta 2"><h3>Irpavi</h3><p>Ideal para desplazarte entre residenciales y avenidas principales de la zona este.</p></div>
-          <div class="pageini-card"><img src="/components/Rental_Payments/pageini/Obrajes.png" alt="Horarios"><h3>Obrajes</h3><p>Zona intermedia con alta conectividad hacia el centro y la parte sur de la ciudad.</p></div>
-          <div class="pageini-card"><img src="/components/Rental_Payments/pageini/Altoirpavi.png" alt="Reportes"><h3>Alto Irpavi</h3><p>Zona residencial con caminos ideales para recorrer en monopatín o bicicleta eléctrica.</p></div>
+          <div class="pageini-card"><img src="/components/Rental_Payments/pageini/emi.png" alt="Unidad 1">
+            <h3>Escuela Militar de Ingeniería</h3>
+            <p>Punto principal de alquiler en Obrajes, con acceso rápido a toda la zona sur.</p>
+          </div>
+          <div class="pageini-card"><img src="/components/Rental_Payments/pageini/Irpavi.png" alt="Ruta 2">
+            <h3>Irpavi</h3>
+            <p>Ideal para desplazarte entre residenciales y avenidas principales de la zona este.</p>
+          </div>
+          <div class="pageini-card"><img src="/components/Rental_Payments/pageini/Obrajes.png" alt="Horarios">
+            <h3>Obrajes</h3>
+            <p>Zona intermedia con alta conectividad hacia el centro y la parte sur de la ciudad.</p>
+          </div>
+          <div class="pageini-card"><img src="/components/Rental_Payments/pageini/Altoirpavi.png" alt="Reportes">
+            <h3>Alto Irpavi</h3>
+            <p>Zona residencial con caminos ideales para recorrer en monopatín o bicicleta eléctrica.</p>
+          </div>
         </div>
         <button class="pageini-carousel-btn right" onclick="scrollCarousel(1)">&#10095;</button>
       </div>
@@ -202,21 +225,22 @@
   </script>
   <script>
     const map = L.map('mapa-transporte').setView([-16.525, -68.11], 14);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-const ubicaciones = [
-  { nombre: "EMI - Obrajes", lat: -16.52686, lng: -68.10520 },
-  { nombre: "Irpavi", lat: -16.54150, lng: -68.08000 },
-  { nombre: "Obrajes", lat: -16.53720, lng: -68.10730 },
-  { nombre: "Alto Irpavi", lat: -16.53100, lng: -68.06000 }
-];
+    const ubicaciones = [
+      { nombre: "EMI - Obrajes", lat: -16.52686, lng: -68.10520 },
+      { nombre: "Irpavi", lat: -16.54150, lng: -68.08000 },
+      { nombre: "Obrajes", lat: -16.53720, lng: -68.10730 },
+      { nombre: "Alto Irpavi", lat: -16.53100, lng: -68.06000 }
+    ];
 
-ubicaciones.forEach(ubi => {
-  L.marker([ubi.lat, ubi.lng]).addTo(map).bindPopup(`<strong>${ubi.nombre}</strong>`);
-});
+    ubicaciones.forEach(ubi => {
+      L.marker([ubi.lat, ubi.lng]).addTo(map).bindPopup(`<strong>${ubi.nombre}</strong>`);
+    });
   </script>
 
 </body>
+
 </html>
