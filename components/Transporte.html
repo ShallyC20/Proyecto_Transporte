@@ -119,7 +119,7 @@
       db.collection("transporte").get().then(snapshot => {
         productos = snapshot.docs.map(doc => {
           const data = doc.data();
-          data.docId = doc.id; // 🔑 Agregamos el ID del documento
+          data.docId = doc.id; 
           return data;
         });
 
