@@ -1,6 +1,7 @@
 <!-- Transporte.html-->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,8 +9,10 @@
 
   <!-- Estilos -->
   <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
+
 <body>
 
   <div id="mainHeaderContainers"></div>
@@ -87,7 +90,7 @@
 
           card.addEventListener("click", () => {
             localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
-            window.location.href = "../components/detalle.html";
+            window.location.href = "/components/detalle.html";
           });
 
           grid.appendChild(card);
@@ -113,7 +116,7 @@
           filtrados.sort((a, b) => (b.tarifa || 0) - (a.tarifa || 0));
         }
 
-        renderProductos(filtrados);
+        renderProductos(filtrados); 
       }
 
       db.collection("transporte").get().then(snapshot => {
@@ -141,7 +144,6 @@
   <script> window.loaderDuration = 2000; </script>
   <script src="/components/Rental_Payments/loader/loader.js"></script>
 
-  <script src="../js/script.js" defer></script>
 
   <!-- Cargar Footer -->
   <div id="mainFooterContainer"></div>
@@ -202,4 +204,5 @@
   </script>
 
 </body>
+
 </html>

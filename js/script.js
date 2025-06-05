@@ -1,7 +1,7 @@
 // script.js
 document.addEventListener("DOMContentLoaded", () => {
   // Cargar header
-  fetch("../components/mainHeader.html")
+  fetch("/components/mainHeader.html")
     .then(res => res.text())
     .then(html => {
       html = document.getElementById("mainHeaderContainer");

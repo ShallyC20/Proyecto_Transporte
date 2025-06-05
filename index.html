@@ -223,38 +223,40 @@
       });
     }
   </script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Asegurar que el mapa se muestra correctamente
-    document.body.style.visibility = 'visible';
 
-    // Inicializar el mapa solo si existe el contenedor
-    const contenedorMapa = document.getElementById('mapa-transporte');
-    if (contenedorMapa) {
-      const map = L.map('mapa-transporte').setView([-16.525, -68.11], 14);
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Asegurar que el mapa se muestra correctamente
+      document.body.style.visibility = 'visible';
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(map);
+      // Inicializar el mapa solo si existe el contenedor
+      const contenedorMapa = document.getElementById('mapa-transporte');
+      if (contenedorMapa) {
+        const map = L.map('mapa-transporte').setView([-16.525, -68.11], 14);
 
-      const ubicaciones = [
-        { nombre: "EMI - Obrajes", lat: -16.52686, lng: -68.10520 },
-        { nombre: "Irpavi", lat: -16.54150, lng: -68.08000 },
-        { nombre: "Obrajes", lat: -16.53720, lng: -68.10730 },
-        { nombre: "Alto Irpavi", lat: -16.53100, lng: -68.06000 }
-      ];
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
 
-      ubicaciones.forEach(ubi => {
-        L.marker([ubi.lat, ubi.lng])
-          .addTo(map)
-          .bindPopup(`<strong>${ubi.nombre}</strong>`);
-      });
-    } else {
-      console.warn("El contenedor del mapa no fue encontrado.");
-    }
-  });
-</script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        const ubicaciones = [
+          { nombre: "EMI - Obrajes", lat: -16.52686, lng: -68.10520 },
+          { nombre: "Irpavi", lat: -16.54150, lng: -68.08000 },
+          { nombre: "Obrajes", lat: -16.53720, lng: -68.10730 },
+          { nombre: "Alto Irpavi", lat: -16.53100, lng: -68.06000 }
+        ];
+
+        ubicaciones.forEach(ubi => {
+          L.marker([ubi.lat, ubi.lng])
+            .addTo(map)
+            .bindPopup(`<strong>${ubi.nombre}</strong>`);
+        });
+      } else {
+        console.warn("El contenedor del mapa no fue encontrado.");
+      }
+    });
+  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 
 </html>
