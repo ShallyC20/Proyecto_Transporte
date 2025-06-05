@@ -22,7 +22,7 @@
       <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
       <div class="filters">
         <select id="filterTipo">
-          <option value="todo">Todos</option>
+          <option value="Todo">Todos</option>
           <option value="bicicleta">Bicicletas</option>
           <option value="patineta">Patinetas</option>
         </select>
@@ -49,7 +49,7 @@
   <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
-  <script src="/js/conexionFireBase.js"></script>
+  <script type="module" src="/js/conexionFireBase.js"></script>
 
   <!-- Lógica de transporte -->
   <script>
@@ -116,7 +116,7 @@
           filtrados.sort((a, b) => (b.tarifa || 0) - (a.tarifa || 0));
         }
 
-        renderProductos(filtrados); 
+        renderProductos(filtrados);
       }
 
       db.collection("transporte").get().then(snapshot => {
@@ -149,7 +149,7 @@
   <div id="mainFooterContainer"></div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      fetch('../components/footer.html')
+      fetch('/components/footer.html')
         .then(res => res.text())
         .then(html => {
           document.getElementById("mainFooterContainer").innerHTML = html;
