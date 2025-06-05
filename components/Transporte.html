@@ -18,11 +18,11 @@
     <header class="header">
       <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
       <div class="filters">
-        <select id="filterTipo">
-          <option value="todo">Todos</option>
-          <option value="bicicleta">Bicicletas</option>
-          <option value="patineta">Patinetas</option>
-        </select>
+      <select id="filterTipo">
+        <option value="todo">Todos</option>
+        <option value="bicicleta">Bicicletas</option>
+        <option value="patineta">Patinetas</option>
+      </select>
 
         <select id="filterEstado">
           <option value="Todo">Todo</option>
@@ -61,7 +61,7 @@
         grid.innerHTML = '';
 
         if (data.length === 0) {
-          grid.innerHTML = '<p>No hay transportes que coincidan con los filtros.</p>';
+          grid.innerHTML = '<p style="text-align:center; font-size: 18px;">No hay transportes que coincidan con los filtros seleccionados.</p>';
           return;
         }
 
@@ -70,10 +70,10 @@
           card.classList.add('card');
 
           const badgeClass = {
-            "Disponible": "badge-disponible",
-            "En uso": "badge-en-uso",
-            "Mantenimiento": "badge-mantenimiento"
-          }[producto.estado] || "badge-default";
+            "disponible": "badge-disponible",
+            "en uso": "badge-en-uso",
+            "mantenimiento": "badge-mantenimiento"
+          }[producto.estado.toLowerCase()] || "badge-default";
 
           card.innerHTML = `
             <div class="badge ${badgeClass}">${producto.estado}</div>
@@ -97,16 +97,19 @@
       function aplicarFiltros() {
         let filtrados = [...productos];
 
-        if (tipo.value !== "Todo") {
-          filtrados = filtrados.filter(p => p.tipo === tipo.value);
+        // Filtro por tipo
+        const tipoValor = tipo.value.toLowerCase();
+        if (tipoValor !== "todo") {
+          filtrados = filtrados.filter(p => p.tipo?.toLowerCase() === tipoValor);
         }
 
         // Filtro por estado
-        if (estado.value !== "Todo") {
-          filtrados = filtrados.filter(p => p.estado === estado.value);
+        const estadoValor = estado.value.toLowerCase();
+        if (estadoValor !== "todo") {
+          filtrados = filtrados.filter(p => p.estado?.toLowerCase() === estadoValor);
         }
 
-        // Ordenamiento por tarifa
+        // Orden por tarifa
         if (tarifa.value === "asc") {
           filtrados.sort((a, b) => (a.tarifa || 0) - (b.tarifa || 0));
         } else if (tarifa.value === "desc") {
@@ -119,22 +122,22 @@
       db.collection("transporte").get().then(snapshot => {
         productos = snapshot.docs.map(doc => {
           const data = doc.data();
-          data.docId = doc.id; // 🔑 Agregamos el ID del documento
+          data.docId = doc.id;
           return data;
         });
 
-        aplicarFiltros(); // Mostrar con filtros aplicados
+        aplicarFiltros();
       }).catch(err => {
         console.error('Error al obtener datos de Firebase:', err);
         grid.innerHTML = '<p style="color:red;">No se pudieron cargar los transportes.</p>';
       });
 
-      // Aplicar filtros en cada cambio
       [tipo, estado, tarifa].forEach(select => {
         select.addEventListener('change', aplicarFiltros);
       });
     });
   </script>
+
 
   <!-- Loader y header/footer -->
   <script src="/components/Rental_Payments/loader/insertloader.js"></script>
@@ -165,7 +168,6 @@
           const temp = document.createElement("div");
           temp.innerHTML = html;
 
-          // Ejecutar scripts del header
           const scripts = temp.querySelectorAll("script");
           scripts.forEach(script => {
             const newScript = document.createElement("script");
@@ -180,7 +182,6 @@
           temp.querySelectorAll("script").forEach(s => s.remove());
           container.innerHTML = temp.innerHTML;
 
-          // Cargar datos de usuario si existen
           setTimeout(() => {
             const usuarioRaw = localStorage.getItem("usuario");
             if (!usuarioRaw) return;
