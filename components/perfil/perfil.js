@@ -92,5 +92,5 @@ window.addEventListener("DOMContentLoaded", () => {
 // Función para cerrar sesión
 function cerrarSesion() {
   localStorage.removeItem("usuario");
-  window.location.href = "/components/Rental_Payments/Login%20and%20register/LoginRegister.html";
+  window.location.href = "/index.html";
 }
