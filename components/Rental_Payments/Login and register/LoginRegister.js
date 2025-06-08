@@ -39,10 +39,17 @@ document.getElementById("form-register").addEventListener("submit", async (e) =>
       borrado: false,
       creado: new Date(),
       rol: "usuario",        // ← se añade por defecto
-      imagen: ""             // ← se deja vacío por defecto
+      imagen: "https://i.ibb.co/M5R0YpCv/perfil-del-usuario.png"             // ← se deja vacío por defecto
     });
 
     alert("¡Registro exitoso!");
+    const otroSnapshot = await db.collection("usuarios")
+      .where("correo", "==", correo)
+      .where("contra", "==", contrasena)
+      .where("borrado", "==", false)
+      .get();
+    const usuarioreg = otroSnapshot.docs[0].data();
+    localStorage.setItem("usuario", JSON.stringify(usuarioreg));
     window.location.href = "/inicio.html";
   } catch (error) {
     alert("Error al registrar: " + error.message);
@@ -70,7 +77,7 @@ document.getElementById("form-login").addEventListener("submit", async (e) => {
       if (usuario.rol === "usuario") {
         window.location.href = "/inicio.html";
       } else if (usuario.rol === "administrador") {
-        window.location.href = "/admin.html";
+        window.location.href = "/components/admin/adminindex.html";
       } else {
         alert("Rol no reconocido.");
       }
