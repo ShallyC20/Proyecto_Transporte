@@ -23,8 +23,35 @@
   <section class="pagina-transporte">
     <header class="header">
       <h2>Sistema de Alquiler - <strong>Puntos de control</strong></h2>
-    </header>
+      
+      <div class="filters">
+        <select id="filterEstacion">
+          <option value="Todas">Todas las ubicaciones</option>
+        </select>
 
+        <select id="filterTipo">
+          <option value="default">Vehículos</option>
+          <option value="todo">Todos</option>
+          <option value="bicicleta">Bicicletas</option>
+          <option value="patineta">Patinetas</option>
+        </select>
+
+        <select id="filterEstado">
+          <option value="default">Estado</option>
+          <option value="Todo">Todos</option>
+          <option value="Disponible">Disponible</option>
+          <option value="En uso">En uso</option>
+          <option value="Mantenimiento">Mantenimiento</option>
+        </select>
+
+        <select id="filterTarifa">
+          <option value="default">Tarifa</option>
+          <option value="asc">Menor a mayor</option>
+          <option value="desc">Mayor a menor</option>
+        </select>
+      </div>
+    
+    </header>
     <div class="product-grid" id="gridTransportes"></div>
   </section>
 
@@ -34,50 +61,56 @@
   <script src="/js/conexionFireBase.js"></script>
 
   <script>
-    var ubicacionesmap = [];
+    let ubicacionesmap = [];
+    let transportesmap = [];
 
-    document.addEventListener("DOMContentLoaded", () => {
-      // Cargar header
-      fetch("./mainHeader.html")
-        .then(res => res.text())
-        .then(html => {
-          html = document.getElementById("mainHeaderContainer");
+    document.addEventListener("DOMContentLoaded", async () => {
+      const estacionSelect = document.getElementById("filterEstacion");
+      const tipoSelect = document.getElementById("filterTipo");
+      const estadoSelect = document.getElementById("filterEstado");
+      const tarifaSelect = document.getElementById("filterTarifa");
 
-          const scriptMenu = document.createElement("script");
-          scriptMenu.src = "../js/menu.js";
-          scriptMenu.onload = () => {
-            const scriptHeader = document.createElement("script");
-            scriptHeader.src = "../js/headerEvents.js";
-            scriptHeader.onload = () => {
-              if (typeof initHeaderEvents === "function") initHeaderEvents();
-            };
-            document.body.appendChild(scriptHeader);
-          };
-          document.body.appendChild(scriptMenu);
-        });
+      // Obtener datos desde Firebase
+      const ubiSnapshot = await db.collection("ubicaciones").get();
+      ubicacionesmap = ubiSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-      // Cargar datos desde Firestore
-      db.collection("ubicaciones").get().then((querySnapshot) => {
-        ubicacionesmap = [];
-        querySnapshot.forEach((doc) => ubicacionesmap.push(doc.data()));
-        renderUbicaciones(ubicacionesmap);
+      const transSnapshot = await db.collection("transporte").get();
+      transportesmap = transSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+
+      // Llenar select de estaciones
+      ubicacionesmap.forEach(ubic => {
+        const opt = document.createElement("option");
+        opt.value = ubic.nombre;
+        opt.textContent = ubic.nombre;
+        estacionSelect.appendChild(opt);
       });
+
+      // Evento para todos los filtros
+      [estacionSelect, tipoSelect, estadoSelect, tarifaSelect].forEach(select => {
+        select.addEventListener("change", aplicarFiltros);
+      });
+
+      aplicarFiltros();
     });
 
-    function renderUbicaciones(lista) {
+    function aplicarFiltros() {
+      const estacion = document.getElementById("filterEstacion").value;
+      const tipo = document.getElementById("filterTipo").value;
+      const estado = document.getElementById("filterEstado").value;
+      const tarifa = document.getElementById("filterTarifa").value;
+
       const grid = document.getElementById("gridTransportes");
       grid.innerHTML = "";
 
-      if (lista.length === 0) {
-        grid.innerHTML = "<p>No hay ubicaciones disponibles.</p>";
-        return;
+      let ubicacionesFiltradas = ubicacionesmap;
+      if (estacion !== "Todas") {
+        ubicacionesFiltradas = ubicacionesmap.filter(ubi => ubi.nombre === estacion);
       }
 
-      lista.forEach(ubic => {
-        const card = document.createElement("div");
-        card.className = "cardU";
-
-        card.innerHTML = `
+      ubicacionesFiltradas.forEach(ubic => {
+        const cardUbi = document.createElement("div");
+        cardUbi.className = "cardU";
+        cardUbi.innerHTML = `
           <img src="${ubic.imagen || 'https://via.placeholder.com/150'}" alt="${ubic.nombre}" />
           <div class="cardU-info">
             <h4>${ubic.nombre}</h4>
@@ -85,14 +118,52 @@
             <p><strong>${ubic.descripcion || ''}</strong></p>
           </div>
         `;
-
-        card.addEventListener("click", () => {
-          const nombreEstacion = encodeURIComponent(ubic.nombre);
-          window.location.href = `/components/detalle_ubicacion.html?estacion=${nombreEstacion}`;
+        // Redirigir a la página de detalles de la ubicación
+        cardUbi.addEventListener('click', () => {
+          window.location.href = `/components/detalle_ubicacion.html?estacion=${ubic.nombre}`;
         });
+        grid.appendChild(cardUbi);
 
-        grid.appendChild(card);
+        if (estacion === "Todas") return;
+
+        let relacionados = transportesmap.filter(t => t.estacion === ubic.nombre);
+
+        if (tipo !== "default" && tipo !== "todo") {
+          relacionados = relacionados.filter(t => t.tipo.toLowerCase() === tipo.toLowerCase());
+        }
+
+        if (estado !== "default" && estado !== "Todo") {
+          relacionados = relacionados.filter(t => t.estado === estado);
+        }
+
+        if (tarifa === "asc") {
+          relacionados.sort((a, b) => a.tarifa - b.tarifa);
+        } else if (tarifa === "desc") {
+          relacionados.sort((a, b) => b.tarifa - a.tarifa);
+        }
+
+        relacionados.forEach(trans => {
+          const transCard = document.createElement("div");
+          transCard.className = "cardU";
+          transCard.innerHTML = `
+            <img src="${trans.imagen || 'https://via.placeholder.com/150'}" alt="${trans.nombre}" />
+            <div class="cardU-info">
+              <h4>${trans.nombre}</h4>
+              <p><strong>${trans.tipo}</strong> - ${trans.estado}</p>
+              <p>Tarifa: $${trans.tarifa}</p>
+            </div>
+          `;
+          // Redirigir a la página de detalles del transporte
+          transCard.addEventListener('click', () => {
+            window.location.href = `/components/detalle.html?productoId=${trans.id}`;
+          });
+          grid.appendChild(transCard);
+        });
       });
+
+      if (grid.innerHTML === "") {
+        grid.innerHTML = "<p>No se encontraron resultados con los filtros aplicados.</p>";
+      }
     }
   </script>
 
@@ -109,6 +180,7 @@
         .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
+
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       // Cargar Header
@@ -166,6 +238,7 @@
     window.loaderDuration = 1200;
   </script>
   <script src="/components/Rental_Payments/loader/loader.js"></script>
+
 </body>
 
 </html>
