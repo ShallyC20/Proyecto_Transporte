@@ -6,6 +6,15 @@ const firebaseConfig = {
     messagingSenderId: "200393220762",
     appId: "1:200393220762:web:0f9e9e1ed19b4ba5b4b523"
 };
+
+const iconoBici = L.icon({
+    iconUrl: '/imag/estacionamiento-de-bicicletas.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -30]
+});
+
+
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const ubicacionesRef = db.collection("ubicaciones");
@@ -46,7 +55,8 @@ async function registrarUbicacion() {
             parseFloat(coordenadaSeleccionada.lng.toFixed(6))
         ],
         nombre: nombre,
-        estacion: nombre
+        estacion: nombre,
+        imagen: "https://i.ibb.co/50dLpmc/defecto-Ubicacion.jpg"
     };
     await ubicacionesRef.add(nuevaUbicacion);
     document.getElementById("nombreInput").value = "";
@@ -65,7 +75,7 @@ async function cargarUbicaciones() {
     snapshot.forEach(doc => {
         const data = doc.data();
 
-        const marker = L.marker([data.geo[0], data.geo[1]]).addTo(map)
+        const marker = L.marker([data.geo[0], data.geo[1]], { icon: iconoBici }).addTo(map)
             .bindPopup(`<b>${data.nombre}</b>`);
         marcadores.push(marker);
 

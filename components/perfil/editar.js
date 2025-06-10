@@ -73,7 +73,7 @@ form.addEventListener("submit", async (e) => {
       title: "Datos guardados",
       text: "Tu perfil fue actualizado correctamente.",
     }).then(() => {
-      window.location.href = "/components/Rental_Payments/Login%20and%20register/Perfil/perfil.html";
+      window.location.href = "/components/perfil/perfil.html";
     });
   } catch (err) {
     Swal.fire("Error al guardar", err.message, "error");
