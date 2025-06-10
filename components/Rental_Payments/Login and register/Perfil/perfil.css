@@ -1,0 +1,67 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.perfil-header {
+  background: linear-gradient(to right, #007991, #78ffd6);
+  padding: 2rem;
+  text-align: center;
+  color: white;
+}
+
+.perfil-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1.5rem;
+}
+
+.perfil-card,
+.perfil-info {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 280px;
+}
+
+.perfil-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0.5rem 0;
+  object-fit: cover;
+  border: 2px solid #007991;
+}
+
+.perfil-botones {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.perfil-botones button {
+  background-color: #34589f;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  margin: 0.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.perfil-botones button:hover {
+  background-color: #294373;
+}
+
+ul {
+  padding-left: 1.2rem;
+}
+
+ul li {
+  margin-bottom: 0.2rem;
+}
