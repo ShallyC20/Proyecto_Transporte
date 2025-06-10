@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil de Usuario</title>
+  <link rel="stylesheet" href="perfil.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="perfil-header">
+    <h1>¡Bienvenido, <span id="nombreUsuario"></span>!</h1>
+    <p>Gestiona tu perfil</p>
+  </header>
+
+  <main class="perfil-container">
+    <section class="perfil-card">
+      <h2>Datos Personales</h2>
+      <img id="imagenPerfil" src="/imag/monito.png" alt="Avatar del Usuario" class="perfil-avatar" />
+      <p><strong>Nombre Completo:</strong> <span id="nombreCompleto"></span></p>
+      <p><strong>Descripción:</strong> <span id="descripcion"></span></p>
+      <p><strong>Dirección:</strong> <span id="direccion"></span></p>
+      <p><strong>Estado:</strong> <span id="estado"></span></p>
+      <p><strong>Género:</strong> <span id="genero"></span></p>
+    </section>
+
+    <section class="perfil-info">
+      <h3>Información de Contacto</h3>
+      <p><strong>Correo Electrónico:</strong> <span id="correo"></span></p>
+      <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
+      <p><strong>NIT:</strong> <span id="nit"></span></p>
+    </section>
+
+    <section class="perfil-info">
+      <h3>Datos de Servicio:</h3>
+      <p><strong>Rol:</strong> <span id="rol"></span></p>
+      <p><strong>Kilómetros recorridos:</strong> <span id="kmRecorridos"></span></p>
+      <p><strong>Horas de recorrido:</strong> <span id="horasRecorridas"></span></p>
+      <p><strong>Vehículo(s) favorito(s):</strong>
+        <ul id="vehiculosFavoritos"></ul>
+      </p>
+      <p><strong>Punto(s) favorito(s):</strong>
+        <ul id="puntosFavoritos"></ul>
+      </p>
+    </section>
+  </main>
+
+  <div class="perfil-botones">
+    <button onclick="window.location.href='/components/Rental_Payments/Login%20and%20register/Perfil/EditarPerfil/editar.html'">Editar Perfil</button>
+    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+
+  
+  <script src="/js/conexionFireBase.js"></script>
+  <script src="perfil.js"></script>
+</body>
+</html>
