@@ -17,6 +17,18 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Clave secreta para XOR
+const secretKey = "mi_clave_secreta";  // Asegúrate de mantener esta clave en secreto
+
+// Función para encriptar la contraseña usando XOR
+function xorEncryptDecrypt(input, key) {
+  let output = '';
+  for (let i = 0; i < input.length; i++) {
+    output += String.fromCharCode(input.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+  }
+  return output;
+}
+
 // === REGISTRO ===
 document.getElementById("form-register").addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -25,6 +37,7 @@ document.getElementById("form-register").addEventListener("submit", async (e) =>
   const contrasena = document.getElementById("contrasena").value;
 
   try {
+    // Verificar si el correo ya está registrado
     const querySnapshot = await db.collection("usuarios")
       .where("correo", "==", correo)
       .get();
@@ -34,10 +47,14 @@ document.getElementById("form-register").addEventListener("submit", async (e) =>
       return;
     }
 
+    // Encriptar la contraseña antes de guardarla
+    const encryptedPassword = xorEncryptDecrypt(contrasena, secretKey);
+
+    // Guardar el usuario con la contraseña encriptada
     await db.collection("usuarios").add({
       nombre,
       correo,
-      contra: contrasena,
+      contra: encryptedPassword, // Guardamos la contraseña encriptada
       borrado: false,
       creado: new Date(),
       rol: "usuario",
@@ -46,19 +63,19 @@ document.getElementById("form-register").addEventListener("submit", async (e) =>
 
     alert("¡Registro exitoso!");
 
+    // Verificar el usuario recién registrado
     const otroSnapshot = await db.collection("usuarios")
       .where("correo", "==", correo)
-      .where("contra", "==", contrasena)
       .where("borrado", "==", false)
       .limit(1)
       .get();
 
     const doc = otroSnapshot.docs[0];
     const usuarioreg = doc.data();
-    usuarioreg.uid = doc.id; // ✅ añadimos el UID
+    usuarioreg.uid = doc.id; // Añadimos el UID
     localStorage.setItem("usuario", JSON.stringify(usuarioreg));
 
-    window.location.href = "/inicio.html";
+    window.location.href = "/inicio.html"; // Redirigir al inicio
 
   } catch (error) {
     alert("Error al registrar: " + error.message);
@@ -72,9 +89,9 @@ document.getElementById("form-login").addEventListener("submit", async (e) => {
   const contrasena = document.getElementById("login-contrasena").value;
 
   try {
+    // Buscar el usuario por correo
     const querySnapshot = await db.collection("usuarios")
       .where("correo", "==", correo)
-      .where("contra", "==", contrasena)
       .where("borrado", "==", false)
       .limit(1)
       .get();
@@ -82,11 +99,20 @@ document.getElementById("form-login").addEventListener("submit", async (e) => {
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
       const usuario = doc.data();
-      usuario.uid = doc.id; // ✅ añadimos el UID
 
+      // Desencriptar la contraseña almacenada en Firestore
+      const decryptedPassword = xorEncryptDecrypt(usuario.contra, secretKey);
+
+      // Verificar que la contraseña proporcionada coincida con la desencriptada
+      if (contrasena !== decryptedPassword) {
+        alert("Correo o contraseña incorrectos.");
+        return;
+      }
+
+      usuario.uid = doc.id; // Añadimos el UID
       localStorage.setItem("usuario", JSON.stringify(usuario));
 
-      // Redirección según el rol
+      // Redirección según el rol del usuario
       if (usuario.rol === "usuario") {
         window.location.href = "/inicio.html";
       } else if (usuario.rol === "administrador") {

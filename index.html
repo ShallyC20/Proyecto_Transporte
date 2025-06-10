@@ -175,24 +175,26 @@
       mostrarComentarios(); // recarga después de enviar
     });
 
-    function mostrarComentarios() {
-      const contenedor = document.getElementById("comentariosXSS");
-      contenedor.innerHTML = "";
 
-      db.collection("comentariosXSS")
-        .orderBy("mensaje", "desc") // puedes cambiar por timestamp si deseas
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(doc => {
-            const data = doc.data();
-            const div = document.createElement("div");
-            // ⚠️ VULNERABILIDAD XSS: se inyecta sin filtrar
-            div.innerHTML = `<strong>${data.nombre}:</strong> ${data.mensaje}`;
-            div.style.marginBottom = "8px";
-            contenedor.appendChild(div);
-          });
-        });
-    }
+
+    function mostrarComentarios() {
+  const contenedor = document.getElementById("comentariosXSS");
+  contenedor.innerHTML = ""; // Limpiar los comentarios previos
+
+  db.collection("comentariosXSS")
+    .orderBy("mensaje", "desc") // Puedes cambiar por timestamp si deseas
+    .get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        // Usar textContent en lugar de innerHTML para evitar inyección de código
+        div.textContent = `${data.nombre}: ${data.mensaje}`;
+        div.style.marginBottom = "8px";
+        contenedor.appendChild(div);
+      });
+    });
+}
 
     mostrarComentarios();
   </script>
