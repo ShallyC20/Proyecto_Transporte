@@ -4,11 +4,14 @@ body {
     background-color: #f1f5f9;
 }
 
+.contenido {
+    display: flex;
+    flex-direction: row;
+}
+
 .sidebar {
     height: 100%;
     width: 250px;
-    top: 0;
-    left: 0;
     background-color: #1b2a47;
     color: #fff;
     padding-top: 60px;

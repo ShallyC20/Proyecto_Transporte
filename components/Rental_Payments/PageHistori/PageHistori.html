@@ -56,7 +56,7 @@
     fetch("/components/Rental_Payments/Templates/Header.html")
       .then(res => res.text())
       .then(async html => {
-        const container = document.getElementById("mainHeaderContainer");
+        const container = document.getElementById("mainHeaderContainers");
 
         // Crear contenedor temporal
         const temp = document.createElement("div");
