@@ -7,11 +7,15 @@
   <link rel="stylesheet" href="../css/sobreNosotros.css" />
   <link rel="stylesheet" href="../css/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="/js/conexionFireBase.js"></script>
 </head>
 <body>
 
   <!-- Header dinámico -->
-  <div id="mainHeaderContainers"></div>
+  <div id="mainHeaderContainer"></div>
 
   <main class="about-container">
     <section class="about-description">
@@ -85,14 +89,14 @@
     // Cargar Header
     fetch("/components/Rental_Payments/Templates/Header.html")
       .then(res => res.text())
-      .then(html => {
-        const container = document.getElementById("mainHeaderContainers");
+      .then(async html => {
+        const container = document.getElementById("mainHeaderContainer");
 
-        // Crear un contenedor temporal
+        // Crear contenedor temporal
         const temp = document.createElement("div");
         temp.innerHTML = html;
 
-        // Ejecutar scripts embebidos manualmente
+        // Ejecutar scripts embebidos
         const scripts = temp.querySelectorAll("script");
         scripts.forEach(script => {
           const newScript = document.createElement("script");
@@ -104,37 +108,54 @@
           document.body.appendChild(newScript);
         });
 
-        // Limpiar los scripts del HTML antes de insertar
+        // Limpiar scripts embebidos antes de insertar HTML
         temp.querySelectorAll("script").forEach(s => s.remove());
-
-        // Agregar el HTML restante al contenedor
         container.innerHTML = temp.innerHTML;
 
-        // Esperar a que el DOM del header esté listo
-        setTimeout(() => {
-          const usuarioRaw = localStorage.getItem("usuario");
-          if (!usuarioRaw) return;
+        // Cargar datos del usuario desde localStorage
+        const usuarioRaw = localStorage.getItem("usuario");
+        if (!usuarioRaw) return;
 
-          try {
-            const usuario = JSON.parse(usuarioRaw);
-            const nombre = usuario.nombre || "Usuario";
-            const imagen = usuario.imagen || "/imag/monito.png";
+        try {
+          const usuario = JSON.parse(usuarioRaw);
+          const nombre = usuario.nombre || "Usuario";
+          const imagen = usuario.imagen || "/imag/monito.png";
 
-            const userNameLabel = document.getElementById("userName");
-            if (userNameLabel) userNameLabel.textContent = nombre;
+          document.getElementById("userName").textContent = nombre;
+          document.getElementById("userAvatar").src = imagen;
+          document.getElementById("avatarMenu").src = imagen;
+          document.getElementById("nombreMenu").textContent = nombre;
 
-            const userAvatar = document.getElementById("userAvatar");
-            if (userAvatar) userAvatar.src = imagen;
+          // Cargar tiempo restante de alquiler
+          const db = firebase.firestore();
+          const pagosRef = db.collection("usuarios").doc(usuario.uid).collection("pagos");
+          const snapshot = await pagosRef.orderBy("fin", "desc").limit(1).get();
 
-            const avatarMenu = document.getElementById("avatarMenu");
-            const nombreMenu = document.getElementById("nombreMenu");
-            if (avatarMenu) avatarMenu.src = imagen;
-            if (nombreMenu) nombreMenu.textContent = nombre;
+          const tiempoRestanteEl = document.getElementById("tiempoRestante");
+          const badgeNotif = document.getElementById("badgeNotif");
 
-          } catch (error) {
-            console.error("Error al parsear usuario desde localStorage:", error);
+          if (!snapshot.empty) {
+            const pago = snapshot.docs[0].data();
+            const tiempoFin = new Date(pago.fin).getTime();
+            const ahora = Date.now();
+            const diferenciaMs = tiempoFin - ahora;
+
+            if (diferenciaMs > 0) {
+              const minutos = Math.floor(diferenciaMs / 60000);
+              tiempoRestanteEl.textContent = `Tiempo restante: ${minutos} min`;
+              badgeNotif.textContent = "1";
+            } else {
+              tiempoRestanteEl.textContent = "No tienes alquiler activo.";
+              badgeNotif.textContent = "0";
+            }
+          } else {
+            tiempoRestanteEl.textContent = "No se encontraron registros de pago.";
+            badgeNotif.textContent = "0";
           }
-        }, 100);
+
+        } catch (error) {
+          console.error("Error al cargar usuario o tiempo restante:", error);
+        }
       })
       .catch(err => console.error("Error al cargar el header:", err));
   });

@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
 </head>
 <body>
   <div id="mainHeaderContainer"></div>
@@ -48,107 +51,130 @@
       </div>
     </section>
   </main>
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPyRTvy7EEvAxs1dZjwKk68IR4R-ZPlbQ",
+    authDomain: "transportesgeolocalizacion.firebaseapp.com",
+    projectId: "transportesgeolocalizacion",
+    storageBucket: "transportesgeolocalizacion.appspot.com",
+    messagingSenderId: "200393220762",
+    appId: "1:200393220762:web:0f9e9e1ed19b4ba5b4b523",
+    measurementId: "G-PN7FB0RTDM"
+  };
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      fetch('/components/Rental_Payments/Templates/Header.html')
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById("mainHeaderContainer").innerHTML = html;
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+  const db = firebase.firestore();
+</script>
+ <script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Cargar header
+    fetch('/components/Rental_Payments/Templates/Header.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("mainHeaderContainer").innerHTML = html;
+      });
 
-          const script1 = document.createElement('script');
-          script1.src = '../js/menu.js';
-          script1.onload = () => {
-            const script2 = document.createElement('script');
-            script2.src = '../js/headerEvents.js';
-            script2.onload = () => {
-              if (typeof initHeaderEvents === 'function') initHeaderEvents();
-            };
-            document.body.appendChild(script2);
-          };
-          document.body.appendChild(script1);
+    const data = JSON.parse(localStorage.getItem('productoSeleccionado'));
+    if (!data) {
+      document.body.innerHTML += '<h2 style="text-align:center;margin-top:4rem;">Producto no encontrado</h2>';
+      return;
+    }
+
+    document.getElementById('mainDetalleContainer').style.display = 'block';
+    document.getElementById('detalleImagen').src = data.imagen;
+    document.getElementById('detalleNombre').textContent = data.nombre;
+    document.getElementById('detalleTarifa').textContent = data.tarifa?.toFixed(2) || '0.00';
+    document.getElementById('detalleEstacion').textContent = data.estacion || '-';
+    document.getElementById('detalleDescripcion').textContent = data.descripcion || 'No disponible.';
+
+    const badge = document.getElementById('detalleBadge');
+    badge.textContent = data.estado || 'Desconocido';
+    switch ((data.estado || '').trim()) {
+      case "Disponible": badge.classList.add('badge-disponible'); break;
+      case "En uso": badge.classList.add('badge-en-uso'); break;
+      case "En mantenimiento": badge.classList.add('badge-mante'); break;
+      default: badge.classList.add('badge-default'); break;
+    }
+
+    const ul = document.getElementById('detalleTecnologia');
+    if (Array.isArray(data.tecnologia)) {
+      data.tecnologia.forEach(tec => {
+        const li = document.createElement('li');
+        li.textContent = tec;
+        ul.appendChild(li);
+      });
+    } else {
+      const li = document.createElement('li');
+      li.textContent = 'Sin tecnología registrada.';
+      li.style.fontStyle = 'italic';
+      ul.appendChild(li);
+    }
+
+    // Lógica para alquilar
+    const btnAlquilar = document.getElementById("btnAlquilar");
+    btnAlquilar.addEventListener("click", async () => {
+      const estado = (data.estado || '').trim();
+
+      if (estado !== "Disponible") {
+        Swal.fire({
+          icon: 'warning',
+          title: 'No disponible',
+          text: 'Este vehículo no está disponible actualmente.',
         });
-
-      const data = JSON.parse(localStorage.getItem('productoSeleccionado'));
-      if (!data) {
-        document.body.innerHTML += '<h2 style="text-align:center;margin-top:4rem;">Producto no encontrado</h2>';
         return;
       }
 
-      window.requestAnimationFrame(() => {
-        document.getElementById('mainDetalleContainer').style.display = 'block';
-        document.getElementById('detalleImagen').src = data.imagen;
-        document.getElementById('detalleImagen').alt = data.alt;
-        document.getElementById('detalleNombre').textContent = data.nombre;
-        document.getElementById('detalleTarifa').textContent = data.tarifa?.toFixed(2) || '0.00';
-        document.getElementById('detalleEstacion').textContent = data.estacion || '-';
-        document.getElementById('detalleDescripcion').textContent = data.descripcion || 'No disponible.';
-
-        const badge = document.getElementById('detalleBadge');
-        badge.textContent = data.estado || 'Desconocido';
-
-        switch ((data.estado || '').trim()) {
-          case "Disponible":
-            badge.classList.add('badge-disponible'); break;
-          case "En uso":
-            badge.classList.add('badge-en-uso'); break;
-          case "En mantenimiento":
-            badge.classList.add('badge-mante'); break;
-          default:
-            badge.classList.add('badge-default'); break;
-        }
-
-        const ul = document.getElementById('detalleTecnologia');
-        if (Array.isArray(data.tecnologia) && data.tecnologia.length > 0) {
-          data.tecnologia.forEach(tec => {
-            const li = document.createElement('li');
-            li.textContent = tec;
-            ul.appendChild(li);
-          });
-        } else {
-          const li = document.createElement('li');
-          li.textContent = 'Sin tecnología registrada.';
-          li.style.fontStyle = 'italic';
-          ul.appendChild(li);
-        }
-
-        const btnAlquilar = document.getElementById("btnAlquilar");
-        btnAlquilar.addEventListener("click", () => {
-          const estado = (data.estado || '').trim();
-          switch (estado) {
-            case "Disponible":
-              localStorage.setItem("vehiculoEnAlquiler", JSON.stringify(data));
-              window.location.href = "/components/Rental_Payments/Renta/PageRental.html";
-              break;
-            case "En uso":
-              Swal.fire({
-                icon: 'warning',
-                title: 'Vehículo en uso',
-                text: 'Este vehículo ya está siendo utilizado. Intenta con otro.',
-                confirmButtonColor: '#f1c40f'
-              });
-              break;
-            case "Mantenimiento":
-              Swal.fire({
-                icon: 'error',
-                title: 'Vehículo en mantenimiento',
-                text: 'Este vehículo está fuera de servicio temporalmente.',
-                confirmButtonColor: '#e74c3c'
-              });
-              break;
-            default:
-              Swal.fire({
-                icon: 'question',
-                title: 'Estado desconocido',
-                text: 'No se puede determinar el estado del vehículo.',
-                confirmButtonColor: '#7f8c8d'
-              });
-              break;
-          }
+      const usuario = JSON.parse(localStorage.getItem("usuario"));
+      if (!usuario || !usuario.uid) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Sesión requerida',
+          text: 'Debes iniciar sesión para alquilar un vehículo.',
         });
-      });
+        return;
+      }
+
+      try {
+        const pagosRef = db.collection("usuarios").doc(usuario.uid).collection("pagos");
+        const snapshot = await pagosRef.orderBy("fin", "desc").limit(1).get();
+
+        let tieneAlquilerActivo = false;
+        if (!snapshot.empty) {
+          const pago = snapshot.docs[0].data();
+          const tiempoFin = new Date(pago.fin).getTime();
+          if (Date.now() < tiempoFin) {
+            tieneAlquilerActivo = true;
+          }
+        }
+
+        if (tieneAlquilerActivo) {
+          Swal.fire({
+            icon: 'info',
+            title: 'Alquiler activo',
+            text: 'Ya tienes un vehículo alquilado. Espera a que termine tu alquiler actual.',
+            confirmButtonColor: '#3498db'
+          });
+          return;
+        }
+
+        // ✅ Alquiler permitido
+        localStorage.setItem("vehiculoEnAlquiler", JSON.stringify(data));
+        window.location.href = "/components/Rental_Payments/Renta/PageRental.html";
+
+      } catch (error) {
+        console.error("Error verificando alquiler activo:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo verificar tu historial de alquiler. Intenta nuevamente.',
+        });
+      }
     });
-  </script>
+  });
+</script>
+
 
   <div id="mainFooterContainer"></div>
 
@@ -162,6 +188,82 @@
         .catch(err => console.error("Error al cargar el footer:", err));
     });
   </script>
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Cargar Header
+    fetch("/components/Rental_Payments/Templates/Header.html")
+      .then(res => res.text())
+      .then(async html => {
+        const container = document.getElementById("mainHeaderContainer");
+
+        // Crear contenedor temporal
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+
+        // Ejecutar scripts embebidos
+        const scripts = temp.querySelectorAll("script");
+        scripts.forEach(script => {
+          const newScript = document.createElement("script");
+          if (script.src) {
+            newScript.src = script.src;
+          } else {
+            newScript.textContent = script.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+
+        // Limpiar scripts embebidos antes de insertar HTML
+        temp.querySelectorAll("script").forEach(s => s.remove());
+        container.innerHTML = temp.innerHTML;
+
+        // Cargar datos del usuario desde localStorage
+        const usuarioRaw = localStorage.getItem("usuario");
+        if (!usuarioRaw) return;
+
+        try {
+          const usuario = JSON.parse(usuarioRaw);
+          const nombre = usuario.nombre || "Usuario";
+          const imagen = usuario.imagen || "/imag/monito.png";
+
+          document.getElementById("userName").textContent = nombre;
+          document.getElementById("userAvatar").src = imagen;
+          document.getElementById("avatarMenu").src = imagen;
+          document.getElementById("nombreMenu").textContent = nombre;
+
+          // Cargar tiempo restante de alquiler
+          const db = firebase.firestore();
+          const pagosRef = db.collection("usuarios").doc(usuario.uid).collection("pagos");
+          const snapshot = await pagosRef.orderBy("fin", "desc").limit(1).get();
+
+          const tiempoRestanteEl = document.getElementById("tiempoRestante");
+          const badgeNotif = document.getElementById("badgeNotif");
+
+          if (!snapshot.empty) {
+            const pago = snapshot.docs[0].data();
+            const tiempoFin = new Date(pago.fin).getTime();
+            const ahora = Date.now();
+            const diferenciaMs = tiempoFin - ahora;
+
+            if (diferenciaMs > 0) {
+              const minutos = Math.floor(diferenciaMs / 60000);
+              tiempoRestanteEl.textContent = `Tiempo restante: ${minutos} min`;
+              badgeNotif.textContent = "1";
+            } else {
+              tiempoRestanteEl.textContent = "No tienes alquiler activo.";
+              badgeNotif.textContent = "0";
+            }
+          } else {
+            tiempoRestanteEl.textContent = "No se encontraron registros de pago.";
+            badgeNotif.textContent = "0";
+          }
+
+        } catch (error) {
+          console.error("Error al cargar usuario o tiempo restante:", error);
+        }
+      })
+      .catch(err => console.error("Error al cargar el header:", err));
+  });
+</script>
   <script src="/components/Rental_Payments/loader/insertloader.js"></script>
   <script>
     window.loaderDuration = 500; // 5 segundos

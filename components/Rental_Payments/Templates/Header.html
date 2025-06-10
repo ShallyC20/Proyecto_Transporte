@@ -53,22 +53,18 @@
 
       <!-- Notificaciones -->
       <div class="menu-item-dropdown notifications-dropdown">
-        <span class="nav-link">
-          <i class="material-icons">notifications</i>
-          <span class="notification-badge">2</span>
-        </span>
-        <div class="submenu submenu-notifications">
-          <p class="notif-title">Notificaciones</p>
-          <div class="notif-item">
-            <i class="material-icons">local_offer</i>
-            <span>¡Nueva oferta en alquileres de bicicleta!</span>
-          </div>
-          <div class="notif-item">
-            <i class="material-icons">schedule</i>
-            <span>Tiempo restante: 2 horas</span>
-          </div>
-        </div>
-      </div>
+  <span class="nav-link">
+    <i class="material-icons">notifications</i>
+    <span class="notification-badge" id="badgeNotif">1</span>
+  </span>
+  <div class="submenu submenu-notifications">
+    <p class="notif-title">Notificaciones</p>
+    <div class="notif-item">
+      <i class="material-icons">schedule</i>
+      <span id="tiempoRestante">Calculando...</span>
+    </div>
+  </div>
+</div>
 
       <!-- Avatar con menú desplegable por clic -->
       <div class="user-dropdown" id="userDropdown">

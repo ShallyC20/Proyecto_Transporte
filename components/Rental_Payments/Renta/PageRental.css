@@ -6,6 +6,7 @@
 body {
   margin: 0;
   border: 0;
+  background: white;
 }
 
 /* Contenedor general */
@@ -29,7 +30,7 @@ body {
   flex-wrap: wrap;
   max-width: 1000px;
   width: 100%;
-  background-color: #2a2b34;
+  background-color: #323c4e;
   border-radius: 20px;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
   overflow: hidden;
@@ -46,14 +47,14 @@ body {
   text-align: center;
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
-  color: #aabcf7;
+  color: white;
 }
 
 .formulario-alquiler label {
   display: block;
   margin-top: 0.6rem;
   font-weight: 600;
-  color: #eaeaea;
+  color: white;
 }
 
 .formulario-alquiler input,
@@ -110,7 +111,7 @@ body {
 /* DETALLES VEHÍCULO */
 .detalles-transporte {
   flex: 1 1 50%;
-  background-color: #2a2b34;
+  background-color: #323c4e;
   color: white;
   padding: 2rem;
   box-sizing: border-box;

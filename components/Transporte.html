@@ -1,4 +1,3 @@
-<!-- Transporte.html-->
 <!DOCTYPE html>
 <html lang="es">
 
@@ -6,34 +5,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Visualización de Transporte</title>
-
-  <!-- Estilos -->
   <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-
   <div id="mainHeaderContainers"></div>
-
   <section class="pagina-transporte">
     <header class="header">
       <h2>Sistema de Alquiler - <strong>Visualización de transporte</strong></h2>
       <div class="filters">
-      <select id="filterTipo">
-        <option value="todo">Todos</option>
-        <option value="bicicleta">Bicicletas</option>
-        <option value="patineta">Patinetas</option>
-      </select>
-
+        <select id="filterTipo">
+          <option value="todo">Todos</option>
+          <option value="bicicleta">Bicicletas</option>
+          <option value="patineta">Patinetas</option>
+        </select>
         <select id="filterEstado">
           <option value="Todo">Todo</option>
           <option value="Disponible">Disponible</option>
           <option value="En uso">En uso</option>
           <option value="Mantenimiento">Mantenimiento</option>
         </select>
-
         <select id="filterTarifa">
           <option value="Default">Tarifa</option>
           <option value="asc">Menor a mayor</option>
@@ -41,7 +33,6 @@
         </select>
       </div>
     </header>
-
     <div class="product-grid" id="gridTransportes"></div>
   </section>
 
@@ -51,33 +42,61 @@
   <script src="https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore-compat.js"></script>
   <script type="module" src="/js/conexionFireBase.js"></script>
 
+  <!-- Lógica de liberación de vehículo vencido -->
+  <script>
+    async function liberarVehiculosVencidos() {
+      const usuarioRaw = localStorage.getItem("usuario");
+      if (!usuarioRaw) return;
+      const usuario = JSON.parse(usuarioRaw);
+      const uid = usuario.uid;
+      if (!uid) return;
+      try {
+        const pagosRef = db.collection("usuarios").doc(uid).collection("pagos");
+        const snapshot = await pagosRef.orderBy("fin", "desc").limit(1).get();
+        if (!snapshot.empty) {
+          const pago = snapshot.docs[0].data();
+          const fin = new Date(pago.fin).getTime();
+          const ahora = Date.now();
+          if (fin < ahora && pago.vehiculoId) {
+            const transporteRef = db.collection("transporte").doc(pago.vehiculoId);
+            const doc = await transporteRef.get();
+            if (doc.exists && doc.data().estado === "En uso") {
+              await transporteRef.update({ estado: "Disponible" });
+              console.log(`Vehículo ${pago.vehiculoId} liberado.`);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("Error al verificar alquiler vencido:", err);
+      }
+    }
+  </script>
+
   <!-- Lógica de transporte -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       const grid = document.getElementById('gridTransportes');
       const tipo = document.getElementById('filterTipo');
       const estado = document.getElementById('filterEstado');
       const tarifa = document.getElementById('filterTarifa');
       let productos = [];
 
+      await liberarVehiculosVencidos();
+
       function renderProductos(data) {
         grid.innerHTML = '';
-
         if (data.length === 0) {
           grid.innerHTML = '<p style="text-align:center; font-size: 18px;">No hay transportes que coincidan con los filtros seleccionados.</p>';
           return;
         }
-
         data.forEach(producto => {
           const card = document.createElement('div');
           card.classList.add('card');
-
           const badgeClass = {
             "disponible": "badge-disponible",
             "en uso": "badge-en-uso",
             "mantenimiento": "badge-mantenimiento"
           }[producto.estado.toLowerCase()] || "badge-default";
-
           card.innerHTML = `
             <div class="badge ${badgeClass}">${producto.estado}</div>
             <img src="${producto.imagen || 'https://via.placeholder.com/150'}" alt="${producto.nombre}">
@@ -87,38 +106,22 @@
               <p><strong>Bs ${producto.tarifa?.toFixed(2) || '0.00'}/hora</strong></p>
             </div>
           `;
-
           card.addEventListener("click", () => {
             localStorage.setItem("productoSeleccionado", JSON.stringify(producto));
             window.location.href = "/components/detalle.html";
           });
-
           grid.appendChild(card);
         });
       }
 
       function aplicarFiltros() {
         let filtrados = [...productos];
-
-        // Filtro por tipo
         const tipoValor = tipo.value.toLowerCase();
-        if (tipoValor !== "todo") {
-          filtrados = filtrados.filter(p => p.tipo?.toLowerCase() === tipoValor);
-        }
-
-        // Filtro por estado
+        if (tipoValor !== "todo") filtrados = filtrados.filter(p => p.tipo?.toLowerCase() === tipoValor);
         const estadoValor = estado.value.toLowerCase();
-        if (estadoValor !== "todo") {
-          filtrados = filtrados.filter(p => p.estado?.toLowerCase() === estadoValor);
-        }
-
-        // Orden por tarifa
-        if (tarifa.value === "asc") {
-          filtrados.sort((a, b) => (a.tarifa || 0) - (b.tarifa || 0));
-        } else if (tarifa.value === "desc") {
-          filtrados.sort((a, b) => (b.tarifa || 0) - (a.tarifa || 0));
-        }
-
+        if (estadoValor !== "todo") filtrados = filtrados.filter(p => p.estado?.toLowerCase() === estadoValor);
+        if (tarifa.value === "asc") filtrados.sort((a, b) => (a.tarifa || 0) - (b.tarifa || 0));
+        else if (tarifa.value === "desc") filtrados.sort((a, b) => (b.tarifa || 0) - (a.tarifa || 0));
         renderProductos(filtrados);
       }
 
@@ -128,82 +131,115 @@
           data.docId = doc.id;
           return data;
         });
-
         aplicarFiltros();
       }).catch(err => {
         console.error('Error al obtener datos de Firebase:', err);
         grid.innerHTML = '<p style="color:red;">No se pudieron cargar los transportes.</p>';
       });
 
-      [tipo, estado, tarifa].forEach(select => {
-        select.addEventListener('change', aplicarFiltros);
-      });
+      [tipo, estado, tarifa].forEach(select => select.addEventListener('change', aplicarFiltros));
     });
   </script>
 
-
-  <!-- Loader y header/footer -->
   <script src="/components/Rental_Payments/loader/insertloader.js"></script>
   <script> window.loaderDuration = 2000; </script>
   <script src="/components/Rental_Payments/loader/loader.js"></script>
 
-
-  <!-- Cargar Footer -->
   <div id="mainFooterContainer"></div>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       fetch('/components/footer.html')
         .then(res => res.text())
-        .then(html => {
-          document.getElementById("mainFooterContainer").innerHTML = html;
-        });
+        .then(html => document.getElementById("mainFooterContainer").innerHTML = html);
     });
   </script>
 
-  <!-- Cargar Header -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      fetch("/components/Rental_Payments/Templates/Header.html")
-        .then(res => res.text())
-        .then(html => {
-          const container = document.getElementById("mainHeaderContainers");
-          const temp = document.createElement("div");
-          temp.innerHTML = html;
 
-          const scripts = temp.querySelectorAll("script");
-          scripts.forEach(script => {
-            const newScript = document.createElement("script");
-            if (script.src) {
-              newScript.src = script.src;
-            } else {
-              newScript.textContent = script.textContent;
-            }
-            document.body.appendChild(newScript);
-          });
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCPyRTvy7EEvAxs1dZjwKk68IR4R-ZPlbQ",
+    authDomain: "transportesgeolocalizacion.firebaseapp.com",
+    projectId: "transportesgeolocalizacion",
+    storageBucket: "transportesgeolocalizacion.appspot.com",
+    messagingSenderId: "200393220762",
+    appId: "1:200393220762:web:0f9e9e1ed19b4ba5b4b523",
+    measurementId: "G-PN7FB0RTDM"
+  };
 
-          temp.querySelectorAll("script").forEach(s => s.remove());
-          container.innerHTML = temp.innerHTML;
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
 
-          setTimeout(() => {
-            const usuarioRaw = localStorage.getItem("usuario");
-            if (!usuarioRaw) return;
-            try {
-              const usuario = JSON.parse(usuarioRaw);
-              const nombre = usuario.nombre || "Usuario";
-              const imagen = usuario.imagen || "/imag/monito.png";
+  document.addEventListener("DOMContentLoaded", async () => {
+    const container = document.getElementById("mainHeaderContainers");
 
-              document.getElementById("userName").textContent = nombre;
-              document.getElementById("userAvatar").src = imagen;
-              document.getElementById("avatarMenu").src = imagen;
-              document.getElementById("nombreMenu").textContent = nombre;
-            } catch (e) {
-              console.error("Error al cargar datos de usuario:", e);
-            }
-          }, 100);
-        });
+    const res = await fetch("/components/Rental_Payments/Templates/Header.html");
+    const html = await res.text();
+
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+
+    const scripts = temp.querySelectorAll("script");
+    scripts.forEach(script => {
+      const newScript = document.createElement("script");
+      if (script.src) newScript.src = script.src;
+      else newScript.textContent = script.textContent;
+      document.body.appendChild(newScript);
     });
-  </script>
+
+    temp.querySelectorAll("script").forEach(s => s.remove());
+    container.innerHTML = temp.innerHTML;
+
+    // === CARGAR DATOS DE USUARIO
+    const usuarioRaw = localStorage.getItem("usuario");
+    if (!usuarioRaw) return;
+
+    const usuario = JSON.parse(usuarioRaw);
+    const nombre = usuario.nombre || "Usuario";
+    const imagen = usuario.imagen || "/imag/monito.png";
+
+    document.getElementById("userName").textContent = nombre;
+    document.getElementById("userAvatar").src = imagen;
+    document.getElementById("avatarMenu").src = imagen;
+    document.getElementById("nombreMenu").textContent = nombre;
+
+    // === VERIFICAR ALQUILER ACTIVO
+    try {
+      const badgeNotif = document.querySelector(".notification-badge");
+      const tiempoSpan = document.querySelector("#tiempoRestante");
+
+      const snapshot = await db
+        .collection("usuarios")
+        .doc(usuario.uid)
+        .collection("pagos")
+        .orderBy("fin", "desc")
+        .limit(1)
+        .get();
+
+      if (snapshot.empty) {
+        if (tiempoSpan) tiempoSpan.textContent = "No tienes alquileres activos.";
+        if (badgeNotif) badgeNotif.textContent = "0";
+        return;
+      }
+
+      const pago = snapshot.docs[0].data();
+      const tiempoFin = new Date(pago.fin).getTime();
+      const ahora = Date.now();
+      const diferencia = tiempoFin - ahora;
+
+      if (diferencia > 0) {
+        const horas = Math.floor(diferencia / 3600000);
+        const minutos = Math.floor((diferencia % 3600000) / 60000);
+        if (tiempoSpan) tiempoSpan.textContent = `Tiempo restante: ${horas}h ${minutos}min`;
+        if (badgeNotif) badgeNotif.textContent = "1";
+      } else {
+        if (tiempoSpan) tiempoSpan.textContent = "No tienes alquileres activos.";
+        if (badgeNotif) badgeNotif.textContent = "0";
+      }
+    } catch (err) {
+      console.error("❌ Error al verificar alquiler activo:", err);
+    }
+  });
+</script>
 
 </body>
-
 </html>

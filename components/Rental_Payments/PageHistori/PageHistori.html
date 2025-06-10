@@ -50,59 +50,82 @@
   <script src="/js/conexionFireBase.js"></script>
 
   <!-- Carga del Header con ejecución de scripts -->
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      // Cargar Header
-      fetch("/components/Rental_Payments/Templates/Header.html")
-        .then(res => res.text())
-        .then(html => {
-          const container = document.getElementById("mainHeaderContainers");
-          const temp = document.createElement("div");
-          temp.innerHTML = html;
+<script>
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Cargar Header
+    fetch("/components/Rental_Payments/Templates/Header.html")
+      .then(res => res.text())
+      .then(async html => {
+        const container = document.getElementById("mainHeaderContainer");
 
-          const scripts = temp.querySelectorAll("script");
-          scripts.forEach(script => {
-            const newScript = document.createElement("script");
-            if (script.src) {
-              newScript.src = script.src;
+        // Crear contenedor temporal
+        const temp = document.createElement("div");
+        temp.innerHTML = html;
+
+        // Ejecutar scripts embebidos
+        const scripts = temp.querySelectorAll("script");
+        scripts.forEach(script => {
+          const newScript = document.createElement("script");
+          if (script.src) {
+            newScript.src = script.src;
+          } else {
+            newScript.textContent = script.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
+
+        // Limpiar scripts embebidos antes de insertar HTML
+        temp.querySelectorAll("script").forEach(s => s.remove());
+        container.innerHTML = temp.innerHTML;
+
+        // Cargar datos del usuario desde localStorage
+        const usuarioRaw = localStorage.getItem("usuario");
+        if (!usuarioRaw) return;
+
+        try {
+          const usuario = JSON.parse(usuarioRaw);
+          const nombre = usuario.nombre || "Usuario";
+          const imagen = usuario.imagen || "/imag/monito.png";
+
+          document.getElementById("userName").textContent = nombre;
+          document.getElementById("userAvatar").src = imagen;
+          document.getElementById("avatarMenu").src = imagen;
+          document.getElementById("nombreMenu").textContent = nombre;
+
+          // Cargar tiempo restante de alquiler
+          const db = firebase.firestore();
+          const pagosRef = db.collection("usuarios").doc(usuario.uid).collection("pagos");
+          const snapshot = await pagosRef.orderBy("fin", "desc").limit(1).get();
+
+          const tiempoRestanteEl = document.getElementById("tiempoRestante");
+          const badgeNotif = document.getElementById("badgeNotif");
+
+          if (!snapshot.empty) {
+            const pago = snapshot.docs[0].data();
+            const tiempoFin = new Date(pago.fin).getTime();
+            const ahora = Date.now();
+            const diferenciaMs = tiempoFin - ahora;
+
+            if (diferenciaMs > 0) {
+              const minutos = Math.floor(diferenciaMs / 60000);
+              tiempoRestanteEl.textContent = `Tiempo restante: ${minutos} min`;
+              badgeNotif.textContent = "1";
             } else {
-              newScript.textContent = script.textContent;
+              tiempoRestanteEl.textContent = "No tienes alquiler activo.";
+              badgeNotif.textContent = "0";
             }
-            document.body.appendChild(newScript);
-          });
+          } else {
+            tiempoRestanteEl.textContent = "No se encontraron registros de pago.";
+            badgeNotif.textContent = "0";
+          }
 
-          temp.querySelectorAll("script").forEach(s => s.remove());
-          container.innerHTML = temp.innerHTML;
-
-          setTimeout(() => {
-            const usuarioRaw = localStorage.getItem("usuario");
-            if (!usuarioRaw) return;
-
-            try {
-              const usuario = JSON.parse(usuarioRaw);
-              const nombre = usuario.nombre || "Usuario";
-              const imagen = usuario.imagen || "/imag/monito.png";
-
-              const userNameLabel = document.getElementById("userName");
-              if (userNameLabel) userNameLabel.textContent = nombre;
-
-              const userAvatar = document.getElementById("userAvatar");
-              if (userAvatar) userAvatar.src = imagen;
-
-              const avatarMenu = document.getElementById("avatarMenu");
-              const nombreMenu = document.getElementById("nombreMenu");
-
-              if (avatarMenu) avatarMenu.src = imagen;
-              if (nombreMenu) nombreMenu.textContent = nombre;
-
-            } catch (error) {
-              console.error("Error al parsear usuario desde localStorage:", error);
-            }
-          }, 100);
-        })
-        .catch(err => console.error("Error al cargar el header:", err));
-    });
-  </script>
+        } catch (error) {
+          console.error("Error al cargar usuario o tiempo restante:", error);
+        }
+      })
+      .catch(err => console.error("Error al cargar el header:", err));
+  });
+</script>
 
   <!-- Lógica del Historial de Pagos -->
   <script>
